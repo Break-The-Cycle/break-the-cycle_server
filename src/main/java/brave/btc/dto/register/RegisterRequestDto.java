@@ -1,7 +1,5 @@
 package brave.btc.dto.register;
 
-import jakarta.persistence.*;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
@@ -15,16 +13,16 @@ public class RegisterRequestDto {
     private String name;
 
     @NotBlank(message = "전화번호 오류")
-    private String phone_number;
+    private String phoneNumber;
 
 //    private Address address;
 
     @NotBlank(message = "아이디 오류")
     @Pattern(regexp = "[a-zA-Z1-9]{7,}",
             message = "아이디 오류")
-    private String login_id;
+    private String loginId;
 
-    private boolean id_dup;
+    private boolean idDup;
 
     @NotBlank(message = "비밀번호 오류")
     @Pattern(regexp = "(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{8,12}",

@@ -1,7 +1,5 @@
 package brave.btc.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.nimbusds.openid.connect.sdk.claims.Address;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -20,7 +18,7 @@ public class User {
     private String name;
 
     @Column(name = "pnbr")
-    private String phone_number;
+    private String phoneNumber;
 
 //    @OneToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "address_id")
@@ -28,16 +26,16 @@ public class User {
 //    private Address address;
 
     @Column(name = "lgnidn")
-    private String login_id;
+    private String loginId;
     private String password;
 
     public User() {
     }
 
-    public User(String name, String phone_number, String login_id, String password) {
+    public User(String name, String phoneNumber, String loginId, String password) {
         this.name = name;
-        this.phone_number = phone_number;
-        this.login_id = login_id;
+        this.phoneNumber = phoneNumber;
+        this.loginId = loginId;
         this.password = password;
     }
 }

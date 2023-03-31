@@ -37,7 +37,9 @@ class LoginControllerTest {
     @Test
     public void nullTest() throws Exception {
         Assertions.assertThat(userService.findUser(1L)).isNull();
+        userService.findUser("123");
     }
+
 
 
 }

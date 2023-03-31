@@ -26,15 +26,21 @@ public class UserRepository {
                 .getResultList();
     }
 
-    public List<User> findByName(String name) {
+    public User findByName(String name) {
         return em.createQuery("select u from User u where u.name= :name", User.class)
                 .setParameter("name", name)
-                .getResultList();
+                .getResultList()
+                .stream()
+                .findFirst()
+                .orElse(null);
     }
 
-    public User findByUserId(String login_id) {
-        return em.createQuery("select u from User u where u.login_id =:login_id", User.class)
-                .setParameter("login_id", login_id)
-                .getSingleResult();
+    public User findByUserId(String loginId) {
+        return em.createQuery("select u from User u where u.loginId =:loginId", User.class)
+                .setParameter("loginId", loginId)
+                .getResultList()
+                .stream()
+                .findFirst()
+                .orElse(null);
     }
 }
