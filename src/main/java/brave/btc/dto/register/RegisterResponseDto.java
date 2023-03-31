@@ -7,13 +7,12 @@ import lombok.Data;
 @AllArgsConstructor
 public class RegisterResponseDto {
 
-    private boolean id_error;
-    private boolean pwd_error;
-    private boolean phone_error;
-    private boolean name_error;
-    private boolean id_dup_error;
-    private boolean success;
-
+    private boolean idError;
+    private boolean pwdError;
+    private boolean phoneError;
+    private boolean nameError;
+    private boolean idDupError;
+    private boolean pwdMatchError;
     public RegisterResponseDto() {
     }
 }
