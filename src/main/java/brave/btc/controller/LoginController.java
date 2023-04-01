@@ -35,8 +35,9 @@ public class LoginController {
             @ApiResponse(responseCode = "400", description = "회원 가입 실패 -> 응답 에러 중 적어도 하나가 true")
     })
     @PostMapping("/register")
-    public ResponseEntity<RegisterResponseDto> registerV1(@RequestBody @Valid RegisterRequestDto request, BindingResult bindingResult) {
-        return userService.registerCheck(request, bindingResult);
+    public ResponseEntity<RegisterResponseDto> registerV1(BindingResult bindingResult,
+        @RequestBody @Valid RegisterRequestDto request) {
+        return userService.registerCheck(request);
     }
 
     @Operation(summary = "ID Duplication Check", description = "아이디 중복 체크",
@@ -67,7 +68,4 @@ public class LoginController {
         userService.login(request.getId(), request.getPassword());
         log.info("로그인 성공. userId = {}", request.getId());
     }
-
-
-
 }
