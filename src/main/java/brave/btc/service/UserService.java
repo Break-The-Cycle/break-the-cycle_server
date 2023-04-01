@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 
-import javax.lang.model.SourceVersion;
 import java.util.List;
 
 @Service
@@ -50,24 +49,21 @@ public class UserService {
     }
 
     @Transactional
-    public ResponseEntity<RegisterResponseDto> registerCheck(RegisterRequestDto request, BindingResult bindingResult) {
+    public ResponseEntity<RegisterResponseDto> registerCheck(RegisterRequestDto request) {
         RegisterResponseDto response = new RegisterResponseDto(false, false, false, false, false, false);
 
         //아이디 중복체크 여부
         if (request.isIdDup()) {
             response.setIdDupError(true);
         }
-        //값 조건 오류
-        if (bindingResult.hasErrors()) {
-            setError(bindingResult, response);
-        }
+
 
         //비밀번호 매칭 확인
         if (!request.getPassword().equals(request.getPassword2())) {
             response.setPwdMatchError(true);
         }
 
-        if(!response.isIdDupError() && !bindingResult.hasErrors() && !response.isPwdError()){
+        if(!response.isIdDupError() && !response.isPwdError()){
             User user = new User(request.getName(), request.getPhoneNumber(), request.getLoginId(), request.getPassword());
             join(user);
             log.info("회원 가입 완료");
@@ -77,21 +73,7 @@ public class UserService {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 
     }
-    private static void setError(BindingResult bindingResult, RegisterResponseDto response) {
-        List<ObjectError> errors = bindingResult.getAllErrors();
-        for (ObjectError error : errors) {
-            String message = error.getDefaultMessage();
-            if (message.equals("이름 오류")) {
-                response.setNameError(true);
-            } else if (message.equals("전화번호 오류")) {
-                response.setPhoneError(true);
-            } else if (message.equals("아이디 오류")) {
-                response.setIdError(true);
-            } else {
-                response.setPwdError(true);
-            }
-        }
-    }
+
 //    private void validateDuplicateUser(User User) {
 //        List<User> findUsers = userRepository.findByName(User.getName());
 //        if (!findUsers.isEmpty()) {
