@@ -22,9 +22,6 @@ public class ErrorController {
         return new ResponseEntity<>(errorResult, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler({NoResultException.class, EmptyResultDataAccessException.class})
-    public User noMatchUserExHandle(EmptyResultDataAccessException e) {
-        return null;
-    }
+
 
 }

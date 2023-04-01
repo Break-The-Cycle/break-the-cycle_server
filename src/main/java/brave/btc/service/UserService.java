@@ -4,6 +4,7 @@ import brave.btc.domain.User;
 import brave.btc.dto.register.RegisterRequestDto;
 import brave.btc.dto.register.RegisterResponseDto;
 import brave.btc.exception.AuthenticationInvalidException;
+import brave.btc.exception.DuplicateIdException;
 import brave.btc.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,11 +43,10 @@ public class UserService {
         }
     }
 
-    public boolean idDuplicateCheck(String loginId) {
-        if (findUser(loginId) == null) {
-            return false;
+    public void idDuplicateCheck(String loginId) {
+        if (findUser(loginId) != null) {
+            throw new DuplicateIdException();
         }
-        return true;
     }
 
     @Transactional
