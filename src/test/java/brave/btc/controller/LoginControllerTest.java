@@ -40,6 +40,4 @@ class LoginControllerTest {
         userService.findUser("123");
     }
 
-
-
 }

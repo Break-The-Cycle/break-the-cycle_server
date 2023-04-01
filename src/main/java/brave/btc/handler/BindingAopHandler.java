@@ -20,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Aspect
 @Component
-public class BindingAop {
+public class BindingAopHandler {
 
 	@Around("execution(* brave.btc.controller..*.*(..))")
 	public Object validationCheck(ProceedingJoinPoint pj) throws Throwable{
