@@ -1,6 +1,7 @@
 package brave.btc.controller;
 
 import brave.btc.domain.User;
+import brave.btc.exception.DuplicateIdException;
 import brave.btc.repository.UserRepository;
 import brave.btc.service.UserService;
 import jakarta.persistence.EntityManager;
@@ -35,9 +36,13 @@ class LoginControllerTest {
     }
 
     @Test
-    public void nullTest() throws Exception {
-        Assertions.assertThat(userService.findUser(1L)).isNull();
-        userService.findUser("123");
+    @DisplayName(value = "아이디 중복체크 테스트")
+    public void idDupTest() throws Exception {
+        User user = new User("1","1","1","1");
+        userService.join(user);
+        assertThrows(DuplicateIdException.class, ()->{
+            userService.idDuplicateCheck("1");
+        });
     }
 
 }

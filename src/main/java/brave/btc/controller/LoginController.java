@@ -45,8 +45,8 @@ public class LoginController {
                     @ApiResponse(responseCode = "200", description = "사용 가능한 아이디"),
                     @ApiResponse(responseCode = "400", description = "이미 존재하는 아이디")
             })
-    @GetMapping("/register/dupCheck")
-    public ResponseEntity<?> dupCheckV1(@RequestBody String loginId) {
+    @GetMapping("/dupCheck/{loginId}")
+    public ResponseEntity<?> dupCheckV1(@PathVariable("loginId") String loginId) {
         try {
             userService.idDuplicateCheck(loginId);
             return ResponseEntity.ok()
