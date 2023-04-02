@@ -35,8 +35,7 @@ public class LoginController {
             @ApiResponse(responseCode = "400", description = "회원 가입 실패 -> 응답 에러 중 적어도 하나가 true")
     })
     @PostMapping("/register")
-    public ResponseEntity<RegisterResponseDto> registerV1(BindingResult bindingResult,
-        @RequestBody @Valid RegisterRequestDto request) {
+    public ResponseEntity<RegisterResponseDto> registerV1(@RequestBody @Valid RegisterRequestDto request, BindingResult bindingResult) {
         return userService.registerCheck(request);
     }
 
