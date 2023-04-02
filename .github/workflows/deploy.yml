@@ -57,4 +57,5 @@ jobs:
           environment_name: 230330-05-break-the-cycle
           version_label: github-action-${{steps.current-time.outputs.formattedTime}}
           region: ap-northeast-2
+          wait_for_environment_recovery: 600
           deployment_package: deploy/deploy.zip
