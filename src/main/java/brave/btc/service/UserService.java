@@ -52,10 +52,6 @@ public class UserService {
     public ResponseEntity<RegisterResponseDto> registerCheck(RegisterRequestDto request) {
         RegisterResponseDto response = new RegisterResponseDto(false, false, false, false, false, false);
 
-        //아이디 중복체크 여부
-        if (request.isIdDup()) {
-            response.setIdDupError(true);
-        }
 
 
         //비밀번호 매칭 확인
