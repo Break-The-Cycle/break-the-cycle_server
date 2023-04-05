@@ -1,4 +1,4 @@
-package brave.btc.dto.register;
+package brave.btc.dto.auth.register;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;

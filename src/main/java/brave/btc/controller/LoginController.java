@@ -1,11 +1,9 @@
 package brave.btc.controller;
 
 import brave.btc.dto.CommonResponseDto;
-import brave.btc.dto.login.LoginRequestDto;
-import brave.btc.dto.register.RegisterRequestDto;
-import brave.btc.dto.register.RegisterResponseDto;
-import brave.btc.exception.auth.DuplicateLoginIdException;
-import brave.btc.service.UserService;
+import brave.btc.dto.auth.login.LoginRequestDto;
+import brave.btc.dto.auth.register.RegisterRequestDto;
+import brave.btc.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -21,12 +19,13 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "01. Auth", description = "회원가입/로그인")
 @Slf4j
+@Valid
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/v1/auth")
 public class LoginController {
 
-    private final UserService userService;
+    private final AuthService authService;
 
     @Operation(summary = "Login ID Duplication Check", description = "아이디 중복 체크",
         responses = {
@@ -39,7 +38,7 @@ public class LoginController {
         @Pattern(regexp = "^[a-z]+[a-zA-Z1-9]{6,20}",message = "아이디는 영문 소문자로 시작하고 숫자를 포함하여 7~20자로 구성되어야 합니다.")
         @PathVariable("loginId") String loginId) {
 
-        CommonResponseDto<Object> responseDto = userService.loginIdIdDuplicateCheck(loginId);
+        CommonResponseDto<Object> responseDto = authService.loginIdIdDuplicateCheck(loginId);
         return ResponseEntity.ok()
                 .body(responseDto);
     }
@@ -50,10 +49,12 @@ public class LoginController {
             @ApiResponse(responseCode = "400", description = "회원 가입 실패")
     })
     @PostMapping("/register")
-    public ResponseEntity<RegisterResponseDto> registerV1(
+    public ResponseEntity<?> registerV1(
         @RequestBody @Valid RegisterRequestDto request,
         BindingResult bindingResult) {
-        return userService.registerCheck(request);
+        CommonResponseDto<Object> responseDto = authService.register(request);
+        return ResponseEntity.ok()
+            .body(responseDto);
     }
 
     @Operation(summary = "Login", description = "로그인 ID PW 확인",
@@ -64,7 +65,7 @@ public class LoginController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping ("/login")
     public void loginV1(@RequestBody LoginRequestDto request) {
-        userService.login(request.getLoginId(), request.getPassword());
+        authService.login(request.getLoginId(), request.getPassword());
         log.info("로그인 성공. userId = {}", request.getLoginId());
     }
 }

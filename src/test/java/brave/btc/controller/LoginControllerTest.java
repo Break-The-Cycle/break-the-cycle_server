@@ -3,7 +3,7 @@ package brave.btc.controller;
 import brave.btc.domain.User;
 import brave.btc.exception.auth.DuplicateLoginIdException;
 import brave.btc.repository.UserRepository;
-import brave.btc.service.UserService;
+import brave.btc.service.AuthService;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class LoginControllerTest {
 
     @Autowired
-    UserService userService;
+    AuthService authService;
     @Autowired
     UserRepository userRepository;
 
@@ -27,9 +27,9 @@ class LoginControllerTest {
         //given
         User user = new User("1","1","1","1");
         //when
-        Long findId = userService.join(user);
+        Long findId = authService.join(user);
         //then
-        User user1 = userService.findUser(findId);
+        User user1 = authService.findUser(findId);
         Assertions.assertThat(user1).isEqualTo(user);
     }
 
@@ -37,9 +37,9 @@ class LoginControllerTest {
     @DisplayName(value = "아이디 중복체크 테스트")
     public void idDupTest() throws Exception {
         User user = new User("1","1","1","1");
-        userService.join(user);
+        authService.join(user);
         assertThrows(DuplicateLoginIdException.class, ()->{
-            userService.idDuplicateCheck("1");
+            authService.idDuplicateCheck("1");
         });
     }
 

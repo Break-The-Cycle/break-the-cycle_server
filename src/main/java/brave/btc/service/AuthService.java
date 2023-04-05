@@ -2,10 +2,9 @@ package brave.btc.service;
 
 import brave.btc.domain.User;
 import brave.btc.dto.CommonResponseDto;
-import brave.btc.dto.register.RegisterRequestDto;
-import brave.btc.dto.register.RegisterResponseDto;
+import brave.btc.dto.auth.register.RegisterRequestDto;
+import brave.btc.dto.auth.register.RegisterResponseDto;
 import brave.btc.exception.auth.AuthenticationInvalidException;
-import brave.btc.exception.auth.DuplicateLoginIdException;
 import brave.btc.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,18 +14,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 @RequiredArgsConstructor
 @Slf4j
-public class UserService {
+public class AuthService {
 
     private final UserRepository userRepository;
 
     //회원 가입
-    @Transactional
+
     public Long join(User User) {
 //        validateDuplicateUser(User);
         userRepository.save(User);
@@ -43,6 +41,7 @@ public class UserService {
         }
     }
 
+    @Transactional(readOnly = true)
     public CommonResponseDto<Object> loginIdIdDuplicateCheck(String loginId) {
         User user = userRepository.findByUserId(loginId)
             .orElse(null);
@@ -57,26 +56,29 @@ public class UserService {
             .build();
     }
 
-    @Transactional
-    public ResponseEntity<RegisterResponseDto> registerCheck(RegisterRequestDto request) {
-        RegisterResponseDto response = new RegisterResponseDto(false, false, false, false, false, false);
 
+    public CommonResponseDto<Object> register(RegisterRequestDto request) {
 
-
+        log.debug("[register] request: {}", request);
         //비밀번호 매칭 확인
-        if (!request.getPassword().equals(request.getPassword2())) {
-            response.setPwdMatchError(true);
+        String password = request.getPassword();
+        String password2 = request.getPassword2();
+        if (password.equals(password2)) {
+            //TODO : MapStruct 도입하기 ... (나중에 필드 많아지면 훨씬 편함) DTO <-> Entity Mapper
+            User newUser = User.builder()
+                .loginId(request.getLoginId())
+                .password(password)
+                .name(request.getName())
+                .phoneNumber(request.getPhoneNumber())
+                .build();
+            userRepository.save(newUser);
+            log.info("[register] 회원 가입 완료");
+            return CommonResponseDto.builder()
+                .message("회원 가입이 완료되었습니다.")
+                .build();
         }
-
-        if(!response.isIdDupError() && !response.isPwdError()){
-            User user = new User(request.getName(), request.getPhoneNumber(), request.getLoginId(), request.getPassword());
-            join(user);
-            log.info("회원 가입 완료");
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        }
-        log.info("회원 가입 실패!");
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-
+        log.error("[register] 회원 가입 실패");
+        throw new AuthenticationInvalidException("비밀번호와 확인 비밀번호가 일치하지 않습니다.");
     }
 
 //    private void validateDuplicateUser(User User) {
