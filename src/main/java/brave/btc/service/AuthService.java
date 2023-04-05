@@ -2,18 +2,16 @@ package brave.btc.service;
 
 import brave.btc.domain.User;
 import brave.btc.dto.CommonResponseDto;
+import brave.btc.dto.auth.login.LoginRequestDto;
 import brave.btc.dto.auth.register.RegisterRequestDto;
-import brave.btc.dto.auth.register.RegisterResponseDto;
 import brave.btc.exception.auth.AuthenticationInvalidException;
+import brave.btc.exception.auth.UserPrincipalNotFoundException;
 import brave.btc.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @Transactional
@@ -23,27 +21,32 @@ public class AuthService {
 
     private final UserRepository userRepository;
 
-    //회원 가입
 
-    public Long join(User User) {
-//        validateDuplicateUser(User);
-        userRepository.save(User);
-        return User.getId();
-    }
+    public CommonResponseDto<Object> login(LoginRequestDto loginRequestDto)  {
 
-    public void login(String loginId, String password) {
-        // User user = findUser(loginId);
-        User user=null;
-        System.out.println("user = " + user);
-        //아이디 or 비밀번호 오류
-        if (user == null || !user.getPassword().equals(password)) {
-            throw new AuthenticationInvalidException();
+        log.info("[login] 로그인 시도");
+        String loginId = loginRequestDto.getLoginId();
+        String rawPassword = loginRequestDto.getPassword();
+        User user = userRepository.findByloginId(loginId)
+            .orElseThrow(() -> new UserPrincipalNotFoundException("해당하는 유저를 찾을 수 없습니다."));
+
+        //비밀번호 확인 로직
+        //보통 DB에는 해시된 값이 들어가 있기 때문에 rawPassword를 해싱한 후에 비교해봄
+        String encPassword = user.getPassword();
+
+        if (rawPassword.equals(encPassword)) {
+            log.info("[login] 비밀번호 일치");
+            return CommonResponseDto.builder()
+                .message("로그인이 완료되었습니다.")
+                .build();
         }
+        log.error("[login] 비밀번호 불일치 에러");
+        throw new AuthenticationInvalidException("비밀번호가 일치하지 않습니다.");
     }
 
     @Transactional(readOnly = true)
     public CommonResponseDto<Object> loginIdIdDuplicateCheck(String loginId) {
-        User user = userRepository.findByUserId(loginId)
+        User user = userRepository.findByloginId(loginId)
             .orElse(null);
 
         if (user == null) {
@@ -80,22 +83,4 @@ public class AuthService {
         log.error("[register] 회원 가입 실패");
         throw new AuthenticationInvalidException("비밀번호와 확인 비밀번호가 일치하지 않습니다.");
     }
-
-//    private void validateDuplicateUser(User User) {
-//        List<User> findUsers = userRepository.findByName(User.getName());
-//        if (!findUsers.isEmpty()) {
-//            throw new IllegalStateException("이미 존재하는 회원입니다.");
-//        }
-//    }
-    //회원 전체 조회
-
-    public List<User> findUsers() {
-        return userRepository.findAll();
-    }
-
-    public User findUser(Long id) {
-        return userRepository.findOne(id);
-    }
-
-    
 }

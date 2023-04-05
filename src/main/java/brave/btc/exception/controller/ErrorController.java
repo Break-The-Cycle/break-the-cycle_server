@@ -2,6 +2,7 @@ package brave.btc.exception.controller;
 
 import brave.btc.exception.ErrorResponseDto;
 import brave.btc.exception.auth.AuthenticationInvalidException;
+import brave.btc.exception.auth.UserPrincipalNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,7 @@ public class ErrorController {
     }
 
     @ExceptionHandler(AuthenticationInvalidException.class)
-        public ResponseEntity<ErrorResponseDto<?>> handleAuthenticaionInvalidException(AuthenticationInvalidException e) {
+        public ResponseEntity<ErrorResponseDto<?>> handleAuthenticationInvalidException(AuthenticationInvalidException e) {
 
         log.error("[handleAuthenticationInvalidException] 로그인 실패 예외");
         ErrorResponseDto<Object> errorResponseDto = ErrorResponseDto.builder()
@@ -34,4 +35,15 @@ public class ErrorController {
         return ResponseEntity.badRequest()
             .body(errorResponseDto);
     }
+    @ExceptionHandler(UserPrincipalNotFoundException.class)
+    public ResponseEntity<ErrorResponseDto<?>> handleUserPrincipalNotFoundException(UserPrincipalNotFoundException e) {
+
+        log.error("[handleUserPrincipalNotFoundException] 회원 존재하지 않음");
+        ErrorResponseDto<Object> errorResponseDto = ErrorResponseDto.builder()
+            .message(e.getMessage())
+            .build();
+        return ResponseEntity.badRequest()
+            .body(errorResponseDto);
+    }
+
 }

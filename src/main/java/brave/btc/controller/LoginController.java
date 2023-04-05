@@ -1,5 +1,7 @@
 package brave.btc.controller;
 
+import java.nio.file.attribute.UserPrincipalNotFoundException;
+
 import brave.btc.dto.CommonResponseDto;
 import brave.btc.dto.auth.login.LoginRequestDto;
 import brave.btc.dto.auth.register.RegisterRequestDto;
@@ -62,10 +64,11 @@ public class LoginController {
                     @ApiResponse(responseCode = "200", description = "로그인 성공"),
                     @ApiResponse(responseCode = "400", description = "로그인 실패")
             })
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping ("/login")
-    public void loginV1(@RequestBody LoginRequestDto request) {
-        authService.login(request.getLoginId(), request.getPassword());
-        log.info("로그인 성공. userId = {}", request.getLoginId());
+    @PostMapping ("/login")
+    public ResponseEntity<?> loginV1(
+        @RequestBody @Valid LoginRequestDto request) {
+        CommonResponseDto<Object> responseDto = authService.login(request);
+        return ResponseEntity.ok()
+            .body(responseDto);
     }
 }

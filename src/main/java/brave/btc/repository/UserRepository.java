@@ -36,7 +36,7 @@ public class UserRepository {
                 .orElse(null);
     }
 
-    public Optional<User> findByUserId(String loginId) {
+    public Optional<User> findByloginId(String loginId) {
         User user = em.createQuery("select u from User u where u.loginId =:loginId", User.class)
             .setParameter("loginId", loginId)
             .getResultList()
