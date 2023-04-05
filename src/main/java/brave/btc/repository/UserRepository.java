@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -35,12 +36,13 @@ public class UserRepository {
                 .orElse(null);
     }
 
-    public User findByUserId(String loginId) {
-        return em.createQuery("select u from User u where u.loginId =:loginId", User.class)
-                .setParameter("loginId", loginId)
-                .getResultList()
-                .stream()
-                .findFirst()
-                .orElse(null);
+    public Optional<User> findByUserId(String loginId) {
+        User user = em.createQuery("select u from User u where u.loginId =:loginId", User.class)
+            .setParameter("loginId", loginId)
+            .getResultList()
+            .stream()
+            .findFirst()
+            .orElse(null);
+        return Optional.ofNullable(user);
     }
 }

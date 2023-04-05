@@ -1,6 +1,7 @@
 package brave.btc.service;
 
 import brave.btc.domain.User;
+import brave.btc.dto.CommonResponseDto;
 import brave.btc.dto.register.RegisterRequestDto;
 import brave.btc.dto.register.RegisterResponseDto;
 import brave.btc.exception.auth.AuthenticationInvalidException;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -32,7 +34,8 @@ public class UserService {
     }
 
     public void login(String loginId, String password) {
-        User user = findUser(loginId);
+        // User user = findUser(loginId);
+        User user=null;
         System.out.println("user = " + user);
         //아이디 or 비밀번호 오류
         if (user == null || !user.getPassword().equals(password)) {
@@ -40,10 +43,18 @@ public class UserService {
         }
     }
 
-    public void idDuplicateCheck(String loginId) {
-        if (findUser(loginId) != null) {
-            throw new DuplicateLoginIdException();
+    public CommonResponseDto<Object> loginIdIdDuplicateCheck(String loginId) {
+        User user = userRepository.findByUserId(loginId)
+            .orElse(null);
+
+        if (user == null) {
+            return CommonResponseDto.builder()
+                .message("사용 가능한 아이디입니다.")
+                .build();
         }
+        return CommonResponseDto.builder()
+            .message("이미 사용중인 아이디입니다.")
+            .build();
     }
 
     @Transactional
@@ -84,8 +95,5 @@ public class UserService {
         return userRepository.findOne(id);
     }
 
-    public User findUser(String loginId) {
-        return userRepository.findByUserId(loginId);
-    }
     
 }

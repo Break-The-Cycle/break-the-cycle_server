@@ -1,5 +1,6 @@
 package brave.btc.controller;
 
+import brave.btc.dto.CommonResponseDto;
 import brave.btc.dto.login.LoginRequestDto;
 import brave.btc.dto.register.RegisterRequestDto;
 import brave.btc.dto.register.RegisterResponseDto;
@@ -38,14 +39,9 @@ public class LoginController {
         @Pattern(regexp = "^[a-z]+[a-zA-Z1-9]{6,20}",message = "아이디는 영문 소문자로 시작하고 숫자를 포함하여 7~20자로 구성되어야 합니다.")
         @PathVariable("loginId") String loginId) {
 
-        try {
-            userService.idDuplicateCheck(loginId);
-            return ResponseEntity.ok()
-                .body("Usable Login Id");
-        } catch (DuplicateLoginIdException e) {
-            return ResponseEntity.badRequest()
-                .body("Duplicate Login Id");
-        }
+        CommonResponseDto<Object> responseDto = userService.loginIdIdDuplicateCheck(loginId);
+        return ResponseEntity.ok()
+                .body(responseDto);
     }
 
     @Operation(summary = "register", description = "회원 가입 폼 제출",
