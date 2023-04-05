@@ -1,10 +1,9 @@
 package brave.btc.controller;
 
-import brave.btc.domain.User;
 import brave.btc.dto.login.LoginRequestDto;
 import brave.btc.dto.register.RegisterRequestDto;
 import brave.btc.dto.register.RegisterResponseDto;
-import brave.btc.exception.DuplicateIdException;
+import brave.btc.exception.auth.DuplicateLoginIdException;
 import brave.btc.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -17,10 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Tag(name = "01. Auth", description = "회원가입/로그인")
 @Slf4j
@@ -30,6 +26,27 @@ import java.util.List;
 public class LoginController {
 
     private final UserService userService;
+
+    @Operation(summary = "Login ID Duplication Check", description = "아이디 중복 체크",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "사용 가능한 아이디"),
+            @ApiResponse(responseCode = "400", description = "이미 존재하는 아이디")
+        })
+    @GetMapping("/duplicate-check/{loginId}")
+    public ResponseEntity<?> dupCheckV1(
+        @Parameter(description = "중복 확인할 아이디")
+        @Pattern(regexp = "^[a-z]+[a-zA-Z1-9]{6,20}",message = "아이디는 영문 소문자로 시작하고 숫자를 포함하여 7~20자로 구성되어야 합니다.")
+        @PathVariable("loginId") String loginId) {
+
+        try {
+            userService.idDuplicateCheck(loginId);
+            return ResponseEntity.ok()
+                .body("Usable Login Id");
+        } catch (DuplicateLoginIdException e) {
+            return ResponseEntity.badRequest()
+                .body("Duplicate Login Id");
+        }
+    }
 
     @Operation(summary = "register", description = "회원 가입 폼 제출",
     responses = {
@@ -41,26 +58,6 @@ public class LoginController {
         @RequestBody @Valid RegisterRequestDto request,
         BindingResult bindingResult) {
         return userService.registerCheck(request);
-    }
-
-    @Operation(summary = "Login ID Duplication Check", description = "아이디 중복 체크",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "사용 가능한 아이디"),
-                    @ApiResponse(responseCode = "400", description = "이미 존재하는 아이디")
-            })
-    @GetMapping("/duplicate-check/{loginId}")
-    public ResponseEntity<?> dupCheckV1(
-        @Parameter(description = "중복 확인할 아이디")
-        @Pattern(regexp = "^[a-z]+[a-zA-Z1-9]{6,20}",message = "아이디는 영문 소문자로 시작하고 숫자를 포함하여 7~20자로 구성되어야 합니다.")
-        @PathVariable("loginId") String loginId) {
-        try {
-            userService.idDuplicateCheck(loginId);
-            return ResponseEntity.ok()
-                    .body("Usable Login Id");
-        } catch (DuplicateIdException e) {
-            return ResponseEntity.badRequest()
-                    .body("Duplicate Login Id");
-        }
     }
 
     @Operation(summary = "Login", description = "로그인 ID PW 확인",

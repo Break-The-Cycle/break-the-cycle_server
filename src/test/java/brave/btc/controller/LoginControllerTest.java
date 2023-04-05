@@ -1,17 +1,15 @@
 package brave.btc.controller;
 
 import brave.btc.domain.User;
-import brave.btc.exception.DuplicateIdException;
+import brave.btc.exception.auth.DuplicateLoginIdException;
 import brave.btc.repository.UserRepository;
 import brave.btc.service.UserService;
-import jakarta.persistence.EntityManager;
+
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.security.spec.EdDSAParameterSpec;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -40,7 +38,7 @@ class LoginControllerTest {
     public void idDupTest() throws Exception {
         User user = new User("1","1","1","1");
         userService.join(user);
-        assertThrows(DuplicateIdException.class, ()->{
+        assertThrows(DuplicateLoginIdException.class, ()->{
             userService.idDuplicateCheck("1");
         });
     }

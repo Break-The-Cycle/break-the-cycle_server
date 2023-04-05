@@ -3,8 +3,8 @@ package brave.btc.service;
 import brave.btc.domain.User;
 import brave.btc.dto.register.RegisterRequestDto;
 import brave.btc.dto.register.RegisterResponseDto;
-import brave.btc.exception.AuthenticationInvalidException;
-import brave.btc.exception.DuplicateIdException;
+import brave.btc.exception.auth.AuthenticationInvalidException;
+import brave.btc.exception.auth.DuplicateLoginIdException;
 import brave.btc.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,8 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 
 import java.util.List;
 
@@ -44,7 +42,7 @@ public class UserService {
 
     public void idDuplicateCheck(String loginId) {
         if (findUser(loginId) != null) {
-            throw new DuplicateIdException();
+            throw new DuplicateLoginIdException();
         }
     }
 
