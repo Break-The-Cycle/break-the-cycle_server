@@ -1,13 +1,21 @@
 package brave.btc.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-@Entity
+@ToString
 @Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
 @Table(name = "use_person")
-@EqualsAndHashCode(of = "id")
 public class User {
 
     @Id
@@ -27,15 +35,7 @@ public class User {
 
     @Column(name = "lgnidn")
     private String loginId;
+
     private String password;
 
-    public User() {
-    }
-
-    public User(String name, String phoneNumber, String loginId, String password) {
-        this.name = name;
-        this.phoneNumber = phoneNumber;
-        this.loginId = loginId;
-        this.password = password;
-    }
 }

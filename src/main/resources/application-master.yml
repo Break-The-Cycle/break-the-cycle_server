@@ -8,15 +8,21 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     properties:
       hibernate:
 #          show_sql: true
 #        format_sql: true
-        default_batch_fetch_size: 100
 
 logging:
   level:
     org.hibernate.SQL: error
-    org.hibernate.type: trace
+    org.hibernate.type: info
+
+log:
+  config:
+    path: ./logs
+    filename: app-master
+    maxHistory: 30
+    totalSizeCap: 200MB
 
