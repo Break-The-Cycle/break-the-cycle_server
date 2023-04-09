@@ -27,7 +27,7 @@ public class AuthService {
         log.info("[login] 로그인 시도");
         String loginId = loginRequestDto.getLoginId();
         String rawPassword = loginRequestDto.getPassword();
-        User user = userRepository.findByloginId(loginId)
+        User user = userRepository.findByLoginId(loginId)
             .orElseThrow(() -> new UserPrincipalNotFoundException("해당하는 유저를 찾을 수 없습니다."));
 
         //비밀번호 확인 로직
@@ -46,7 +46,7 @@ public class AuthService {
 
     @Transactional(readOnly = true)
     public CommonResponseDto<Object> loginIdIdDuplicateCheck(String loginId) {
-        User user = userRepository.findByloginId(loginId)
+        User user = userRepository.findByLoginId(loginId)
             .orElse(null);
 
         if (user == null) {
