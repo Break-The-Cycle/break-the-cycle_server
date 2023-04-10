@@ -38,7 +38,7 @@ public class RegisterRequestDto {
         message ="비밀번호는 영문 대문자, 소문자, 특수문자를 포함하여 8~20자로 구성되어야 합니다.")
     private String password;
 
-    @Schema(description = "로그인 패스워드2")
+    @Schema(description = "로그인 패스워드2", example = "kang123!")
     @NotBlank(message = "확인 비밀번호는 필수 입력 값입니다.")
     @Pattern(regexp="^(?=.*[A-Za-z])(?=.*[~!@#$%^&*()+|=])[A-Za-z\\d~!@#$%^&*()+|=]{8,20}$",
         message ="확인 비밀번호는 영문 대문자, 소문자, 특수문자를 포함하여 8~20자로 구성되어야 합니다.")
