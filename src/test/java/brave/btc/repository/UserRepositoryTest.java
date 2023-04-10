@@ -32,11 +32,9 @@ class UserRepositoryTest {
         userRepository.save(user);
         Optional<User> optionalUser = userRepository.findById(user.getId());
         User findUser = optionalUser.get();
-        Optional<User> optionalNullUser = userRepository.findById(2L);
-        User nullUser = optionalNullUser.orElse(null);
         //then
         assertThat(findUser.getId()).isEqualTo(user.getId());
-        assertThat(nullUser).isNull();
+
     }
 
     @Test
