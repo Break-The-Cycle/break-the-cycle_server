@@ -1,16 +1,11 @@
 package brave.btc.controller;
 
-import brave.btc.domain.User;
-import brave.btc.repository.UserRepository;
-import brave.btc.service.AuthService;
-
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.*;
+import brave.btc.repository.UsePersonRepository;
+import brave.btc.repository.UserRepository;
+import brave.btc.service.AuthService;
 
 @SpringBootTest
 class LoginControllerTest {
@@ -18,7 +13,7 @@ class LoginControllerTest {
     @Autowired
     AuthService authService;
     @Autowired
-    UserRepository userRepository;
+    UsePersonRepository usePersonRepository;
 
     // @Test
     // @DisplayName(value = "저장 테스트")

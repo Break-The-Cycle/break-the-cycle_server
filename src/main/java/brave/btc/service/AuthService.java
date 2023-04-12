@@ -1,17 +1,17 @@
 package brave.btc.service;
 
-import brave.btc.domain.User;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import brave.btc.domain.user.UsePerson;
 import brave.btc.dto.CommonResponseDto;
 import brave.btc.dto.auth.login.LoginRequestDto;
 import brave.btc.dto.auth.register.RegisterRequestDto;
 import brave.btc.exception.auth.AuthenticationInvalidException;
 import brave.btc.exception.auth.UserPrincipalNotFoundException;
-import brave.btc.repository.UserRepository;
+import brave.btc.repository.UsePersonRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class AuthService {
 
-    private final UserRepository userRepository;
+    private final UsePersonRepository usePersonRepository;
 
 
     public CommonResponseDto<Object> login(LoginRequestDto loginRequestDto)  {
@@ -27,7 +27,7 @@ public class AuthService {
         log.info("[login] 로그인 시도");
         String loginId = loginRequestDto.getLoginId();
         String rawPassword = loginRequestDto.getPassword();
-        User user = userRepository.findByLoginId(loginId)
+        UsePerson user = usePersonRepository.findByLoginId(loginId)
             .orElseThrow(() -> new UserPrincipalNotFoundException("해당하는 유저를 찾을 수 없습니다."));
 
         //비밀번호 확인 로직
@@ -46,7 +46,7 @@ public class AuthService {
 
     @Transactional(readOnly = true)
     public CommonResponseDto<Object> loginIdIdDuplicateCheck(String loginId) {
-        User user = userRepository.findByLoginId(loginId)
+        UsePerson user = usePersonRepository.findByLoginId(loginId)
             .orElse(null);
 
         if (user == null) {
@@ -68,13 +68,13 @@ public class AuthService {
         String password2 = request.getPassword2();
         if (password.equals(password2)) {
             //TODO : MapStruct 도입하기 ... (나중에 필드 많아지면 훨씬 편함) DTO <-> Entity Mapper
-            User newUser = User.builder()
+            UsePerson newUsePerson = UsePerson.builder()
                 .loginId(request.getLoginId())
                 .password(password)
                 .name(request.getName())
                 .phoneNumber(request.getPhoneNumber())
                 .build();
-            userRepository.save(newUser);
+            usePersonRepository.save(newUsePerson);
             log.info("[register] 회원 가입 완료");
             return CommonResponseDto.builder()
                 .message("회원 가입이 완료되었습니다.")
