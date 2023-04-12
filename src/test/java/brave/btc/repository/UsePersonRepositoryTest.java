@@ -11,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import brave.btc.domain.user.UsePerson;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 
 @SpringBootTest
 class UsePersonRepositoryTest {
@@ -20,8 +18,6 @@ class UsePersonRepositoryTest {
     @Autowired
     UsePersonRepository usePersonRepository;
 
-    @PersistenceContext
-    EntityManager em;
 
     @Test
     @DisplayName("사용자 조회 테스트 - ID")
@@ -32,7 +28,7 @@ class UsePersonRepositoryTest {
         usePersonRepository.save(usePerson);
         Optional<UsePerson> optionalUsePerson = usePersonRepository.findById(usePerson.getId());
         UsePerson findUsePerson = optionalUsePerson.get();
-        Optional<UsePerson> optionalNullUsePerson = usePersonRepository.findById(2L);
+        Optional<UsePerson> optionalNullUsePerson = usePersonRepository.findById(2);
         UsePerson nullUsePerson = optionalNullUsePerson.orElse(null);
         //then
         assertThat(findUsePerson.getId()).isEqualTo(usePerson.getId());

@@ -27,18 +27,24 @@ public class AuthService {
         log.info("[login] 로그인 시도");
         String loginId = loginRequestDto.getLoginId();
         String rawPassword = loginRequestDto.getPassword();
-        UsePerson user = usePersonRepository.findByLoginId(loginId)
+        checkIsPasswordEqual(loginId, rawPassword);
+
+        log.info("[login] 비밀번호 일치");
+        return CommonResponseDto.builder()
+            .message("로그인이 완료되었습니다.")
+            .build();
+    }
+
+    public UsePerson checkIsPasswordEqual(String loginId, String rawPassword) {
+        UsePerson usePerson = usePersonRepository.findByLoginId(loginId)
             .orElseThrow(() -> new UserPrincipalNotFoundException("해당하는 유저를 찾을 수 없습니다."));
 
         //비밀번호 확인 로직
         //보통 DB에는 해시된 값이 들어가 있기 때문에 rawPassword를 해싱한 후에 비교해봄
-        String encPassword = user.getPassword();
+        String encPassword = usePerson.getPassword();
 
         if (rawPassword.equals(encPassword)) {
-            log.info("[login] 비밀번호 일치");
-            return CommonResponseDto.builder()
-                .message("로그인이 완료되었습니다.")
-                .build();
+            return usePerson;
         }
         log.error("[login] 비밀번호 불일치 에러");
         throw new AuthenticationInvalidException("비밀번호가 일치하지 않습니다.");

@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import brave.btc.domain.user.UsePerson;
 
-public interface UsePersonRepository extends JpaRepository<UsePerson, Long> {
+public interface UsePersonRepository extends JpaRepository<UsePerson, Integer> {
 
     List<UsePerson> findByName(String username);
 

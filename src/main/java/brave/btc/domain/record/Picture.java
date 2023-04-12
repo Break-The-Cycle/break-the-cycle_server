@@ -1,5 +1,7 @@
 package brave.btc.domain.record;
 
+import org.hibernate.annotations.Comment;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -25,17 +27,19 @@ import lombok.ToString;
 @Table(name = "PICTURE")
 public class Picture {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Comment("개인 기록 ID")
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "USE_PERSON_RECORD_ID", columnDefinition = "INT NOT NULL")
 	private Integer id;
 
+	@Comment("개인 기록")
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="USE_PERSON_RECORD_ID")
 	@MapsId
 	@ToString.Exclude
 	private Record record;
 
+	@Comment("사진 내용")
 	@Column(name = "PICTURE_CONTENT", columnDefinition = "VARCHAR(100) NOT NULL")
 	private String content;
 }
