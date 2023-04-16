@@ -2,9 +2,12 @@ package brave.btc.exception.controller;
 
 import brave.btc.exception.ErrorResponseDto;
 import brave.btc.exception.auth.AuthenticationInvalidException;
+import brave.btc.exception.auth.SmsCertificationNumberExpiredException;
+import brave.btc.exception.auth.SmsCertificationNumberNotSameException;
 import brave.btc.exception.auth.UserPrincipalNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 
+import net.nurigo.sdk.message.exception.NurigoMessageNotReceivedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -44,6 +47,39 @@ public class ErrorController {
             .build();
         return ResponseEntity.badRequest()
             .body(errorResponseDto);
+    }
+
+    @ExceptionHandler(NurigoMessageNotReceivedException.class)
+    public ResponseEntity<ErrorResponseDto<?>> handleNurigoMessageNotReceivedException(NurigoMessageNotReceivedException e) {
+
+        log.error("[handleNurigoMessageNotReceivedException] 인증 번호 전송 실패");
+        ErrorResponseDto<Object> errorResponseDto = ErrorResponseDto.builder()
+                .message(e.getMessage())
+                .build();
+        return ResponseEntity.badRequest()
+                .body(errorResponseDto);
+    }
+
+    @ExceptionHandler(SmsCertificationNumberNotSameException.class)
+    public ResponseEntity<ErrorResponseDto<?>> handleSmsCertificationNumberNotSameException(SmsCertificationNumberNotSameException e) {
+
+        log.error("[handleSmsCertificationNumberNotSameException] 인증 번호 불일치");
+        ErrorResponseDto<Object> errorResponseDto = ErrorResponseDto.builder()
+                .message(e.getMessage())
+                .build();
+        return ResponseEntity.badRequest()
+                .body(errorResponseDto);
+    }
+
+    @ExceptionHandler(SmsCertificationNumberExpiredException.class)
+    public ResponseEntity<ErrorResponseDto<?>> handleSmsCertificationNumberExpiredException(SmsCertificationNumberExpiredException e) {
+
+        log.error("[handleSmsCertificationNumberExpiredException] 인증 번호 만료");
+        ErrorResponseDto<Object> errorResponseDto = ErrorResponseDto.builder()
+                .message(e.getMessage())
+                .build();
+        return ResponseEntity.badRequest()
+                .body(errorResponseDto);
     }
 
 }

@@ -1,17 +1,29 @@
 package brave.btc.service;
 
+import brave.btc.domain.SmsCertification;
 import brave.btc.domain.User;
 import brave.btc.dto.CommonResponseDto;
 import brave.btc.dto.auth.login.LoginRequestDto;
 import brave.btc.dto.auth.register.RegisterRequestDto;
 import brave.btc.exception.auth.AuthenticationInvalidException;
+import brave.btc.exception.auth.SmsCertificationNumberExpiredException;
+import brave.btc.exception.auth.SmsCertificationNumberNotSameException;
 import brave.btc.exception.auth.UserPrincipalNotFoundException;
+import brave.btc.repository.SmsCertificationRepository;
 import brave.btc.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 
+import net.nurigo.sdk.NurigoApp;
+import net.nurigo.sdk.message.model.Message;
+import net.nurigo.sdk.message.service.DefaultMessageService;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Service
 @Transactional
@@ -20,15 +32,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class AuthService {
 
     private final UserRepository userRepository;
+    private final SmsCertificationRepository smsCertificationRepository;
 
-
-    public CommonResponseDto<Object> login(LoginRequestDto loginRequestDto)  {
+    public CommonResponseDto<Object> login(LoginRequestDto loginRequestDto) {
 
         log.info("[login] 로그인 시도");
         String loginId = loginRequestDto.getLoginId();
         String rawPassword = loginRequestDto.getPassword();
         User user = userRepository.findByLoginId(loginId)
-            .orElseThrow(() -> new UserPrincipalNotFoundException("해당하는 유저를 찾을 수 없습니다."));
+                .orElseThrow(() -> new UserPrincipalNotFoundException("해당하는 유저를 찾을 수 없습니다."));
 
         //비밀번호 확인 로직
         //보통 DB에는 해시된 값이 들어가 있기 때문에 rawPassword를 해싱한 후에 비교해봄
@@ -37,8 +49,8 @@ public class AuthService {
         if (rawPassword.equals(encPassword)) {
             log.info("[login] 비밀번호 일치");
             return CommonResponseDto.builder()
-                .message("로그인이 완료되었습니다.")
-                .build();
+                    .message("로그인이 완료되었습니다.")
+                    .build();
         }
         log.error("[login] 비밀번호 불일치 에러");
         throw new AuthenticationInvalidException("비밀번호가 일치하지 않습니다.");
@@ -47,16 +59,16 @@ public class AuthService {
     @Transactional(readOnly = true)
     public CommonResponseDto<Object> loginIdIdDuplicateCheck(String loginId) {
         User user = userRepository.findByLoginId(loginId)
-            .orElse(null);
+                .orElse(null);
 
         if (user == null) {
             return CommonResponseDto.builder()
-                .message("사용 가능한 아이디입니다.")
-                .build();
+                    .message("사용 가능한 아이디입니다.")
+                    .build();
         }
         return CommonResponseDto.builder()
-            .message("이미 사용중인 아이디입니다.")
-            .build();
+                .message("이미 사용중인 아이디입니다.")
+                .build();
     }
 
 
@@ -69,18 +81,96 @@ public class AuthService {
         if (password.equals(password2)) {
             //TODO : MapStruct 도입하기 ... (나중에 필드 많아지면 훨씬 편함) DTO <-> Entity Mapper
             User newUser = User.builder()
-                .loginId(request.getLoginId())
-                .password(password)
-                .name(request.getName())
-                .phoneNumber(request.getPhoneNumber())
-                .build();
+                    .loginId(request.getLoginId())
+                    .password(password)
+                    .name(request.getName())
+                    .phoneNumber(request.getPhoneNumber())
+                    .build();
             userRepository.save(newUser);
             log.info("[register] 회원 가입 완료");
             return CommonResponseDto.builder()
-                .message("회원 가입이 완료되었습니다.")
-                .build();
+                    .message("회원 가입이 완료되었습니다.")
+                    .build();
         }
         log.error("[register] 회원 가입 실패");
         throw new AuthenticationInvalidException("비밀번호와 확인 비밀번호가 일치하지 않습니다.");
+    }
+
+
+    public CommonResponseDto<Object> sendAuthNumber(String apiKey, String secretKey, String smsDomain, String phoneNumber) {
+
+        log.info("[register] 인증번호 요청");
+        String authNumber = RandomStringUtils.randomNumeric(6);
+
+        DefaultMessageService messageService = NurigoApp.INSTANCE.initialize(apiKey, secretKey, smsDomain);
+
+        Message message = new Message();
+        message.setFrom("01099236825");
+        message.setTo(phoneNumber);
+        message.setText("[로즈 데이즈] 인증번호는 " + authNumber + "입니다.");
+
+        //인증 번호 저장하고 check에서 비교할 때 사용
+
+        try {
+            messageService.send(message);
+            saveCertificationNumber(phoneNumber, authNumber);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return CommonResponseDto.builder()
+                .message("인증번호 전송이 완료되었습니다.")
+                .build();
+    }
+
+    public void saveCertificationNumber(String phoneNumber, String authNumber) {
+
+        log.info("[register] 인증번호 저장");
+        SmsCertification smsCertification = smsCertificationRepository.findByPhoneNumber(phoneNumber)
+                .orElse(null);
+        if (smsCertification != null) {
+            smsCertificationRepository.updateCertificationNum(authNumber, getNowTimeStamp(), phoneNumber);
+        } else {
+            SmsCertification requestDto = SmsCertification.builder()
+                    .phoneNumber(phoneNumber)
+                    .certificationNumber(authNumber)
+                    .build();
+            smsCertificationRepository.save(requestDto);
+        }
+
+    }
+
+    public CommonResponseDto<Object> checkAuthNumber(String authNumber, String phoneNumber) {
+
+        log.info("[register] 인증번호 확인 요청");
+        SmsCertification smsCertification = smsCertificationRepository.findByPhoneNumber(phoneNumber)
+                .orElse(null);
+        if (smsCertification != null) {
+            checkCertificationTime(smsCertification.getCreated(), 3);
+            if (smsCertification.getCertificationNumber().equals(authNumber)) {
+                System.out.println("smsCertification.getCertificationNumber() = " + smsCertification.getCertificationNumber());
+                System.out.println("authNumber = " + authNumber);
+                return CommonResponseDto.builder()
+                        .message("인증번호 인증이 완료되었습니다.")
+                        .build();
+            }
+        }
+
+        throw new SmsCertificationNumberNotSameException("인증번호가 일치하지 않습니다.");
+
+    }
+
+    public Timestamp getNowTimeStamp() {
+        return new Timestamp(System.currentTimeMillis());
+    }
+
+    public void checkCertificationTime(Timestamp timestamp, int validationTime) {
+
+        LocalDateTime localDateTime = timestamp.toLocalDateTime()
+                .plusMinutes(validationTime);
+        LocalDateTime now = LocalDateTime.now();
+        if (localDateTime.isBefore(now)) {
+            throw new SmsCertificationNumberExpiredException("인증번호가 만료되었습니다.");
+        }
     }
 }
