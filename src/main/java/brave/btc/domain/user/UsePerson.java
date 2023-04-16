@@ -1,9 +1,13 @@
 package brave.btc.domain.user;
 
+import java.time.Period;
+
 import org.hibernate.annotations.Comment;
 
 import brave.btc.domain.address.Address;
+import brave.btc.util.converter.PeriodToIntegerConverter;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -48,8 +52,21 @@ public class UsePerson extends User{
 	@Column(name = "USE_PERSON_PASSWORD", columnDefinition = "VARCHAR(200) NOT NULL")
 	private String password;
 
+	@Builder.Default
+	@Convert(converter= PeriodToIntegerConverter.class)
+	@Comment("사용개인생리주기")
+	@Column(name = "MENSTRUATION_PERIOD", columnDefinition = "INT NOT NULL DEFAULT 28")
+	private Period menstruationPeriod=Period.ofDays(28);
+
+	@Comment("긴급신고내용")
+	@Column(name = "EMRGN_REPORT_CONTENT", columnDefinition = "VARCHAR(200)")
+	private String emergencyReportContent;
+
+
 	@Comment("주소")
 	@JoinColumn(name = "ADDRESS_ID", columnDefinition = "INT NOT NULL")
 	@OneToOne(fetch= FetchType.LAZY)
+	@ToString.Exclude
 	private Address address;
+
 }

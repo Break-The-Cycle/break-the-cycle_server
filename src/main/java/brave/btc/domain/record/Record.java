@@ -47,11 +47,11 @@ public class Record {
 	private UsePerson usePerson;
 
 	@Comment("기록일시")
-	@Column(name = "REPORT_DATE", columnDefinition = "TIMESTAMP NOT NULL")
+	@Column(name = "RECORD_DATE", columnDefinition = "TIMESTAMP NOT NULL")
 	private LocalDateTime date;
 
 	@Comment("기록구분")
-	@Column(name = "REPORT_DVSN", columnDefinition = "VARCHAR(3) NOT NULL")
+	@Column(name = "RECORD_DVSN", columnDefinition = "VARCHAR(3) NOT NULL")
 	private String division;
 
 	@Comment("기록감정")
