@@ -1,10 +1,10 @@
 package brave.btc.controller;
 
-import java.nio.file.attribute.UserPrincipalNotFoundException;
-
 import brave.btc.dto.CommonResponseDto;
 import brave.btc.dto.auth.login.LoginRequestDto;
 import brave.btc.dto.auth.register.RegisterRequestDto;
+import brave.btc.domain.SmsCertification;
+import brave.btc.dto.auth.register.SmsCertificationDto;
 import brave.btc.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -14,7 +14,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +28,15 @@ import org.springframework.web.bind.annotation.*;
 public class LoginController {
 
     private final AuthService authService;
+
+    @Value("${sms-public-key}")
+    String publicKey;
+
+    @Value("${sms-secret-key}")
+    String secretKey;
+
+    @Value("${sms-domain}")
+    String smsDomain;
 
     @Operation(summary = "Login ID Duplication Check", description = "아이디 중복 체크",
         responses = {
@@ -71,4 +80,30 @@ public class LoginController {
         return ResponseEntity.ok()
             .body(responseDto);
     }
+
+    @Operation(summary = "Sms Certification Send", description = "인증번호 요청",
+    responses = {
+            @ApiResponse(responseCode = "200", description = "인증번호 요청 성공"),
+            @ApiResponse(responseCode = "400", description = "인증번호 요청 실패")
+    })
+    @PostMapping("/sms-certification/send")
+    public ResponseEntity<?> sendSms(@RequestBody SmsCertificationDto request){
+        CommonResponseDto<Object> responseDto = authService.sendAuthNumber(publicKey,secretKey,smsDomain,request.getPhoneNumber());
+        return ResponseEntity.ok()
+                .body(responseDto);
+    }
+
+    @Operation(summary = "Sms Certification Confirm", description = "인증번호 확인",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "인증번호 일치"),
+                    @ApiResponse(responseCode = "400", description = "인증번호 불일치")
+            })
+    @PostMapping("/sms-certification/confirm")
+    public ResponseEntity<?> smsCertification(@RequestBody SmsCertificationDto request) {
+        CommonResponseDto<Object> responseDto = authService.checkAuthNumber(request.getCertificationNumber(), request.getPhoneNumber());
+        return ResponseEntity.ok()
+                .body(responseDto);
+    }
+
+
 }

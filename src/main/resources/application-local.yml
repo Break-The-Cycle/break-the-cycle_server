@@ -16,3 +16,7 @@ logging:
   level:
     org.hibernate.SQL: debug
     org.hibernate.type: trace
+
+sms-secret-key: ${SMS_SECRET_KEY}
+sms-public-key: ${SMS_PUBLIC_KEY}
+sms-domain: ${SMS_DOMAIN}
