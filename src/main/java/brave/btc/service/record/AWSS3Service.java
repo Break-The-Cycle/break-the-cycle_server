@@ -14,6 +14,20 @@ public interface AWSS3Service {
 	 */
 	String uploadPicture(MultipartFile multipartFile, String encodePassword);
 
+	/**
+	 *  손글씨를 S3에 업로드한다.
+	 * @param handWriting 손글씨 byte array;
+	 * @param encodePassword 암호화 비밀번호
+	 * @return 업로드된 주소
+	 */
+	String uploadPicture(byte[] handWriting, String encodePassword);
+
+	/**
+	 * 일기를 S3에 업로드한다.
+	 * @param diaryDto Diary dto
+	 * @param encodePassword 암호화 비밀번호
+	 * @return 업로드된 주소
+	 */
 	String uploadDiary(DiaryDto diaryDto, String encodePassword);
 
 }

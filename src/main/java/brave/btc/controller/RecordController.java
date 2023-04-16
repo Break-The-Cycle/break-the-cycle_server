@@ -1,8 +1,9 @@
 package brave.btc.controller;
 
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -10,7 +11,6 @@ import brave.btc.dto.CommonResponseDto;
 import brave.btc.dto.record.RecordRequestDto;
 import brave.btc.service.record.RecordService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -33,10 +33,13 @@ public class RecordController {
 			@ApiResponse(responseCode = "200", description = "업로드 성공"),
 			@ApiResponse(responseCode = "400", description = "회원 정보 불일치")
 		})
-	@PostMapping
+	@PostMapping(consumes = {
+		MediaType.MULTIPART_FORM_DATA_VALUE
+	})
 	public ResponseEntity<?> uploadRecord(
-		@Parameter(description = "업로드할 기록/일기") @RequestBody RecordRequestDto requestDto) {
+		 @ModelAttribute  RecordRequestDto requestDto) {
 
+		log.info("[uploadRecord] requestDto: {}", requestDto);
 		CommonResponseDto<Object> responseDto = recordService.uploadRecord(requestDto);
 		return ResponseEntity.ok()
 			.body(responseDto);

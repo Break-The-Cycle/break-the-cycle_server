@@ -26,7 +26,7 @@ public class Address {
 
 	@Comment("지역 ID")
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ADDRESS_ID", columnDefinition = "INT NOT NULL AUTO_INCREMENT")
+	@Column(name = "ADDRESS_ID", columnDefinition = "INT NOT NULL")
 	private Integer id;
 
 	@Comment("지역 구분")

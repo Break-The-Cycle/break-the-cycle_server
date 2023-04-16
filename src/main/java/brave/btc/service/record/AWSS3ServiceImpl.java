@@ -20,13 +20,18 @@ public class AWSS3ServiceImpl implements AWSS3Service {
 	@Override
 	public String uploadPicture(MultipartFile multipartFile, String encodePassword) {
 
-		return "https://s3.object.aws";
+		return "https://s3.object.aws/picture/normal";
+	}
+
+	@Override
+	public String uploadPicture(byte[] handWriting, String encodePassword) {
+		return "https://s3.object.aws/picture/handwriting";
 	}
 
 	@Override
 	public String uploadDiary(DiaryDto diaryDto, String encodePassword) {
 
-		return "https://s3.object.aws";
+		return "https://s3.object.aws/diary";
 	}
 
 }

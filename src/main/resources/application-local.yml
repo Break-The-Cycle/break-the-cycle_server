@@ -7,7 +7,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
     properties:
       hibernate:
 #        show_sql: true
@@ -16,7 +16,7 @@ logging:
   level:
     org.hibernate.SQL: debug
     org.hibernate.type: trace
-s
+
 cloud:
   aws:
     credentials:
@@ -28,6 +28,7 @@ cloud:
         auto: false
       stack:
         auto: false
+
 sms-secret-key: ${SMS_SECRET_KEY}
 sms-public-key: ${SMS_PUBLIC_KEY}
 sms-domain: ${SMS_DOMAIN}

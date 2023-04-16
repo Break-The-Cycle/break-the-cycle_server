@@ -38,3 +38,7 @@ cloud:
         auto: false
       stack:
         auto: false
+
+sms-secret-key: ${{secrets.SMS_SECRET_KEY}}
+sms-public-key: ${{secrets.SMS_PUBLIC_KEY}}
+sms-domain: ${{secrets.SMS_DOMAIN}}
