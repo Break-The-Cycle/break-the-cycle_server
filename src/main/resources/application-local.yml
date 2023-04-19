@@ -7,7 +7,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
     properties:
       hibernate:
 #        show_sql: true
@@ -16,6 +16,18 @@ logging:
   level:
     org.hibernate.SQL: debug
     org.hibernate.type: trace
+
+cloud:
+  aws:
+    credentials:
+      profile-name: btc-s3
+    s3:
+      bucket: break-the-cycle-use-person-record
+      region:
+        static: ap-northeast-2
+        auto: false
+      stack:
+        auto: false
 
 sms-secret-key: ${SMS_SECRET_KEY}
 sms-public-key: ${SMS_PUBLIC_KEY}

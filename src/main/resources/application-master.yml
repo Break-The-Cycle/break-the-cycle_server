@@ -26,3 +26,15 @@ log:
     maxHistory: 30
     totalSizeCap: 200MB
 
+cloud:
+  aws:
+    credentials:
+      accessKey: ${{ AWS_ACCESS_KEY }}
+      secretKey: ${{ AWS_SECRET_ACCESS_KEY }}
+    s3:
+      bucket: break-the-cycle-use-person-record
+      region:
+        static: ap-northeast-2
+        auto: false
+      stack:
+        auto: false
