@@ -56,7 +56,6 @@ jobs:
           application_name: break-the-cycle_deploy
           environment_name: 230330-05-break-the-cycle
           version_label: github-action-${{steps.current-time.outputs.formattedTime}}
-          existing_bucket_name: elasticbeanstalk-ap-northeast-2-037212726184
           region: ap-northeast-2
           wait_for_environment_recovery: 600
           deployment_package: deploy/deploy.zip
