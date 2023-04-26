@@ -29,6 +29,7 @@ cloud:
       stack:
         auto: false
 
-sms-secret-key: ${SMS_SECRET_KEY}
-sms-public-key: ${SMS_PUBLIC_KEY}
-sms-domain: ${SMS_DOMAIN}
+sms:
+  secret-key: ${SMS_SECRET_KEY}
+  public-key: ${SMS_PUBLIC_KEY}
+  domain: ${SMS_DOMAIN}
