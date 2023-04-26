@@ -34,13 +34,13 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @Value("${sms-public-key}")
+    @Value("${sms.publicKey}")
     String publicKey;
 
-    @Value("${sms-secret-key}")
+    @Value("${sms.secretKey}")
     String secretKey;
 
-    @Value("${sms-domain}")
+    @Value("${sms.domain}")
     String smsDomain;
 
     @Operation(summary = "Login ID Duplication Check", description = "아이디 중복 체크",

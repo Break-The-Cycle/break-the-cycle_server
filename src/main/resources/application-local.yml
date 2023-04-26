@@ -30,6 +30,6 @@ cloud:
         auto: false
 
 sms:
-  secret-key: ${SMS_SECRET_KEY}
-  public-key: ${SMS_PUBLIC_KEY}
+  secretKey: ${SMS_SECRET_KEY}
+  publicKey: ${SMS_PUBLIC_KEY}
   domain: ${SMS_DOMAIN}
