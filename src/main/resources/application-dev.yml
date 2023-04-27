@@ -29,8 +29,8 @@ log:
 cloud:
   aws:
     credentials:
-      accessKey: ${secrets.AWS_ACCESS_KEY }
-      secretKey: ${secrets.AWS_SECRET_KEY }
+      accessKey: ${secrets.AWS_ACCESS_KEY_ID }
+      secretKey: ${secrets.AWS_SECRET_ACCESS_KEY }
     s3:
       bucket: break-the-cycle-use-person-record
       region:

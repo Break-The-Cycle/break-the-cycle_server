@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,9 +32,6 @@ public class RecordRequestDto {
 	
 	@Schema(title = "로그인, 암호화 password", example = "qwer1234")
 	private String password;
-
-	@Parameter(name = "손 글씨")
-	private byte[] handWriting;
 
 	@Schema(title = "첨부 사진 리스트")
 	private List<MultipartFile> pictureList;

@@ -16496,3 +16496,16 @@ Unconditional classes:
 [2023-04-26 11:36:10:16196] DEBUG 6956 --- [ionShutdownHook] o.s.c.s.DefaultLifecycleProcessor        : Stopping beans in phase 2147482623
 [2023-04-26 11:36:10:16197] DEBUG 6956 --- [ionShutdownHook] o.s.c.s.DefaultLifecycleProcessor        : Bean 'webServerGracefulShutdown' completed its stop procedure
 [2023-04-26 11:36:10:16197] DEBUG 6956 --- [ionShutdownHook] o.s.c.s.DefaultLifecycleProcessor        : Stopping beans in phase 2147481599
+[2023-04-27 18:30:00:785] DEBUG 25892 --- [kground-preinit] org.jboss.logging                        : Logging Provider: org.jboss.logging.Slf4jLoggerProvider found via system property
+[2023-04-27 18:30:00:787] INFO  25892 --- [kground-preinit] o.h.validator.internal.util.Version      : HV000001: Hibernate Validator 8.0.0.Final
+[2023-04-27 18:30:00:794] DEBUG 25892 --- [kground-preinit] o.h.v.i.x.config.ValidationXmlParser     : Trying to load META-INF/validation.xml for XML based Validator configuration.
+[2023-04-27 18:30:00:795] DEBUG 25892 --- [kground-preinit] o.h.v.i.x.c.ResourceLoaderHelper         : Trying to load META-INF/validation.xml via TCCL
+[2023-04-27 18:30:00:796] DEBUG 25892 --- [kground-preinit] o.h.v.i.x.c.ResourceLoaderHelper         : Trying to load META-INF/validation.xml via Hibernate Validator's class loader
+[2023-04-27 18:30:00:796] DEBUG 25892 --- [kground-preinit] o.h.v.i.x.config.ValidationXmlParser     : No META-INF/validation.xml found. Using annotation based configuration only.
+[2023-04-27 18:30:00:804] DEBUG 25892 --- [kground-preinit] o.h.v.i.e.r.TraversableResolvers         : Found jakarta.persistence.Persistence on classpath containing 'getPersistenceUtil'. Assuming JPA 2 environment. Trying to instantiate JPA aware TraversableResolver
+[2023-04-27 18:30:00:806] DEBUG 25892 --- [kground-preinit] o.h.v.i.e.r.TraversableResolvers         : Instantiated JPA aware TraversableResolver of type org.hibernate.validator.internal.engine.resolver.JPATraversableResolver.
+[2023-04-27 18:30:00:833] INFO  25892 --- [  restartedMain] b.btc.BreakTheCycleServerApplication     : Starting BreakTheCycleServerApplication using Java 17.0.6 with PID 25892 (C:\workspace\JamesCoding\break-the-cycle_server\out\production\classes started by 정민석 in C:\workspace\JamesCoding\break-the-cycle_server)
+[2023-04-27 18:30:00:833] DEBUG 25892 --- [  restartedMain] b.btc.BreakTheCycleServerApplication     : Running with Spring Boot v3.0.5, Spring v6.0.7
+[2023-04-27 18:30:00:834] DEBUG 25892 --- [kground-preinit] .h.v.m.ResourceBundleMessageInterpolator : Loaded expression factory via original TCCL
+[2023-04-27 18:30:00:834] INFO  25892 --- [  restartedMain] b.btc.BreakTheCycleServerApplication     : The following 1 profile is active: "dev"
+[2023-04-27 18:30:00:835] DEBUG 25892 --- [  restartedMain] o.s.boot.SpringApplication               : Loading source class brave.btc.BreakTheCycleServerApplication
