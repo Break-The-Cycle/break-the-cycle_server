@@ -1,3 +1,11 @@
+server:
+  ssl:
+    enabled: true
+    key-store: keystore.p12
+    key-store-password: 123456
+    key-store-type: PKCS12
+    key-alias: bns-ssl
+  port: 8443
 spring:
   datasource:
     url: jdbc:h2:mem://localhost/~/btc
@@ -20,7 +28,8 @@ logging:
 cloud:
   aws:
     credentials:
-      profile-name: btc-s3
+      accessKey: ${AWS_ACCESS_KEY_ID }
+      secretKey: ${AWS_SECRET_ACCESS_KEY }
     s3:
       bucket: break-the-cycle-use-person-record
       region:

@@ -1,9 +1,10 @@
 package brave.btc.service.record;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.UUID;
 
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,7 +29,7 @@ public class RecordServiceImpl implements RecordService {
 
 	private final RecordRepository recordRepository;
 	private final AuthService authService;
-	private final AWSS3Service awsS3Service;
+	private final RecordUploadService recordUploadService;
 
 	@Override
 	public CommonResponseDto<Object> uploadRecord(RecordRequestDto requestDto) {
@@ -38,10 +39,9 @@ public class RecordServiceImpl implements RecordService {
 		UsePerson usePerson = authService.checkIsPasswordEqual(loginId, password);
 		log.debug("[uploadRecord] usePerson: {}", usePerson);
 
-		List<Record> newRecordList = makeNewPictureRecordList(requestDto, password, usePerson);
+		List<Record> newRecordList = new ArrayList<>();
+		makeNewPictureRecordList(requestDto, password, usePerson, newRecordList);
 		makeNewDiaryRecord(requestDto, password, usePerson, newRecordList);
-		makeNewHandWritingRecord(requestDto, password, usePerson, newRecordList);
-
 		recordRepository.saveAll(newRecordList);
 
 		log.info("[uploadRecord] 업로드 완료");
@@ -50,21 +50,10 @@ public class RecordServiceImpl implements RecordService {
 			.build();
 	}
 
-	private void makeNewHandWritingRecord(RecordRequestDto requestDto, String password, UsePerson usePerson, List<Record> newRecordList) {
-		byte[] handWriting = requestDto.getHandWriting();
-		String handWritingS3Url = awsS3Service.uploadPicture(handWriting, password);
-		Record newHandWritingPicture = Picture.builder()
-			.usePerson(usePerson)
-			.date(requestDto.getDate())
-			.division(RecordDivision.PICTURE)
-			.content(handWritingS3Url)
-			.build();
-		newRecordList.add(newHandWritingPicture);
-	}
-
 	private void makeNewDiaryRecord(RecordRequestDto requestDto, String password, UsePerson usePerson, List<Record> newRecordList) {
 		DiaryDto diaryDto = requestDto.toDiaryDto();
-		String diaryS3Url = awsS3Service.uploadDiary(diaryDto, password);
+		String objectPath = makeObjectPath(requestDto.getLoginId(), RecordDivision.DIARY);
+		String diaryS3Url = recordUploadService.uploadDiary(diaryDto, objectPath, password);
 		Record newDiary = Diary.builder()
 			.usePerson(usePerson)
 			.date(requestDto.getDate())
@@ -73,17 +62,24 @@ public class RecordServiceImpl implements RecordService {
 		newRecordList.add(newDiary);
 	}
 
-	@NotNull
-	private List<Record> makeNewPictureRecordList(RecordRequestDto requestDto, String password, UsePerson usePerson) {
-		return requestDto.getPictureList()
+	private void makeNewPictureRecordList(RecordRequestDto requestDto, String password, UsePerson usePerson, List<Record> newRecordList) {
+		requestDto.getPictureList()
 			.stream()
-			.map(multipartFile -> awsS3Service.uploadPicture(multipartFile, password))
+			.map(multipartFile -> {
+					String objectPath = makeObjectPath(requestDto.getLoginId(), RecordDivision.PICTURE);
+					return recordUploadService.uploadPicture(multipartFile, objectPath, password);})
 			.map(pictureS3Url -> (Record) Picture.builder()
 					.usePerson(usePerson)
 					.date(requestDto.getDate())
 					.division(RecordDivision.PICTURE)
 					.content(pictureS3Url)
 					.build())
-			.collect(Collectors.toList());
+			.forEach(newRecordList::add);
+	}
+
+	private  String makeObjectPath(String loginId, RecordDivision division) {
+		LocalDate today = LocalDate.now();
+		UUID uuid = UUID.randomUUID();
+		return  "/" + loginId + "/" + today.toString() + "/" + division.getCode() + "/" + uuid;
 	}
 }
