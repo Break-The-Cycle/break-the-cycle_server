@@ -18,7 +18,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import lombok.RequiredArgsConstructor;
 
 @EnableJpaRepositories(
-	basePackages = "brave.btc.repository.persistence", // Master Repository 경로
+	basePackages = "brave.btc.repository.persistence", // main Repository 경로
 	entityManagerFactoryRef = "mainEntityManager",
 	transactionManagerRef = "mainTransactionManager"
 )

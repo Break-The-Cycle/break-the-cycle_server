@@ -18,7 +18,7 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import lombok.RequiredArgsConstructor;
 
 @EnableJpaRepositories(
-	basePackages = "brave.btc.repository.temporary", // Master Repository 경로
+	basePackages = "brave.btc.repository.temporary", // temporary repository 경로
 	entityManagerFactoryRef = "temporaryEntityManager",
 	transactionManagerRef = "temporaryTransactionManager"
 )
