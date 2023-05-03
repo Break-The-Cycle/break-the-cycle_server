@@ -57,7 +57,6 @@ public class RecordServiceImpl implements RecordService {
 		Record newDiary = Diary.builder()
 			.usePerson(usePerson)
 			.date(requestDto.getDate())
-			.division(RecordDivision.DIARY)
 			.content(diaryS3Url).build();
 		newRecordList.add(newDiary);
 	}
@@ -71,7 +70,6 @@ public class RecordServiceImpl implements RecordService {
 			.map(pictureS3Url -> (Record) Picture.builder()
 					.usePerson(usePerson)
 					.date(requestDto.getDate())
-					.division(RecordDivision.PICTURE)
 					.content(pictureS3Url)
 					.build())
 			.forEach(newRecordList::add);

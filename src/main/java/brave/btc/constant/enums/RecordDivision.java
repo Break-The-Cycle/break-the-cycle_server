@@ -21,4 +21,15 @@ public enum RecordDivision {
 			.findAny()
 			.orElse(null);
 	}
+
+	public static class Values{
+		public static final String DIARY="001";
+		public static final String RECORDING= "002";
+		public static final String PICTURE="003";
+		public static final String SEX="004";
+		public static final String EMOTION = "005";
+		public static final String MENSTRUATION = "006";
+
+	}
+
 }

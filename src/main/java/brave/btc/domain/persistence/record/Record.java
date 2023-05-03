@@ -4,15 +4,11 @@ import java.time.LocalDateTime;
 
 import org.hibernate.annotations.Comment;
 
-import brave.btc.constant.enums.RecordDivision;
 import brave.btc.domain.persistence.user.UsePerson;
-import brave.btc.util.converter.RecordDivisionToCodeConverter;
 import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
 import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -35,7 +31,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name="division")
+@DiscriminatorColumn(name="REPORT_DVSN", discriminatorType = DiscriminatorType.STRING)
 @Table(name = "USE_PERSON_RECORD")
 public class Record {
 
@@ -52,13 +48,13 @@ public class Record {
 	private UsePerson usePerson;
 
 	@Comment("기록일시")
-	@Column(name = "RECORD_DATE", columnDefinition = "TIMESTAMP NOT NULL", nullable = false)
+	@Column(name = "REPORT_DATETIME", columnDefinition = "TIMESTAMP NOT NULL", nullable = false)
 	private LocalDateTime date;
 
-	@Comment("기록구분")
-	@Convert(converter = RecordDivisionToCodeConverter.class)
-	@Enumerated(EnumType.STRING)
-	@Column(name = "RECORD_DVSN", nullable = false)
-	private RecordDivision division;
+	// @Comment("기록구분")
+	// @Convert(converter = RecordDivisionToCodeConverter.class)
+	// @Enumerated(EnumType.STRING)
+	// @Column(name = "REPORT_DVSN", nullable = false)
+	// private RecordDivision division;
 
 }

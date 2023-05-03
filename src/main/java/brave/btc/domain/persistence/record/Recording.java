@@ -2,6 +2,7 @@ package brave.btc.domain.persistence.record;
 
 import org.hibernate.annotations.Comment;
 
+import brave.btc.constant.enums.RecordDivision;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
@@ -18,7 +19,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@DiscriminatorValue("002")
+@DiscriminatorValue(RecordDivision.Values.RECORDING)
 @Table(name = "RECORDING")
 public class Recording extends Record{
 
