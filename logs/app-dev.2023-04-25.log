@@ -262,7 +262,7 @@
 	Jar files URLs []
 	Managed classes names [
 		brave.btc.domain.address.Address
-		brave.btc.domain.address.Name
+		brave.btc.domain.address.AddressName
 		brave.btc.domain.address.PostalNumber
 		brave.btc.domain.record.Diary
 		brave.btc.domain.record.Picture
@@ -478,22 +478,22 @@
 [2023-04-13 21:55:00:4742] DEBUG 34596 --- [  restartedMain] o.h.cfg.annotations.BasicValueBinder     : building BasicValue for division
 [2023-04-13 21:55:00:4742] DEBUG 34596 --- [  restartedMain] org.hibernate.mapping.BasicValue         : Skipping column re-registration: ADDRESS.ADDRESS_DVSN
 [2023-04-13 21:55:00:4743] DEBUG 34596 --- [  restartedMain] o.h.cfg.annotations.PropertyBinder       : Building property division
-[2023-04-13 21:55:00:4748] DEBUG 34596 --- [  restartedMain] o.h.cfg.annotations.EntityBinder         : Binding entity from annotated class: brave.btc.domain.address.Name
+[2023-04-13 21:55:00:4748] DEBUG 34596 --- [  restartedMain] o.h.cfg.annotations.EntityBinder         : Binding entity from annotated class: brave.btc.domain.address.AddressName
 [2023-04-13 21:55:00:4748] DEBUG 34596 --- [  restartedMain] org.hibernate.cfg.AnnotatedColumn        : Binding column: DiscriminatorColumn{logicalColumnName'DTYPE', discriminatorTypeName='string'}
 [2023-04-13 21:55:00:4748] DEBUG 34596 --- [  restartedMain] o.h.cfg.annotations.EntityBinder         : Import with entity name Name
-[2023-04-13 21:55:00:4748] DEBUG 34596 --- [  restartedMain] o.h.cfg.annotations.EntityBinder         : Bind entity brave.btc.domain.address.Name on table ADDRESS_NAME
+[2023-04-13 21:55:00:4748] DEBUG 34596 --- [  restartedMain] o.h.cfg.annotations.EntityBinder         : Bind entity brave.btc.domain.address.AddressName on table ADDRESS_NAME
 [2023-04-13 21:55:00:4749] DEBUG 34596 --- [  restartedMain] org.hibernate.cfg.AnnotatedColumn        : Binding column: Column{table=Table(ADDRESS_NAME), mappingColumn=ADDRESS_ID, insertable=true, updatable=true, unique=false}
-[2023-04-13 21:55:00:4749] DEBUG 34596 --- [  restartedMain] o.h.b.internal.ClassLoaderAccessImpl     : Not known whether passed class name [brave.btc.domain.address.Name] is safe
-[2023-04-13 21:55:00:4749] DEBUG 34596 --- [  restartedMain] o.h.b.internal.ClassLoaderAccessImpl     : No temp ClassLoader provided; using live ClassLoader for loading potentially unsafe class : brave.btc.domain.address.Name
+[2023-04-13 21:55:00:4749] DEBUG 34596 --- [  restartedMain] o.h.b.internal.ClassLoaderAccessImpl     : Not known whether passed class name [brave.btc.domain.address.AddressName] is safe
+[2023-04-13 21:55:00:4749] DEBUG 34596 --- [  restartedMain] o.h.b.internal.ClassLoaderAccessImpl     : No temp ClassLoader provided; using live ClassLoader for loading potentially unsafe class : brave.btc.domain.address.AddressName
 [2023-04-13 21:55:00:4750] DEBUG 34596 --- [  restartedMain] o.h.cfg.annotations.PropertyBinder       : MetadataSourceProcessor property id with lazy=false
-[2023-04-13 21:55:00:4750] DEBUG 34596 --- [  restartedMain] o.h.cfg.AbstractPropertyHolder           : Attempting to locate auto-apply AttributeConverter for property [brave.btc.domain.address.Name:id]
+[2023-04-13 21:55:00:4750] DEBUG 34596 --- [  restartedMain] o.h.cfg.AbstractPropertyHolder           : Attempting to locate auto-apply AttributeConverter for property [brave.btc.domain.address.AddressName:id]
 [2023-04-13 21:55:00:4750] DEBUG 34596 --- [  restartedMain] o.h.cfg.annotations.BasicValueBinder     : building BasicValue for id
 [2023-04-13 21:55:00:4750] DEBUG 34596 --- [  restartedMain] org.hibernate.mapping.BasicValue         : Skipping column re-registration: ADDRESS_NAME.ADDRESS_ID
 [2023-04-13 21:55:00:4750] DEBUG 34596 --- [  restartedMain] o.h.cfg.annotations.PropertyBinder       : Building property id
 [2023-04-13 21:55:00:4750] DEBUG 34596 --- [  restartedMain] org.hibernate.cfg.BinderHelper           : #makeIdGenerator(BasicValue([Column(ADDRESS_ID)]), id, identity, , ...)
 [2023-04-13 21:55:00:4750] DEBUG 34596 --- [  restartedMain] org.hibernate.cfg.AnnotatedColumn        : Binding column: Column{table=Table(ADDRESS_NAME), mappingColumn=ADDRESS_DVSN, insertable=true, updatable=true, unique=false}
 [2023-04-13 21:55:00:4750] DEBUG 34596 --- [  restartedMain] o.h.cfg.annotations.PropertyBinder       : MetadataSourceProcessor property name with lazy=false
-[2023-04-13 21:55:00:4750] DEBUG 34596 --- [  restartedMain] o.h.cfg.AbstractPropertyHolder           : Attempting to locate auto-apply AttributeConverter for property [brave.btc.domain.address.Name:name]
+[2023-04-13 21:55:00:4750] DEBUG 34596 --- [  restartedMain] o.h.cfg.AbstractPropertyHolder           : Attempting to locate auto-apply AttributeConverter for property [brave.btc.domain.address.AddressName:name]
 [2023-04-13 21:55:00:4750] DEBUG 34596 --- [  restartedMain] o.h.cfg.annotations.BasicValueBinder     : building BasicValue for name
 [2023-04-13 21:55:00:4750] DEBUG 34596 --- [  restartedMain] org.hibernate.mapping.BasicValue         : Skipping column re-registration: ADDRESS_NAME.ADDRESS_DVSN
 [2023-04-13 21:55:00:4750] DEBUG 34596 --- [  restartedMain] o.h.cfg.annotations.PropertyBinder       : Building property name
@@ -798,8 +798,8 @@
 [2023-04-13 21:55:01:4932] DEBUG 34596 --- [  restartedMain] .i.e.ValidatorFactoryConfigurationHelper : HV000234: Using org.hibernate.validator.internal.engine.scripting.DefaultScriptEvaluatorFactory as ValidatorFactory-scoped script evaluator factory.
 [2023-04-13 21:55:01:4932] DEBUG 34596 --- [  restartedMain] o.h.b.internal.ClassLoaderAccessImpl     : Not known whether passed class name [brave.btc.domain.address.Address] is safe
 [2023-04-13 21:55:01:4932] DEBUG 34596 --- [  restartedMain] o.h.b.internal.ClassLoaderAccessImpl     : No temp ClassLoader provided; using live ClassLoader for loading potentially unsafe class : brave.btc.domain.address.Address
-[2023-04-13 21:55:01:4955] DEBUG 34596 --- [  restartedMain] o.h.b.internal.ClassLoaderAccessImpl     : Not known whether passed class name [brave.btc.domain.address.Name] is safe
-[2023-04-13 21:55:01:4955] DEBUG 34596 --- [  restartedMain] o.h.b.internal.ClassLoaderAccessImpl     : No temp ClassLoader provided; using live ClassLoader for loading potentially unsafe class : brave.btc.domain.address.Name
+[2023-04-13 21:55:01:4955] DEBUG 34596 --- [  restartedMain] o.h.b.internal.ClassLoaderAccessImpl     : Not known whether passed class name [brave.btc.domain.address.AddressName] is safe
+[2023-04-13 21:55:01:4955] DEBUG 34596 --- [  restartedMain] o.h.b.internal.ClassLoaderAccessImpl     : No temp ClassLoader provided; using live ClassLoader for loading potentially unsafe class : brave.btc.domain.address.AddressName
 [2023-04-13 21:55:01:4956] DEBUG 34596 --- [  restartedMain] o.h.b.internal.ClassLoaderAccessImpl     : Not known whether passed class name [brave.btc.domain.user.UsePerson] is safe
 [2023-04-13 21:55:01:4956] DEBUG 34596 --- [  restartedMain] o.h.b.internal.ClassLoaderAccessImpl     : No temp ClassLoader provided; using live ClassLoader for loading potentially unsafe class : brave.btc.domain.user.UsePerson
 [2023-04-13 21:55:01:4958] DEBUG 34596 --- [  restartedMain] o.h.b.internal.ClassLoaderAccessImpl     : Not known whether passed class name [brave.btc.domain.record.Picture] is safe
@@ -1114,8 +1114,8 @@
 [2023-04-13 21:55:01:5100] DEBUG 34596 --- [  restartedMain] o.h.type.spi.TypeConfiguration$Scope     : Scoping TypeConfiguration [org.hibernate.type.spi.TypeConfiguration@f4d1fdf] to SessionFactoryImplementor [org.hibernate.internal.SessionFactoryImpl@210a0f3a]
 [2023-04-13 21:55:01:5173] DEBUG 34596 --- [  restartedMain] o.h.b.internal.ClassLoaderAccessImpl     : Not known whether passed class name [brave.btc.domain.address.Address] is safe
 [2023-04-13 21:55:01:5173] DEBUG 34596 --- [  restartedMain] o.h.b.internal.ClassLoaderAccessImpl     : No temp ClassLoader provided; using live ClassLoader for loading potentially unsafe class : brave.btc.domain.address.Address
-[2023-04-13 21:55:01:5395] DEBUG 34596 --- [  restartedMain] o.h.b.internal.ClassLoaderAccessImpl     : Not known whether passed class name [brave.btc.domain.address.Name] is safe
-[2023-04-13 21:55:01:5395] DEBUG 34596 --- [  restartedMain] o.h.b.internal.ClassLoaderAccessImpl     : No temp ClassLoader provided; using live ClassLoader for loading potentially unsafe class : brave.btc.domain.address.Name
+[2023-04-13 21:55:01:5395] DEBUG 34596 --- [  restartedMain] o.h.b.internal.ClassLoaderAccessImpl     : Not known whether passed class name [brave.btc.domain.address.AddressName] is safe
+[2023-04-13 21:55:01:5395] DEBUG 34596 --- [  restartedMain] o.h.b.internal.ClassLoaderAccessImpl     : No temp ClassLoader provided; using live ClassLoader for loading potentially unsafe class : brave.btc.domain.address.AddressName
 [2023-04-13 21:55:01:5403] DEBUG 34596 --- [  restartedMain] o.h.b.internal.ClassLoaderAccessImpl     : Not known whether passed class name [brave.btc.domain.user.UsePerson] is safe
 [2023-04-13 21:55:01:5403] DEBUG 34596 --- [  restartedMain] o.h.b.internal.ClassLoaderAccessImpl     : No temp ClassLoader provided; using live ClassLoader for loading potentially unsafe class : brave.btc.domain.user.UsePerson
 [2023-04-13 21:55:01:5413] DEBUG 34596 --- [  restartedMain] o.h.b.internal.ClassLoaderAccessImpl     : Not known whether passed class name [brave.btc.domain.record.Picture] is safe
@@ -1138,7 +1138,7 @@
 [2023-04-13 21:55:01:5462] DEBUG 34596 --- [  restartedMain] o.h.p.c.AbstractCollectionPersister      :  One-shot delete: update PICTURE set USE_PERSON_RECORD_ID=null where USE_PERSON_RECORD_ID=?
 [2023-04-13 21:55:01:5485] DEBUG 34596 --- [  restartedMain] o.h.orm.model.mapping.creation           : Starting post-init callbacks
 [2023-04-13 21:55:01:5485] DEBUG 34596 --- [  restartedMain] o.h.orm.model.mapping.creation           : Starting PostInitCallbackEntry : Entity(brave.btc.domain.address.Address) `staticFetchableList` generator
-[2023-04-13 21:55:01:5485] DEBUG 34596 --- [  restartedMain] o.h.orm.model.mapping.creation           : Starting PostInitCallbackEntry : Entity(brave.btc.domain.address.Name) `staticFetchableList` generator
+[2023-04-13 21:55:01:5485] DEBUG 34596 --- [  restartedMain] o.h.orm.model.mapping.creation           : Starting PostInitCallbackEntry : Entity(brave.btc.domain.address.AddressName) `staticFetchableList` generator
 [2023-04-13 21:55:01:5485] DEBUG 34596 --- [  restartedMain] o.h.orm.model.mapping.creation           : Starting PostInitCallbackEntry : To-one key - NavigableRole[brave.btc.domain.user.UsePerson.address]
 [2023-04-13 21:55:01:5489] DEBUG 34596 --- [  restartedMain] o.h.orm.model.mapping.creation           : Starting PostInitCallbackEntry : Entity(brave.btc.domain.user.UsePerson) `staticFetchableList` generator
 [2023-04-13 21:55:01:5489] DEBUG 34596 --- [  restartedMain] o.h.orm.model.mapping.creation           : Starting PostInitCallbackEntry : To-one key - NavigableRole[brave.btc.domain.record.Picture.record]
@@ -1176,22 +1176,22 @@
       }
     }
 
-[2023-04-13 21:55:01:5545] DEBUG 34596 --- [  restartedMain] o.h.p.entity.AbstractEntityPersister     : Static SQL for entity: brave.btc.domain.address.Name
+[2023-04-13 21:55:01:5545] DEBUG 34596 --- [  restartedMain] o.h.p.entity.AbstractEntityPersister     : Static SQL for entity: brave.btc.domain.address.AddressName
 [2023-04-13 21:55:01:5545] DEBUG 34596 --- [  restartedMain] o.h.p.entity.AbstractEntityPersister     :  Version select: select ADDRESS_ID from ADDRESS_NAME where ADDRESS_ID =?
 [2023-04-13 21:55:01:5545] DEBUG 34596 --- [  restartedMain] o.h.p.entity.AbstractEntityPersister     :  Insert 0: insert into ADDRESS_NAME (ADDRESS_DVSN, ADDRESS_ID) values (?, ?)
 [2023-04-13 21:55:01:5546] DEBUG 34596 --- [  restartedMain] o.h.p.entity.AbstractEntityPersister     :  Update 0: update ADDRESS_NAME set ADDRESS_DVSN=? where ADDRESS_ID=?
 [2023-04-13 21:55:01:5546] DEBUG 34596 --- [  restartedMain] o.h.p.entity.AbstractEntityPersister     :  Delete 0: delete from ADDRESS_NAME where ADDRESS_ID=?
 [2023-04-13 21:55:01:5546] DEBUG 34596 --- [  restartedMain] o.h.p.entity.AbstractEntityPersister     :  Identity insert: insert into ADDRESS_NAME (ADDRESS_ID, ADDRESS_DVSN) values (default, ?)
 [2023-04-13 21:55:01:5546] DEBUG 34596 --- [  restartedMain] org.hibernate.orm.sql.ast.create         : Created new SQL alias : n1_0
-[2023-04-13 21:55:01:5546] DEBUG 34596 --- [  restartedMain] org.hibernate.orm.sql.ast.create         : Registration of TableGroup [StandardTableGroup(brave.btc.domain.address.Name)] with identifierForTableGroup [brave.btc.domain.address.Name] for NavigablePath [brave.btc.domain.address.Name] 
+[2023-04-13 21:55:01:5546] DEBUG 34596 --- [  restartedMain] org.hibernate.orm.sql.ast.create         : Registration of TableGroup [StandardTableGroup(brave.btc.domain.address.AddressName)] with identifierForTableGroup [brave.btc.domain.address.AddressName] for NavigablePath [brave.btc.domain.address.AddressName]
 [2023-04-13 21:55:01:5546] DEBUG 34596 --- [  restartedMain] org.hibernate.orm.results.graph.AST      : DomainResult Graph:
- \-EntityResultImpl [brave.btc.domain.address.Name]
- |  \-BasicFetch [brave.btc.domain.address.Name.name]
+ \-EntityResultImpl [brave.btc.domain.address.AddressName]
+ |  \-BasicFetch [brave.btc.domain.address.AddressName.name]
 
 [2023-04-13 21:55:01:5546] DEBUG 34596 --- [  restartedMain] org.hibernate.orm.sql.ast.tree           : SQL AST Tree:
     SelectStatement {
       FromClause {
-        StandardTableGroup (n1 : brave.btc.domain.address.Name) {
+        StandardTableGroup (n1 : brave.btc.domain.address.AddressName) {
           primaryTableReference : ADDRESS_NAME as n1_0
         }
       }
@@ -4073,7 +4073,7 @@ org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (
 	Jar files URLs []
 	Managed classes names [
 		brave.btc.domain.address.Address
-		brave.btc.domain.address.Name
+		brave.btc.domain.address.AddressName
 		brave.btc.domain.address.PostalNumber
 		brave.btc.domain.record.Diary
 		brave.btc.domain.record.Picture
@@ -4347,26 +4347,26 @@ org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (
 [2023-04-25 18:00:29:5744] DEBUG 17656 --- [           main] o.h.cfg.annotations.BasicValueBinder     : building BasicValue for division
 [2023-04-25 18:00:29:5744] DEBUG 17656 --- [           main] org.hibernate.mapping.BasicValue         : Skipping column re-registration: ADDRESS.ADDRESS_DVSN
 [2023-04-25 18:00:29:5744] DEBUG 17656 --- [           main] o.h.cfg.annotations.PropertyBinder       : Building property division
-[2023-04-25 18:00:29:5752] DEBUG 17656 --- [           main] o.h.cfg.annotations.EntityBinder         : Binding entity from annotated class: brave.btc.domain.address.Name
+[2023-04-25 18:00:29:5752] DEBUG 17656 --- [           main] o.h.cfg.annotations.EntityBinder         : Binding entity from annotated class: brave.btc.domain.address.AddressName
 [2023-04-25 18:00:29:5752] DEBUG 17656 --- [           main] org.hibernate.cfg.AnnotatedColumn        : Binding column: DiscriminatorColumn{logicalColumnName'DTYPE', discriminatorTypeName='string'}
 [2023-04-25 18:00:29:5752] DEBUG 17656 --- [           main] o.h.cfg.annotations.EntityBinder         : Import with entity name Name
-[2023-04-25 18:00:29:5752] DEBUG 17656 --- [           main] o.h.cfg.annotations.EntityBinder         : Bind entity brave.btc.domain.address.Name on table ADDRESS_NAME
+[2023-04-25 18:00:29:5752] DEBUG 17656 --- [           main] o.h.cfg.annotations.EntityBinder         : Bind entity brave.btc.domain.address.AddressName on table ADDRESS_NAME
 [2023-04-25 18:00:29:5754] DEBUG 17656 --- [           main] org.hibernate.cfg.AnnotatedColumn        : Binding column: Column{table=Table(ADDRESS_NAME), mappingColumn=ADDRESS_ID, insertable=true, updatable=true, unique=false}
-[2023-04-25 18:00:29:5754] DEBUG 17656 --- [           main] o.h.b.internal.ClassLoaderAccessImpl     : Not known whether passed class name [brave.btc.domain.address.Name] is safe
-[2023-04-25 18:00:29:5754] DEBUG 17656 --- [           main] o.h.b.internal.ClassLoaderAccessImpl     : No temp ClassLoader provided; using live ClassLoader for loading potentially unsafe class : brave.btc.domain.address.Name
+[2023-04-25 18:00:29:5754] DEBUG 17656 --- [           main] o.h.b.internal.ClassLoaderAccessImpl     : Not known whether passed class name [brave.btc.domain.address.AddressName] is safe
+[2023-04-25 18:00:29:5754] DEBUG 17656 --- [           main] o.h.b.internal.ClassLoaderAccessImpl     : No temp ClassLoader provided; using live ClassLoader for loading potentially unsafe class : brave.btc.domain.address.AddressName
 [2023-04-25 18:00:29:5754] DEBUG 17656 --- [           main] o.h.cfg.annotations.PropertyBinder       : MetadataSourceProcessor property id with lazy=false
-[2023-04-25 18:00:29:5754] DEBUG 17656 --- [           main] o.h.cfg.AbstractPropertyHolder           : Attempting to locate auto-apply AttributeConverter for property [brave.btc.domain.address.Name:id]
-[2023-04-25 18:00:29:5754] DEBUG 17656 --- [           main] o.h.b.m.c.i.AttributeConverterManager    : Checking auto-apply AttributeConverter [brave.btc.util.converter.RecordDivisionToCodeConverter] (domain-type=Lbrave/btc/constant/enums/RecordDivision;) for match against basic attribute : brave.btc.domain.address.Name.id (type=java.lang.Integer)
-[2023-04-25 18:00:29:5755] DEBUG 17656 --- [           main] o.h.b.m.c.i.AttributeConverterManager    : Checking auto-apply AttributeConverter [brave.btc.util.converter.PeriodToIntegerConverter] (domain-type=Ljava/time/Period;) for match against basic attribute : brave.btc.domain.address.Name.id (type=java.lang.Integer)
+[2023-04-25 18:00:29:5754] DEBUG 17656 --- [           main] o.h.cfg.AbstractPropertyHolder           : Attempting to locate auto-apply AttributeConverter for property [brave.btc.domain.address.AddressName:id]
+[2023-04-25 18:00:29:5754] DEBUG 17656 --- [           main] o.h.b.m.c.i.AttributeConverterManager    : Checking auto-apply AttributeConverter [brave.btc.util.converter.RecordDivisionToCodeConverter] (domain-type=Lbrave/btc/constant/enums/RecordDivision;) for match against basic attribute : brave.btc.domain.address.AddressName.id (type=java.lang.Integer)
+[2023-04-25 18:00:29:5755] DEBUG 17656 --- [           main] o.h.b.m.c.i.AttributeConverterManager    : Checking auto-apply AttributeConverter [brave.btc.util.converter.PeriodToIntegerConverter] (domain-type=Ljava/time/Period;) for match against basic attribute : brave.btc.domain.address.AddressName.id (type=java.lang.Integer)
 [2023-04-25 18:00:29:5755] DEBUG 17656 --- [           main] o.h.cfg.annotations.BasicValueBinder     : building BasicValue for id
 [2023-04-25 18:00:29:5755] DEBUG 17656 --- [           main] org.hibernate.mapping.BasicValue         : Skipping column re-registration: ADDRESS_NAME.ADDRESS_ID
 [2023-04-25 18:00:29:5755] DEBUG 17656 --- [           main] o.h.cfg.annotations.PropertyBinder       : Building property id
 [2023-04-25 18:00:29:5755] DEBUG 17656 --- [           main] org.hibernate.cfg.BinderHelper           : #makeIdGenerator(BasicValue([Column(ADDRESS_ID)]), id, identity, , ...)
 [2023-04-25 18:00:29:5755] DEBUG 17656 --- [           main] org.hibernate.cfg.AnnotatedColumn        : Binding column: Column{table=Table(ADDRESS_NAME), mappingColumn=ADDRESS_DVSN, insertable=true, updatable=true, unique=false}
 [2023-04-25 18:00:29:5755] DEBUG 17656 --- [           main] o.h.cfg.annotations.PropertyBinder       : MetadataSourceProcessor property name with lazy=false
-[2023-04-25 18:00:29:5755] DEBUG 17656 --- [           main] o.h.cfg.AbstractPropertyHolder           : Attempting to locate auto-apply AttributeConverter for property [brave.btc.domain.address.Name:name]
-[2023-04-25 18:00:29:5755] DEBUG 17656 --- [           main] o.h.b.m.c.i.AttributeConverterManager    : Checking auto-apply AttributeConverter [brave.btc.util.converter.RecordDivisionToCodeConverter] (domain-type=Lbrave/btc/constant/enums/RecordDivision;) for match against basic attribute : brave.btc.domain.address.Name.name (type=java.lang.String)
-[2023-04-25 18:00:29:5755] DEBUG 17656 --- [           main] o.h.b.m.c.i.AttributeConverterManager    : Checking auto-apply AttributeConverter [brave.btc.util.converter.PeriodToIntegerConverter] (domain-type=Ljava/time/Period;) for match against basic attribute : brave.btc.domain.address.Name.name (type=java.lang.String)
+[2023-04-25 18:00:29:5755] DEBUG 17656 --- [           main] o.h.cfg.AbstractPropertyHolder           : Attempting to locate auto-apply AttributeConverter for property [brave.btc.domain.address.AddressName:name]
+[2023-04-25 18:00:29:5755] DEBUG 17656 --- [           main] o.h.b.m.c.i.AttributeConverterManager    : Checking auto-apply AttributeConverter [brave.btc.util.converter.RecordDivisionToCodeConverter] (domain-type=Lbrave/btc/constant/enums/RecordDivision;) for match against basic attribute : brave.btc.domain.address.AddressName.name (type=java.lang.String)
+[2023-04-25 18:00:29:5755] DEBUG 17656 --- [           main] o.h.b.m.c.i.AttributeConverterManager    : Checking auto-apply AttributeConverter [brave.btc.util.converter.PeriodToIntegerConverter] (domain-type=Ljava/time/Period;) for match against basic attribute : brave.btc.domain.address.AddressName.name (type=java.lang.String)
 [2023-04-25 18:00:29:5755] DEBUG 17656 --- [           main] o.h.cfg.annotations.BasicValueBinder     : building BasicValue for name
 [2023-04-25 18:00:29:5755] DEBUG 17656 --- [           main] org.hibernate.mapping.BasicValue         : Skipping column re-registration: ADDRESS_NAME.ADDRESS_DVSN
 [2023-04-25 18:00:29:5756] DEBUG 17656 --- [           main] o.h.cfg.annotations.PropertyBinder       : Building property name
@@ -4752,8 +4752,8 @@ org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (
 [2023-04-25 18:00:29:6085] DEBUG 17656 --- [           main] .i.e.ValidatorFactoryConfigurationHelper : HV000234: Using org.hibernate.validator.internal.engine.scripting.DefaultScriptEvaluatorFactory as ValidatorFactory-scoped script evaluator factory.
 [2023-04-25 18:00:29:6087] DEBUG 17656 --- [           main] o.h.b.internal.ClassLoaderAccessImpl     : Not known whether passed class name [brave.btc.domain.address.Address] is safe
 [2023-04-25 18:00:29:6087] DEBUG 17656 --- [           main] o.h.b.internal.ClassLoaderAccessImpl     : No temp ClassLoader provided; using live ClassLoader for loading potentially unsafe class : brave.btc.domain.address.Address
-[2023-04-25 18:00:29:6135] DEBUG 17656 --- [           main] o.h.b.internal.ClassLoaderAccessImpl     : Not known whether passed class name [brave.btc.domain.address.Name] is safe
-[2023-04-25 18:00:29:6136] DEBUG 17656 --- [           main] o.h.b.internal.ClassLoaderAccessImpl     : No temp ClassLoader provided; using live ClassLoader for loading potentially unsafe class : brave.btc.domain.address.Name
+[2023-04-25 18:00:29:6135] DEBUG 17656 --- [           main] o.h.b.internal.ClassLoaderAccessImpl     : Not known whether passed class name [brave.btc.domain.address.AddressName] is safe
+[2023-04-25 18:00:29:6136] DEBUG 17656 --- [           main] o.h.b.internal.ClassLoaderAccessImpl     : No temp ClassLoader provided; using live ClassLoader for loading potentially unsafe class : brave.btc.domain.address.AddressName
 [2023-04-25 18:00:29:6138] DEBUG 17656 --- [           main] o.h.b.internal.ClassLoaderAccessImpl     : Not known whether passed class name [brave.btc.domain.user.UsePerson] is safe
 [2023-04-25 18:00:29:6138] DEBUG 17656 --- [           main] o.h.b.internal.ClassLoaderAccessImpl     : No temp ClassLoader provided; using live ClassLoader for loading potentially unsafe class : brave.btc.domain.user.UsePerson
 [2023-04-25 18:00:29:6141] DEBUG 17656 --- [           main] o.h.b.internal.ClassLoaderAccessImpl     : Not known whether passed class name [brave.btc.domain.record.Picture] is safe
@@ -5072,8 +5072,8 @@ org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (
 [2023-04-25 18:00:29:6336] DEBUG 17656 --- [           main] o.h.type.spi.TypeConfiguration$Scope     : Scoping TypeConfiguration [org.hibernate.type.spi.TypeConfiguration@55821edf] to SessionFactoryImplementor [org.hibernate.internal.SessionFactoryImpl@39f7cc46]
 [2023-04-25 18:00:29:6425] DEBUG 17656 --- [           main] o.h.b.internal.ClassLoaderAccessImpl     : Not known whether passed class name [brave.btc.domain.address.Address] is safe
 [2023-04-25 18:00:29:6425] DEBUG 17656 --- [           main] o.h.b.internal.ClassLoaderAccessImpl     : No temp ClassLoader provided; using live ClassLoader for loading potentially unsafe class : brave.btc.domain.address.Address
-[2023-04-25 18:00:30:6678] DEBUG 17656 --- [           main] o.h.b.internal.ClassLoaderAccessImpl     : Not known whether passed class name [brave.btc.domain.address.Name] is safe
-[2023-04-25 18:00:30:6678] DEBUG 17656 --- [           main] o.h.b.internal.ClassLoaderAccessImpl     : No temp ClassLoader provided; using live ClassLoader for loading potentially unsafe class : brave.btc.domain.address.Name
+[2023-04-25 18:00:30:6678] DEBUG 17656 --- [           main] o.h.b.internal.ClassLoaderAccessImpl     : Not known whether passed class name [brave.btc.domain.address.AddressName] is safe
+[2023-04-25 18:00:30:6678] DEBUG 17656 --- [           main] o.h.b.internal.ClassLoaderAccessImpl     : No temp ClassLoader provided; using live ClassLoader for loading potentially unsafe class : brave.btc.domain.address.AddressName
 [2023-04-25 18:00:30:6689] DEBUG 17656 --- [           main] o.h.b.internal.ClassLoaderAccessImpl     : Not known whether passed class name [brave.btc.domain.user.UsePerson] is safe
 [2023-04-25 18:00:30:6689] DEBUG 17656 --- [           main] o.h.b.internal.ClassLoaderAccessImpl     : No temp ClassLoader provided; using live ClassLoader for loading potentially unsafe class : brave.btc.domain.user.UsePerson
 [2023-04-25 18:00:30:6705] DEBUG 17656 --- [           main] o.h.b.internal.ClassLoaderAccessImpl     : Not known whether passed class name [brave.btc.domain.record.Picture] is safe
@@ -5096,7 +5096,7 @@ org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (
 [2023-04-25 18:00:30:6763] DEBUG 17656 --- [           main] o.h.b.internal.ClassLoaderAccessImpl     : No temp ClassLoader provided; using live ClassLoader for loading potentially unsafe class : brave.btc.domain.SmsCertification
 [2023-04-25 18:00:30:6794] DEBUG 17656 --- [           main] o.h.orm.model.mapping.creation           : Starting post-init callbacks
 [2023-04-25 18:00:30:6795] DEBUG 17656 --- [           main] o.h.orm.model.mapping.creation           : Starting PostInitCallbackEntry : Entity(brave.btc.domain.address.Address) `staticFetchableList` generator
-[2023-04-25 18:00:30:6795] DEBUG 17656 --- [           main] o.h.orm.model.mapping.creation           : Starting PostInitCallbackEntry : Entity(brave.btc.domain.address.Name) `staticFetchableList` generator
+[2023-04-25 18:00:30:6795] DEBUG 17656 --- [           main] o.h.orm.model.mapping.creation           : Starting PostInitCallbackEntry : Entity(brave.btc.domain.address.AddressName) `staticFetchableList` generator
 [2023-04-25 18:00:30:6795] DEBUG 17656 --- [           main] o.h.orm.model.mapping.creation           : Starting PostInitCallbackEntry : Entity(brave.btc.domain.user.UsePerson) `staticFetchableList` generator
 [2023-04-25 18:00:30:6795] DEBUG 17656 --- [           main] o.h.orm.model.mapping.creation           : Starting PostInitCallbackEntry : To-one key - NavigableRole[brave.btc.domain.record.Record.usePerson]
 [2023-04-25 18:00:30:6799] DEBUG 17656 --- [           main] o.h.orm.model.mapping.creation           : Starting PostInitCallbackEntry : Entity(brave.btc.domain.record.Record) `staticFetchableList` generator
@@ -5137,22 +5137,22 @@ org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (
       }
     }
 
-[2023-04-25 18:00:30:6888] DEBUG 17656 --- [           main] o.h.p.entity.AbstractEntityPersister     : Static SQL for entity: brave.btc.domain.address.Name
+[2023-04-25 18:00:30:6888] DEBUG 17656 --- [           main] o.h.p.entity.AbstractEntityPersister     : Static SQL for entity: brave.btc.domain.address.AddressName
 [2023-04-25 18:00:30:6888] DEBUG 17656 --- [           main] o.h.p.entity.AbstractEntityPersister     :  Version select: select ADDRESS_ID from ADDRESS_NAME where ADDRESS_ID =?
 [2023-04-25 18:00:30:6888] DEBUG 17656 --- [           main] o.h.p.entity.AbstractEntityPersister     :  Insert 0: insert into ADDRESS_NAME (ADDRESS_DVSN, ADDRESS_ID) values (?, ?)
 [2023-04-25 18:00:30:6888] DEBUG 17656 --- [           main] o.h.p.entity.AbstractEntityPersister     :  Update 0: update ADDRESS_NAME set ADDRESS_DVSN=? where ADDRESS_ID=?
 [2023-04-25 18:00:30:6888] DEBUG 17656 --- [           main] o.h.p.entity.AbstractEntityPersister     :  Delete 0: delete from ADDRESS_NAME where ADDRESS_ID=?
 [2023-04-25 18:00:30:6888] DEBUG 17656 --- [           main] o.h.p.entity.AbstractEntityPersister     :  Identity insert: insert into ADDRESS_NAME (ADDRESS_ID, ADDRESS_DVSN) values (default, ?)
 [2023-04-25 18:00:30:6888] DEBUG 17656 --- [           main] org.hibernate.orm.sql.ast.create         : Created new SQL alias : n1_0
-[2023-04-25 18:00:30:6888] DEBUG 17656 --- [           main] org.hibernate.orm.sql.ast.create         : Registration of TableGroup [StandardTableGroup(brave.btc.domain.address.Name)] with identifierForTableGroup [brave.btc.domain.address.Name] for NavigablePath [brave.btc.domain.address.Name] 
+[2023-04-25 18:00:30:6888] DEBUG 17656 --- [           main] org.hibernate.orm.sql.ast.create         : Registration of TableGroup [StandardTableGroup(brave.btc.domain.address.AddressName)] with identifierForTableGroup [brave.btc.domain.address.AddressName] for NavigablePath [brave.btc.domain.address.AddressName]
 [2023-04-25 18:00:30:6888] DEBUG 17656 --- [           main] org.hibernate.orm.results.graph.AST      : DomainResult Graph:
- \-EntityResultImpl [brave.btc.domain.address.Name]
- |  \-BasicFetch [brave.btc.domain.address.Name.name]
+ \-EntityResultImpl [brave.btc.domain.address.AddressName]
+ |  \-BasicFetch [brave.btc.domain.address.AddressName.name]
 
 [2023-04-25 18:00:30:6888] DEBUG 17656 --- [           main] org.hibernate.orm.sql.ast.tree           : SQL AST Tree:
     SelectStatement {
       FromClause {
-        StandardTableGroup (n1 : brave.btc.domain.address.Name) {
+        StandardTableGroup (n1 : brave.btc.domain.address.AddressName) {
           primaryTableReference : ADDRESS_NAME as n1_0
         }
       }

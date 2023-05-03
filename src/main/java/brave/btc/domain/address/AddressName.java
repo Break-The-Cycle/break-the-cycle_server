@@ -21,7 +21,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @Entity
 @Table(name = "ADDRESS_NAME")
-public class Name {
+public class AddressName {
 
 
 	@Comment("지역 ID")
@@ -30,6 +30,6 @@ public class Name {
 	private Integer id;
 
 	@Comment("지역 구분")
-	@Column(name = "ADDRESS_DVSN", columnDefinition = "VARCHAR(100) NOT NULL")
+	@Column(name = "ADDRESS_NAME", columnDefinition = "VARCHAR(100) NOT NULL")
 	private String name;
 }
