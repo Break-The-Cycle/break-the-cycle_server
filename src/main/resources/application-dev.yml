@@ -2,7 +2,6 @@
 spring:
 #  datasource:
 #    url: ${ secrets.MYSQL_URL }
-#    jdbc-url: ${ secrets.MYSQL_URL }
 #    username: ${ secrets.MYSQL_USERNAME }
 #    password: ${ secrets.MYSQL_PASSWORD }
 #    driver-class-name: com.mysql.cj.jdbc.Driver
@@ -15,7 +14,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create #추후에 validate
+      ddl-auto: create-drop #추후에 validate
     properties:
       hibernate:
         #          show_sql: true
