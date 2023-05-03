@@ -54,8 +54,8 @@ jobs:
           aws_access_key: ${{ secrets.AWS_EB_ACCESS_KEY }}
           aws_secret_key: ${{ secrets.AWS_EB_SECRET_ACCESS_KEY }}
           application_name: break-the-cycle_deploy
-          environment_name: 230330-05-break-the-cycle
+          environment_name: 230503-break-the-cycle
           version_label: github-action-${{steps.current-time.outputs.formattedTime}}
           region: ap-northeast-2
-          wait_for_environment_recovery: 600
+          wait_for_environment_recovery: 300
           deployment_package: deploy/deploy.zip
