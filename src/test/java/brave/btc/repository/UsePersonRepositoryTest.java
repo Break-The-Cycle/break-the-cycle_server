@@ -11,14 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import brave.btc.domain.user.UsePerson;
+import brave.btc.domain.persistence.user.UsePerson;
+import brave.btc.repository.persistence.UsePersonRepository;
 
 @SpringBootTest
 @ActiveProfiles("local")
 class UsePersonRepositoryTest {
 
     @Autowired
-    UsePersonRepository usePersonRepository;
+	UsePersonRepository usePersonRepository;
 
 
     @Test

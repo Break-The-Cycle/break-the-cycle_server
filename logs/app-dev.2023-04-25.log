@@ -47,7 +47,7 @@
 [2023-04-13 21:54:58:2023] INFO  34596 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
 [2023-04-13 21:54:58:2031] DEBUG 34596 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Scanning for Redis repositories in packages brave.btc.
 [2023-04-13 21:54:58:2037] DEBUG 34596 --- [  restartedMain] o.s.d.r.c.RepositoryComponentProvider    : Identified candidate component class: file [C:\workspace\JamesCoding\break-the-cycle_server\out\production\classes\brave\btc\repository\UsePersonRepository.class]
-[2023-04-13 21:54:58:2039] INFO  34596 --- [  restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface brave.btc.repository.UsePersonRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-04-13 21:54:58:2039] INFO  34596 --- [  restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface brave.btc.repository.persistence.UsePersonRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
 [2023-04-13 21:54:58:2040] INFO  34596 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 8 ms. Found 0 Redis repository interfaces.
 [2023-04-13 21:54:58:2251] DEBUG 34596 --- [  restartedMain] o.s.b.f.s.DefaultListableBeanFactory     : Creating shared instance of singleton bean 'propertySourcesPlaceholderConfigurer'
 [2023-04-13 21:54:58:2254] DEBUG 34596 --- [  restartedMain] o.s.b.f.s.DefaultListableBeanFactory     : Creating shared instance of singleton bean 'emBeanDefinitionRegistrarPostProcessor'
@@ -1379,9 +1379,9 @@
 [2023-04-13 21:55:01:5804] DEBUG 34596 --- [  restartedMain] tor$SharedEntityManagerInvocationHandler : Creating new EntityManager for shared EntityManager invocation
 [2023-04-13 21:55:01:5816] DEBUG 34596 --- [  restartedMain] o.s.beans.CachedIntrospectionResults     : Not strongly caching class [brave.btc.domain.user.UsePerson] because it is not cache-safe
 [2023-04-13 21:55:01:5833] DEBUG 34596 --- [  restartedMain] o.s.beans.CachedIntrospectionResults     : Not strongly caching class [brave.btc.domain.address.Address] because it is not cache-safe
-[2023-04-13 21:55:01:5837] DEBUG 34596 --- [  restartedMain] o.s.d.r.c.s.RepositoryFactorySupport     : Initializing repository instance for brave.btc.repository.UsePersonRepository…
+[2023-04-13 21:55:01:5837] DEBUG 34596 --- [  restartedMain] o.s.d.r.c.s.RepositoryFactorySupport     : Initializing repository instance for brave.btc.repository.persistence.UsePersonRepository…
 [2023-04-13 21:55:02:5853] DEBUG 34596 --- [  restartedMain] tor$SharedEntityManagerInvocationHandler : Creating new EntityManager for shared EntityManager invocation
-[2023-04-13 21:55:02:5904] WARN  34596 --- [  restartedMain] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: brave.btc.repository.UsePersonRepository
+[2023-04-13 21:55:02:5904] WARN  34596 --- [  restartedMain] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: brave.btc.repository.persistence.UsePersonRepository
 [2023-04-13 21:55:02:5914] DEBUG 34596 --- [  restartedMain] o.s.d.j.repository.query.NamedQuery      : Looking up named query UsePerson.findByLoginId
 [2023-04-13 21:55:02:5918] DEBUG 34596 --- [  restartedMain] cResourceLocalTransactionCoordinatorImpl : JDBC transaction marked for rollback-only (exception provided for stack trace)
 java.lang.Exception: exception just for purpose of providing stack trace
@@ -1546,7 +1546,7 @@ java.lang.Exception: exception just for purpose of providing stack trace
 	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:49)
 [2023-04-13 21:55:02:5963] DEBUG 34596 --- [  restartedMain] o.s.d.j.repository.query.NamedQuery      : Did not find named query UsePerson.findByName
 [2023-04-13 21:55:02:5963] DEBUG 34596 --- [  restartedMain] tor$SharedEntityManagerInvocationHandler : Creating new EntityManager for shared EntityManager invocation
-[2023-04-13 21:55:02:5967] DEBUG 34596 --- [  restartedMain] o.s.d.r.c.s.RepositoryFactorySupport     : Finished creation of repository instance for brave.btc.repository.UsePersonRepository.
+[2023-04-13 21:55:02:5967] DEBUG 34596 --- [  restartedMain] o.s.d.r.c.s.RepositoryFactorySupport     : Finished creation of repository instance for brave.btc.repository.persistence.UsePersonRepository.
 [2023-04-13 21:55:02:5981] DEBUG 34596 --- [  restartedMain] o.s.b.f.s.DefaultListableBeanFactory     : Autowiring by type from bean name 'authService' via constructor to bean named 'usePersonRepository'
 [2023-04-13 21:55:02:5987] DEBUG 34596 --- [  restartedMain] o.s.b.f.s.DefaultListableBeanFactory     : Autowiring by type from bean name 'loginController' via constructor to bean named 'authService'
 [2023-04-13 21:55:02:5991] DEBUG 34596 --- [  restartedMain] o.s.b.f.s.DefaultListableBeanFactory     : Creating shared instance of singleton bean 'recordController'
@@ -3966,9 +3966,9 @@ org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (
 [2023-04-25 18:00:26:2689] DEBUG 17656 --- [           main] o.s.d.r.c.RepositoryComponentProvider    : Identified candidate component class: file [C:\workspace\JamesCoding\break-the-cycle_server\out\production\classes\brave\btc\repository\record\RecordRepository.class]
 [2023-04-25 18:00:26:2689] DEBUG 17656 --- [           main] o.s.d.r.c.RepositoryComponentProvider    : Identified candidate component class: file [C:\workspace\JamesCoding\break-the-cycle_server\out\production\classes\brave\btc\repository\SmsCertificationRepository.class]
 [2023-04-25 18:00:26:2690] DEBUG 17656 --- [           main] o.s.d.r.c.RepositoryComponentProvider    : Identified candidate component class: file [C:\workspace\JamesCoding\break-the-cycle_server\out\production\classes\brave\btc\repository\UsePersonRepository.class]
-[2023-04-25 18:00:26:2693] INFO  17656 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface brave.btc.repository.record.RecordRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
-[2023-04-25 18:00:26:2694] INFO  17656 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface brave.btc.repository.SmsCertificationRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
-[2023-04-25 18:00:26:2694] INFO  17656 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface brave.btc.repository.UsePersonRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-04-25 18:00:26:2693] INFO  17656 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface brave.btc.repository.persistence.record.RecordRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-04-25 18:00:26:2694] INFO  17656 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface brave.btc.repository.temporary.SmsCertificationRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2023-04-25 18:00:26:2694] INFO  17656 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface brave.btc.repository.persistence.UsePersonRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
 [2023-04-25 18:00:26:2695] INFO  17656 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 16 ms. Found 0 Redis repository interfaces.
 [2023-04-25 18:00:26:2937] DEBUG 17656 --- [           main] o.s.b.f.s.DefaultListableBeanFactory     : Creating shared instance of singleton bean 'propertySourcesPlaceholderConfigurer'
 [2023-04-25 18:00:26:2941] DEBUG 17656 --- [           main] o.s.b.f.s.DefaultListableBeanFactory     : Creating shared instance of singleton bean 'org.springframework.boot.test.mock.mockito.MockitoPostProcessor'
@@ -4079,7 +4079,7 @@ org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (
 		brave.btc.domain.record.Picture
 		brave.btc.domain.record.Record
 		brave.btc.domain.record.Recording
-		brave.btc.domain.SmsCertification
+		brave.btc.domain.temporary.SmsCertification
 		brave.btc.domain.user.ManagePerson
 		brave.btc.domain.user.UsePerson
 		brave.btc.domain.user.User
@@ -4523,42 +4523,42 @@ org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (
 [2023-04-25 18:00:29:5803] DEBUG 17656 --- [           main] o.h.cfg.annotations.BasicValueBinder     : building BasicValue for conversionContent
 [2023-04-25 18:00:29:5803] DEBUG 17656 --- [           main] org.hibernate.mapping.BasicValue         : Skipping column re-registration: RECORDING.RCRDN_CNVRS_CONTENT
 [2023-04-25 18:00:29:5803] DEBUG 17656 --- [           main] o.h.cfg.annotations.PropertyBinder       : Building property conversionContent
-[2023-04-25 18:00:29:5804] DEBUG 17656 --- [           main] o.h.cfg.annotations.EntityBinder         : Binding entity from annotated class: brave.btc.domain.SmsCertification
+[2023-04-25 18:00:29:5804] DEBUG 17656 --- [           main] o.h.cfg.annotations.EntityBinder         : Binding entity from annotated class: brave.btc.domain.temporary.SmsCertification
 [2023-04-25 18:00:29:5804] DEBUG 17656 --- [           main] org.hibernate.cfg.AnnotatedColumn        : Binding column: DiscriminatorColumn{logicalColumnName'DTYPE', discriminatorTypeName='string'}
 [2023-04-25 18:00:29:5804] DEBUG 17656 --- [           main] o.h.cfg.annotations.EntityBinder         : Import with entity name SmsCertification
-[2023-04-25 18:00:29:5804] DEBUG 17656 --- [           main] o.h.cfg.annotations.EntityBinder         : Bind entity brave.btc.domain.SmsCertification on table sms_certification
+[2023-04-25 18:00:29:5804] DEBUG 17656 --- [           main] o.h.cfg.annotations.EntityBinder         : Bind entity brave.btc.domain.temporary.SmsCertification on table sms_certification
 [2023-04-25 18:00:29:5806] DEBUG 17656 --- [           main] org.hibernate.cfg.AnnotatedColumn        : Binding column: Column{table=Table(sms_certification), mappingColumn=sms_certification_id, insertable=true, updatable=true, unique=false}
-[2023-04-25 18:00:29:5806] DEBUG 17656 --- [           main] o.h.b.internal.ClassLoaderAccessImpl     : Not known whether passed class name [brave.btc.domain.SmsCertification] is safe
-[2023-04-25 18:00:29:5806] DEBUG 17656 --- [           main] o.h.b.internal.ClassLoaderAccessImpl     : No temp ClassLoader provided; using live ClassLoader for loading potentially unsafe class : brave.btc.domain.SmsCertification
+[2023-04-25 18:00:29:5806] DEBUG 17656 --- [           main] o.h.b.internal.ClassLoaderAccessImpl     : Not known whether passed class name [brave.btc.domain.temporary.SmsCertification] is safe
+[2023-04-25 18:00:29:5806] DEBUG 17656 --- [           main] o.h.b.internal.ClassLoaderAccessImpl     : No temp ClassLoader provided; using live ClassLoader for loading potentially unsafe class : brave.btc.domain.temporary.SmsCertification
 [2023-04-25 18:00:29:5806] DEBUG 17656 --- [           main] o.h.cfg.annotations.PropertyBinder       : MetadataSourceProcessor property id with lazy=false
-[2023-04-25 18:00:29:5806] DEBUG 17656 --- [           main] o.h.cfg.AbstractPropertyHolder           : Attempting to locate auto-apply AttributeConverter for property [brave.btc.domain.SmsCertification:id]
-[2023-04-25 18:00:29:5807] DEBUG 17656 --- [           main] o.h.b.m.c.i.AttributeConverterManager    : Checking auto-apply AttributeConverter [brave.btc.util.converter.RecordDivisionToCodeConverter] (domain-type=Lbrave/btc/constant/enums/RecordDivision;) for match against basic attribute : brave.btc.domain.SmsCertification.id (type=java.lang.Long)
-[2023-04-25 18:00:29:5807] DEBUG 17656 --- [           main] o.h.b.m.c.i.AttributeConverterManager    : Checking auto-apply AttributeConverter [brave.btc.util.converter.PeriodToIntegerConverter] (domain-type=Ljava/time/Period;) for match against basic attribute : brave.btc.domain.SmsCertification.id (type=java.lang.Long)
+[2023-04-25 18:00:29:5806] DEBUG 17656 --- [           main] o.h.cfg.AbstractPropertyHolder           : Attempting to locate auto-apply AttributeConverter for property [brave.btc.domain.temporary.SmsCertification:id]
+[2023-04-25 18:00:29:5807] DEBUG 17656 --- [           main] o.h.b.m.c.i.AttributeConverterManager    : Checking auto-apply AttributeConverter [brave.btc.util.converter.RecordDivisionToCodeConverter] (domain-type=Lbrave/btc/constant/enums/RecordDivision;) for match against basic attribute : brave.btc.domain.temporary.SmsCertification.id (type=java.lang.Long)
+[2023-04-25 18:00:29:5807] DEBUG 17656 --- [           main] o.h.b.m.c.i.AttributeConverterManager    : Checking auto-apply AttributeConverter [brave.btc.util.converter.PeriodToIntegerConverter] (domain-type=Ljava/time/Period;) for match against basic attribute : brave.btc.domain.temporary.SmsCertification.id (type=java.lang.Long)
 [2023-04-25 18:00:29:5807] DEBUG 17656 --- [           main] o.h.cfg.annotations.BasicValueBinder     : building BasicValue for id
 [2023-04-25 18:00:29:5807] DEBUG 17656 --- [           main] org.hibernate.mapping.BasicValue         : Skipping column re-registration: sms_certification.sms_certification_id
 [2023-04-25 18:00:29:5807] DEBUG 17656 --- [           main] o.h.cfg.annotations.PropertyBinder       : Building property id
 [2023-04-25 18:00:29:5807] DEBUG 17656 --- [           main] org.hibernate.cfg.BinderHelper           : #makeIdGenerator(BasicValue([Column(sms_certification_id)]), id, org.hibernate.id.enhanced.SequenceStyleGenerator, , ...)
 [2023-04-25 18:00:29:5807] DEBUG 17656 --- [           main] org.hibernate.cfg.AnnotatedColumn        : Binding column: Column{table=Table(sms_certification), mappingColumn=certification_number, insertable=true, updatable=true, unique=false}
 [2023-04-25 18:00:29:5807] DEBUG 17656 --- [           main] o.h.cfg.annotations.PropertyBinder       : MetadataSourceProcessor property certificationNumber with lazy=false
-[2023-04-25 18:00:29:5807] DEBUG 17656 --- [           main] o.h.cfg.AbstractPropertyHolder           : Attempting to locate auto-apply AttributeConverter for property [brave.btc.domain.SmsCertification:certificationNumber]
-[2023-04-25 18:00:29:5807] DEBUG 17656 --- [           main] o.h.b.m.c.i.AttributeConverterManager    : Checking auto-apply AttributeConverter [brave.btc.util.converter.RecordDivisionToCodeConverter] (domain-type=Lbrave/btc/constant/enums/RecordDivision;) for match against basic attribute : brave.btc.domain.SmsCertification.certificationNumber (type=java.lang.String)
-[2023-04-25 18:00:29:5807] DEBUG 17656 --- [           main] o.h.b.m.c.i.AttributeConverterManager    : Checking auto-apply AttributeConverter [brave.btc.util.converter.PeriodToIntegerConverter] (domain-type=Ljava/time/Period;) for match against basic attribute : brave.btc.domain.SmsCertification.certificationNumber (type=java.lang.String)
+[2023-04-25 18:00:29:5807] DEBUG 17656 --- [           main] o.h.cfg.AbstractPropertyHolder           : Attempting to locate auto-apply AttributeConverter for property [brave.btc.domain.temporary.SmsCertification:certificationNumber]
+[2023-04-25 18:00:29:5807] DEBUG 17656 --- [           main] o.h.b.m.c.i.AttributeConverterManager    : Checking auto-apply AttributeConverter [brave.btc.util.converter.RecordDivisionToCodeConverter] (domain-type=Lbrave/btc/constant/enums/RecordDivision;) for match against basic attribute : brave.btc.domain.temporary.SmsCertification.certificationNumber (type=java.lang.String)
+[2023-04-25 18:00:29:5807] DEBUG 17656 --- [           main] o.h.b.m.c.i.AttributeConverterManager    : Checking auto-apply AttributeConverter [brave.btc.util.converter.PeriodToIntegerConverter] (domain-type=Ljava/time/Period;) for match against basic attribute : brave.btc.domain.temporary.SmsCertification.certificationNumber (type=java.lang.String)
 [2023-04-25 18:00:29:5807] DEBUG 17656 --- [           main] o.h.cfg.annotations.BasicValueBinder     : building BasicValue for certificationNumber
 [2023-04-25 18:00:29:5807] DEBUG 17656 --- [           main] org.hibernate.mapping.BasicValue         : Skipping column re-registration: sms_certification.certification_number
 [2023-04-25 18:00:29:5807] DEBUG 17656 --- [           main] o.h.cfg.annotations.PropertyBinder       : Building property certificationNumber
 [2023-04-25 18:00:29:5809] DEBUG 17656 --- [           main] org.hibernate.cfg.AnnotatedColumn        : Binding column: Column{table=Table(sms_certification), mappingColumn=created_at, insertable=true, updatable=true, unique=false}
 [2023-04-25 18:00:29:5809] DEBUG 17656 --- [           main] o.h.cfg.annotations.PropertyBinder       : MetadataSourceProcessor property created with lazy=false
-[2023-04-25 18:00:29:5809] DEBUG 17656 --- [           main] o.h.cfg.AbstractPropertyHolder           : Attempting to locate auto-apply AttributeConverter for property [brave.btc.domain.SmsCertification:created]
-[2023-04-25 18:00:29:5809] DEBUG 17656 --- [           main] o.h.b.m.c.i.AttributeConverterManager    : Checking auto-apply AttributeConverter [brave.btc.util.converter.RecordDivisionToCodeConverter] (domain-type=Lbrave/btc/constant/enums/RecordDivision;) for match against basic attribute : brave.btc.domain.SmsCertification.created (type=java.sql.Timestamp)
-[2023-04-25 18:00:29:5809] DEBUG 17656 --- [           main] o.h.b.m.c.i.AttributeConverterManager    : Checking auto-apply AttributeConverter [brave.btc.util.converter.PeriodToIntegerConverter] (domain-type=Ljava/time/Period;) for match against basic attribute : brave.btc.domain.SmsCertification.created (type=java.sql.Timestamp)
+[2023-04-25 18:00:29:5809] DEBUG 17656 --- [           main] o.h.cfg.AbstractPropertyHolder           : Attempting to locate auto-apply AttributeConverter for property [brave.btc.domain.temporary.SmsCertification:created]
+[2023-04-25 18:00:29:5809] DEBUG 17656 --- [           main] o.h.b.m.c.i.AttributeConverterManager    : Checking auto-apply AttributeConverter [brave.btc.util.converter.RecordDivisionToCodeConverter] (domain-type=Lbrave/btc/constant/enums/RecordDivision;) for match against basic attribute : brave.btc.domain.temporary.SmsCertification.created (type=java.sql.Timestamp)
+[2023-04-25 18:00:29:5809] DEBUG 17656 --- [           main] o.h.b.m.c.i.AttributeConverterManager    : Checking auto-apply AttributeConverter [brave.btc.util.converter.PeriodToIntegerConverter] (domain-type=Ljava/time/Period;) for match against basic attribute : brave.btc.domain.temporary.SmsCertification.created (type=java.sql.Timestamp)
 [2023-04-25 18:00:29:5809] DEBUG 17656 --- [           main] o.h.cfg.annotations.BasicValueBinder     : building BasicValue for created
 [2023-04-25 18:00:29:5809] DEBUG 17656 --- [           main] org.hibernate.mapping.BasicValue         : Skipping column re-registration: sms_certification.created_at
 [2023-04-25 18:00:29:5809] DEBUG 17656 --- [           main] o.h.cfg.annotations.PropertyBinder       : Building property created
 [2023-04-25 18:00:29:5813] DEBUG 17656 --- [           main] org.hibernate.cfg.AnnotatedColumn        : Binding column: Column{table=Table(sms_certification), mappingColumn=phone_number, insertable=true, updatable=true, unique=false}
 [2023-04-25 18:00:29:5813] DEBUG 17656 --- [           main] o.h.cfg.annotations.PropertyBinder       : MetadataSourceProcessor property phoneNumber with lazy=false
-[2023-04-25 18:00:29:5813] DEBUG 17656 --- [           main] o.h.cfg.AbstractPropertyHolder           : Attempting to locate auto-apply AttributeConverter for property [brave.btc.domain.SmsCertification:phoneNumber]
-[2023-04-25 18:00:29:5813] DEBUG 17656 --- [           main] o.h.b.m.c.i.AttributeConverterManager    : Checking auto-apply AttributeConverter [brave.btc.util.converter.RecordDivisionToCodeConverter] (domain-type=Lbrave/btc/constant/enums/RecordDivision;) for match against basic attribute : brave.btc.domain.SmsCertification.phoneNumber (type=java.lang.String)
-[2023-04-25 18:00:29:5813] DEBUG 17656 --- [           main] o.h.b.m.c.i.AttributeConverterManager    : Checking auto-apply AttributeConverter [brave.btc.util.converter.PeriodToIntegerConverter] (domain-type=Ljava/time/Period;) for match against basic attribute : brave.btc.domain.SmsCertification.phoneNumber (type=java.lang.String)
+[2023-04-25 18:00:29:5813] DEBUG 17656 --- [           main] o.h.cfg.AbstractPropertyHolder           : Attempting to locate auto-apply AttributeConverter for property [brave.btc.domain.temporary.SmsCertification:phoneNumber]
+[2023-04-25 18:00:29:5813] DEBUG 17656 --- [           main] o.h.b.m.c.i.AttributeConverterManager    : Checking auto-apply AttributeConverter [brave.btc.util.converter.RecordDivisionToCodeConverter] (domain-type=Lbrave/btc/constant/enums/RecordDivision;) for match against basic attribute : brave.btc.domain.temporary.SmsCertification.phoneNumber (type=java.lang.String)
+[2023-04-25 18:00:29:5813] DEBUG 17656 --- [           main] o.h.b.m.c.i.AttributeConverterManager    : Checking auto-apply AttributeConverter [brave.btc.util.converter.PeriodToIntegerConverter] (domain-type=Ljava/time/Period;) for match against basic attribute : brave.btc.domain.temporary.SmsCertification.phoneNumber (type=java.lang.String)
 [2023-04-25 18:00:29:5813] DEBUG 17656 --- [           main] o.h.cfg.annotations.BasicValueBinder     : building BasicValue for phoneNumber
 [2023-04-25 18:00:29:5813] DEBUG 17656 --- [           main] org.hibernate.mapping.BasicValue         : Skipping column re-registration: sms_certification.phone_number
 [2023-04-25 18:00:29:5813] DEBUG 17656 --- [           main] o.h.cfg.annotations.PropertyBinder       : Building property phoneNumber
@@ -4768,8 +4768,8 @@ org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (
 [2023-04-25 18:00:29:6153] DEBUG 17656 --- [           main] o.h.b.internal.ClassLoaderAccessImpl     : No temp ClassLoader provided; using live ClassLoader for loading potentially unsafe class : brave.btc.domain.record.Diary
 [2023-04-25 18:00:29:6156] DEBUG 17656 --- [           main] o.h.b.internal.ClassLoaderAccessImpl     : Not known whether passed class name [brave.btc.domain.record.Recording] is safe
 [2023-04-25 18:00:29:6156] DEBUG 17656 --- [           main] o.h.b.internal.ClassLoaderAccessImpl     : No temp ClassLoader provided; using live ClassLoader for loading potentially unsafe class : brave.btc.domain.record.Recording
-[2023-04-25 18:00:29:6159] DEBUG 17656 --- [           main] o.h.b.internal.ClassLoaderAccessImpl     : Not known whether passed class name [brave.btc.domain.SmsCertification] is safe
-[2023-04-25 18:00:29:6159] DEBUG 17656 --- [           main] o.h.b.internal.ClassLoaderAccessImpl     : No temp ClassLoader provided; using live ClassLoader for loading potentially unsafe class : brave.btc.domain.SmsCertification
+[2023-04-25 18:00:29:6159] DEBUG 17656 --- [           main] o.h.b.internal.ClassLoaderAccessImpl     : Not known whether passed class name [brave.btc.domain.temporary.SmsCertification] is safe
+[2023-04-25 18:00:29:6159] DEBUG 17656 --- [           main] o.h.b.internal.ClassLoaderAccessImpl     : No temp ClassLoader provided; using live ClassLoader for loading potentially unsafe class : brave.btc.domain.temporary.SmsCertification
 [2023-04-25 18:00:29:6163] DEBUG 17656 --- [           main] .h.s.i.SessionFactoryServiceRegistryImpl : EventListenerRegistry access via ServiceRegistry is deprecated.  Use `sessionFactory.getEventEngine().getListenerRegistry()` instead
 [2023-04-25 18:00:29:6167] DEBUG 17656 --- [           main] o.h.internal.SessionFactoryImpl          : Instantiated session factory
 [2023-04-25 18:00:29:6202] DEBUG 17656 --- [           main] org.hibernate.orm.query.plan.cache       : Starting QueryPlanCache(2048)
@@ -5092,8 +5092,8 @@ org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (
 [2023-04-25 18:00:30:6740] DEBUG 17656 --- [           main] o.h.b.internal.ClassLoaderAccessImpl     : No temp ClassLoader provided; using live ClassLoader for loading potentially unsafe class : brave.btc.domain.address.PostalNumber
 [2023-04-25 18:00:30:6756] DEBUG 17656 --- [           main] o.h.p.e.JoinedSubclassEntityPersister    : Encountered explicit discriminator mapping for joined inheritance
 [2023-04-25 18:00:30:6762] DEBUG 17656 --- [           main] o.h.p.e.JoinedSubclassEntityPersister    : Encountered explicit discriminator mapping for joined inheritance
-[2023-04-25 18:00:30:6763] DEBUG 17656 --- [           main] o.h.b.internal.ClassLoaderAccessImpl     : Not known whether passed class name [brave.btc.domain.SmsCertification] is safe
-[2023-04-25 18:00:30:6763] DEBUG 17656 --- [           main] o.h.b.internal.ClassLoaderAccessImpl     : No temp ClassLoader provided; using live ClassLoader for loading potentially unsafe class : brave.btc.domain.SmsCertification
+[2023-04-25 18:00:30:6763] DEBUG 17656 --- [           main] o.h.b.internal.ClassLoaderAccessImpl     : Not known whether passed class name [brave.btc.domain.temporary.SmsCertification] is safe
+[2023-04-25 18:00:30:6763] DEBUG 17656 --- [           main] o.h.b.internal.ClassLoaderAccessImpl     : No temp ClassLoader provided; using live ClassLoader for loading potentially unsafe class : brave.btc.domain.temporary.SmsCertification
 [2023-04-25 18:00:30:6794] DEBUG 17656 --- [           main] o.h.orm.model.mapping.creation           : Starting post-init callbacks
 [2023-04-25 18:00:30:6795] DEBUG 17656 --- [           main] o.h.orm.model.mapping.creation           : Starting PostInitCallbackEntry : Entity(brave.btc.domain.address.Address) `staticFetchableList` generator
 [2023-04-25 18:00:30:6795] DEBUG 17656 --- [           main] o.h.orm.model.mapping.creation           : Starting PostInitCallbackEntry : Entity(brave.btc.domain.address.AddressName) `staticFetchableList` generator
@@ -5114,8 +5114,8 @@ org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (
 [2023-04-25 18:00:30:6808] DEBUG 17656 --- [           main] o.h.orm.model.mapping.creation           : Starting PostInitCallbackEntry : Entity(brave.btc.domain.record.Recording) `staticFetchableList` generator
 [2023-04-25 18:00:30:6809] DEBUG 17656 --- [           main] o.h.orm.model.mapping.creation           : Starting PostInitCallbackEntry : Entity(brave.btc.domain.record.Recording) `sqmMultiTableMutationStrategy` interpretation
 [2023-04-25 18:00:30:6809] DEBUG 17656 --- [           main] o.h.orm.model.mapping.creation           : Starting PostInitCallbackEntry : Entity(brave.btc.domain.record.Recording) `sqmMultiTableInsertStrategy` interpretation
-[2023-04-25 18:00:30:6809] DEBUG 17656 --- [           main] o.h.orm.model.mapping.creation           : Starting PostInitCallbackEntry : Entity(brave.btc.domain.SmsCertification) `staticFetchableList` generator
-[2023-04-25 18:00:30:6809] DEBUG 17656 --- [           main] o.h.orm.model.mapping.creation           : Starting PostInitCallbackEntry : Entity(brave.btc.domain.SmsCertification) `sqmMultiTableInsertStrategy` interpretation
+[2023-04-25 18:00:30:6809] DEBUG 17656 --- [           main] o.h.orm.model.mapping.creation           : Starting PostInitCallbackEntry : Entity(brave.btc.domain.temporary.SmsCertification) `staticFetchableList` generator
+[2023-04-25 18:00:30:6809] DEBUG 17656 --- [           main] o.h.orm.model.mapping.creation           : Starting PostInitCallbackEntry : Entity(brave.btc.domain.temporary.SmsCertification) `sqmMultiTableInsertStrategy` interpretation
 [2023-04-25 18:00:30:6814] DEBUG 17656 --- [           main] o.h.p.entity.AbstractEntityPersister     : Static SQL for entity: brave.btc.domain.address.Address
 [2023-04-25 18:00:30:6814] DEBUG 17656 --- [           main] o.h.p.entity.AbstractEntityPersister     :  Version select: select ADDRESS_ID from ADDRESS where ADDRESS_ID =?
 [2023-04-25 18:00:30:6814] DEBUG 17656 --- [           main] o.h.p.entity.AbstractEntityPersister     :  Insert 0: insert into ADDRESS (ADDRESS_DVSN, ADDRESS_ID) values (?, ?)
@@ -5364,23 +5364,23 @@ org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (
       }
     }
 
-[2023-04-25 18:00:30:6902] DEBUG 17656 --- [           main] o.h.p.entity.AbstractEntityPersister     : Static SQL for entity: brave.btc.domain.SmsCertification
+[2023-04-25 18:00:30:6902] DEBUG 17656 --- [           main] o.h.p.entity.AbstractEntityPersister     : Static SQL for entity: brave.btc.domain.temporary.SmsCertification
 [2023-04-25 18:00:30:6902] DEBUG 17656 --- [           main] o.h.p.entity.AbstractEntityPersister     :  Version select: select sms_certification_id from sms_certification where sms_certification_id =?
 [2023-04-25 18:00:30:6903] DEBUG 17656 --- [           main] o.h.p.entity.AbstractEntityPersister     :  Insert 0: insert into sms_certification (certification_number, created_at, phone_number, sms_certification_id) values (?, ?, ?, ?)
 [2023-04-25 18:00:30:6903] DEBUG 17656 --- [           main] o.h.p.entity.AbstractEntityPersister     :  Update 0: update sms_certification set certification_number=?, created_at=?, phone_number=? where sms_certification_id=?
 [2023-04-25 18:00:30:6903] DEBUG 17656 --- [           main] o.h.p.entity.AbstractEntityPersister     :  Delete 0: delete from sms_certification where sms_certification_id=?
 [2023-04-25 18:00:30:6903] DEBUG 17656 --- [           main] org.hibernate.orm.sql.ast.create         : Created new SQL alias : s1_0
-[2023-04-25 18:00:30:6903] DEBUG 17656 --- [           main] org.hibernate.orm.sql.ast.create         : Registration of TableGroup [StandardTableGroup(brave.btc.domain.SmsCertification)] with identifierForTableGroup [brave.btc.domain.SmsCertification] for NavigablePath [brave.btc.domain.SmsCertification] 
+[2023-04-25 18:00:30:6903] DEBUG 17656 --- [           main] org.hibernate.orm.sql.ast.create         : Registration of TableGroup [StandardTableGroup(brave.btc.domain.temporary.SmsCertification)] with identifierForTableGroup [brave.btc.domain.temporary.SmsCertification] for NavigablePath [brave.btc.domain.temporary.SmsCertification]
 [2023-04-25 18:00:30:6903] DEBUG 17656 --- [           main] org.hibernate.orm.results.graph.AST      : DomainResult Graph:
- \-EntityResultImpl [brave.btc.domain.SmsCertification]
- |  +-BasicFetch [brave.btc.domain.SmsCertification.certificationNumber]
- |  +-BasicFetch [brave.btc.domain.SmsCertification.created]
- |  \-BasicFetch [brave.btc.domain.SmsCertification.phoneNumber]
+ \-EntityResultImpl [brave.btc.domain.temporary.SmsCertification]
+ |  +-BasicFetch [brave.btc.domain.temporary.SmsCertification.certificationNumber]
+ |  +-BasicFetch [brave.btc.domain.temporary.SmsCertification.created]
+ |  \-BasicFetch [brave.btc.domain.temporary.SmsCertification.phoneNumber]
 
 [2023-04-25 18:00:30:6903] DEBUG 17656 --- [           main] org.hibernate.orm.sql.ast.tree           : SQL AST Tree:
     SelectStatement {
       FromClause {
-        StandardTableGroup (s1 : brave.btc.domain.SmsCertification) {
+        StandardTableGroup (s1 : brave.btc.domain.temporary.SmsCertification) {
           primaryTableReference : sms_certification as s1_0
         }
       }
@@ -5412,9 +5412,9 @@ org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (
 [2023-04-25 18:00:30:7107] DEBUG 17656 --- [           main] tor$SharedEntityManagerInvocationHandler : Creating new EntityManager for shared EntityManager invocation
 [2023-04-25 18:00:30:7177] DEBUG 17656 --- [           main] o.h.s.internal.StatisticsInitiator       : Statistics initialized [enabled=false]
 [2023-04-25 18:00:30:7186] DEBUG 17656 --- [           main] tor$SharedEntityManagerInvocationHandler : Creating new EntityManager for shared EntityManager invocation
-[2023-04-25 18:00:30:7229] DEBUG 17656 --- [           main] o.s.d.r.c.s.RepositoryFactorySupport     : Initializing repository instance for brave.btc.repository.UsePersonRepository…
+[2023-04-25 18:00:30:7229] DEBUG 17656 --- [           main] o.s.d.r.c.s.RepositoryFactorySupport     : Initializing repository instance for brave.btc.repository.persistence.UsePersonRepository…
 [2023-04-25 18:00:30:7258] DEBUG 17656 --- [           main] tor$SharedEntityManagerInvocationHandler : Creating new EntityManager for shared EntityManager invocation
-[2023-04-25 18:00:30:7326] WARN  17656 --- [           main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: brave.btc.repository.UsePersonRepository
+[2023-04-25 18:00:30:7326] WARN  17656 --- [           main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: brave.btc.repository.persistence.UsePersonRepository
 [2023-04-25 18:00:30:7340] DEBUG 17656 --- [           main] o.s.d.j.repository.query.NamedQuery      : Looking up named query UsePerson.findByLoginId
 [2023-04-25 18:00:30:7349] DEBUG 17656 --- [           main] cResourceLocalTransactionCoordinatorImpl : JDBC transaction marked for rollback-only (exception provided for stack trace)
 java.lang.Exception: exception just for purpose of providing stack trace
@@ -5723,12 +5723,12 @@ java.lang.Exception: exception just for purpose of providing stack trace
 	at com.intellij.rt.junit.JUnitStarter.main(JUnitStarter.java:54)
 [2023-04-25 18:00:30:7414] DEBUG 17656 --- [           main] o.s.d.j.repository.query.NamedQuery      : Did not find named query UsePerson.findByName
 [2023-04-25 18:00:30:7414] DEBUG 17656 --- [           main] tor$SharedEntityManagerInvocationHandler : Creating new EntityManager for shared EntityManager invocation
-[2023-04-25 18:00:30:7419] DEBUG 17656 --- [           main] o.s.d.r.c.s.RepositoryFactorySupport     : Finished creation of repository instance for brave.btc.repository.UsePersonRepository.
+[2023-04-25 18:00:30:7419] DEBUG 17656 --- [           main] o.s.d.r.c.s.RepositoryFactorySupport     : Finished creation of repository instance for brave.btc.repository.persistence.UsePersonRepository.
 [2023-04-25 18:00:30:7433] DEBUG 17656 --- [           main] o.s.b.f.s.DefaultListableBeanFactory     : Creating shared instance of singleton bean 'smsCertificationRepository'
 [2023-04-25 18:00:30:7434] DEBUG 17656 --- [           main] o.s.b.f.s.DefaultListableBeanFactory     : Creating shared instance of singleton bean 'jpa.named-queries#0'
 [2023-04-25 18:00:30:7436] DEBUG 17656 --- [           main] o.s.b.f.s.DefaultListableBeanFactory     : Creating shared instance of singleton bean 'jpa.SmsCertificationRepository.fragments#0'
 [2023-04-25 18:00:30:7437] DEBUG 17656 --- [           main] tor$SharedEntityManagerInvocationHandler : Creating new EntityManager for shared EntityManager invocation
-[2023-04-25 18:00:30:7439] DEBUG 17656 --- [           main] o.s.d.r.c.s.RepositoryFactorySupport     : Initializing repository instance for brave.btc.repository.SmsCertificationRepository…
+[2023-04-25 18:00:30:7439] DEBUG 17656 --- [           main] o.s.d.r.c.s.RepositoryFactorySupport     : Initializing repository instance for brave.btc.repository.temporary.SmsCertificationRepository…
 [2023-04-25 18:00:30:7440] DEBUG 17656 --- [           main] tor$SharedEntityManagerInvocationHandler : Creating new EntityManager for shared EntityManager invocation
 [2023-04-25 18:00:30:7468] DEBUG 17656 --- [           main] cResourceLocalTransactionCoordinatorImpl : JDBC transaction marked for rollback-only (exception provided for stack trace)
 java.lang.Exception: exception just for purpose of providing stack trace
@@ -5889,28 +5889,28 @@ java.lang.Exception: exception just for purpose of providing stack trace
 [2023-04-25 18:00:31:7771] DEBUG 17656 --- [           main] o.hibernate.orm.query.sqm.creation       : Applying inferable type to SqmExpression [SqmNamedParameter(phoneNumber)] : null -> BasicSqmPathSource(phoneNumber : String)
 [2023-04-25 18:00:31:7781] DEBUG 17656 --- [           main] org.hibernate.orm.query.sqm.ast          : SqmStatement Tree :
     -> [update]
-      [target = brave.btc.domain.SmsCertification(s)]
+      [target = brave.btc.domain.temporary.SmsCertification(s)]
       -> [set]
         -> [assignment]
           =
-            [brave.btc.domain.SmsCertification(s).certificationNumber]
+            [brave.btc.domain.temporary.SmsCertification(s).certificationNumber]
             :certificationNumber
         <- [assignment]
         -> [assignment]
           =
-            [brave.btc.domain.SmsCertification(s).created]
+            [brave.btc.domain.temporary.SmsCertification(s).created]
             :created
         <- [assignment]
       <- [set]
       -> [where]
         -> [EQUAL]
-            -> [basic-path] - `brave.btc.domain.SmsCertification(s).phoneNumber`
+            -> [basic-path] - `brave.btc.domain.temporary.SmsCertification(s).phoneNumber`
             :phoneNumber
         <- [EQUAL]
       <- [where]
     <- [update]
 
-[2023-04-25 18:00:31:7796] WARN  17656 --- [           main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: brave.btc.repository.SmsCertificationRepository
+[2023-04-25 18:00:31:7796] WARN  17656 --- [           main] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: brave.btc.repository.temporary.SmsCertificationRepository
 [2023-04-25 18:00:31:7797] DEBUG 17656 --- [           main] o.s.d.j.repository.query.NamedQuery      : Looking up named query SmsCertification.findByPhoneNumber
 [2023-04-25 18:00:31:7797] DEBUG 17656 --- [           main] cResourceLocalTransactionCoordinatorImpl : JDBC transaction marked for rollback-only (exception provided for stack trace)
 java.lang.Exception: exception just for purpose of providing stack trace
@@ -6065,7 +6065,7 @@ java.lang.Exception: exception just for purpose of providing stack trace
 	at com.intellij.rt.junit.JUnitStarter.main(JUnitStarter.java:54)
 [2023-04-25 18:00:31:7798] DEBUG 17656 --- [           main] o.s.d.j.repository.query.NamedQuery      : Did not find named query SmsCertification.findByPhoneNumber
 [2023-04-25 18:00:31:7798] DEBUG 17656 --- [           main] tor$SharedEntityManagerInvocationHandler : Creating new EntityManager for shared EntityManager invocation
-[2023-04-25 18:00:31:7801] DEBUG 17656 --- [           main] o.s.d.r.c.s.RepositoryFactorySupport     : Finished creation of repository instance for brave.btc.repository.SmsCertificationRepository.
+[2023-04-25 18:00:31:7801] DEBUG 17656 --- [           main] o.s.d.r.c.s.RepositoryFactorySupport     : Finished creation of repository instance for brave.btc.repository.temporary.SmsCertificationRepository.
 [2023-04-25 18:00:31:7814] DEBUG 17656 --- [           main] o.s.b.f.s.DefaultListableBeanFactory     : Autowiring by type from bean name 'authService' via constructor to bean named 'usePersonRepository'
 [2023-04-25 18:00:31:7814] DEBUG 17656 --- [           main] o.s.b.f.s.DefaultListableBeanFactory     : Autowiring by type from bean name 'authService' via constructor to bean named 'smsCertificationRepository'
 [2023-04-25 18:00:31:7841] DEBUG 17656 --- [           main] o.s.b.f.s.DefaultListableBeanFactory     : Autowiring by type from bean name 'authController' via constructor to bean named 'authService'
