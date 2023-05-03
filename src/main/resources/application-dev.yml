@@ -27,7 +27,7 @@ logging:
 
 log:
   config:
-    path: ./logs
+    path: /var/log
     filename: app-dev
     maxHistory: 10
     totalSizeCap: 30MB
