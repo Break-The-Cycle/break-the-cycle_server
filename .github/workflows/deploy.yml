@@ -53,7 +53,7 @@ jobs:
         with:
           aws_access_key: ${{ secrets.AWS_EB_ACCESS_KEY }}
           aws_secret_key: ${{ secrets.AWS_EB_SECRET_ACCESS_KEY }}
-          application_name: break-the-cycle_deploy
+          application_name: break-the-cycle
           environment_name: dev-break-the-cycle
           version_label: github-action-${{steps.current-time.outputs.formattedTime}}
           region: ap-northeast-2
