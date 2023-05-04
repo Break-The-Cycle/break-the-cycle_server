@@ -5,7 +5,8 @@ import java.time.Period;
 
 import org.hibernate.annotations.Comment;
 
-import brave.btc.config.enums.RecordDivision;
+import brave.btc.constant.enums.MenstruationDivision;
+import brave.btc.constant.enums.RecordDivision;
 import brave.btc.dto.app.menstruation.MenstruationDto;
 import brave.btc.util.converter.PeriodToIntegerConverter;
 import jakarta.persistence.Column;
@@ -13,7 +14,9 @@ import jakarta.persistence.Convert;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -42,11 +45,23 @@ public class Menstruation extends Record{
 	@Column(name = "MNSTT_PERIOD", columnDefinition = "INT NULL")
 	private Period period;
 
+	@Builder.Default
+	@Transient
+	private MenstruationDivision division=MenstruationDivision.REAL;
+
+	public MenstruationDivision getDivision() {
+		if (this.division == null) {
+			return MenstruationDivision.REAL;
+		}
+		return this.division;
+	}
+
 	public MenstruationDto.Response toDto() {
 		return MenstruationDto.Response.builder()
 			.id(id)
 			.startDate(startDate)
 			.endDate(endDate)
+			.division(getDivision())
 			.build();
 	}
 }
