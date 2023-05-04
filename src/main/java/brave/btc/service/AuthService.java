@@ -1,10 +1,17 @@
 package brave.btc.service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import brave.btc.domain.persistence.user.UsePerson;
+import net.nurigo.sdk.NurigoApp;
+import net.nurigo.sdk.message.model.Message;
+import net.nurigo.sdk.message.service.DefaultMessageService;
 
+import brave.btc.domain.app.user.UsePerson;
 import brave.btc.domain.temporary.SmsCertification;
 import brave.btc.dto.CommonResponseDto;
 import brave.btc.dto.auth.login.LoginRequestDto;
@@ -13,22 +20,10 @@ import brave.btc.exception.auth.AuthenticationInvalidException;
 import brave.btc.exception.auth.SmsCertificationNumberExpiredException;
 import brave.btc.exception.auth.SmsCertificationNumberNotSameException;
 import brave.btc.exception.auth.UserPrincipalNotFoundException;
-
-import brave.btc.repository.persistence.UsePersonRepository;
-
+import brave.btc.repository.app.UsePersonRepository;
 import brave.btc.repository.temporary.SmsCertificationRepository;
-
 import lombok.RequiredArgsConstructor;
-
 import lombok.extern.slf4j.Slf4j;
-
-
-import net.nurigo.sdk.NurigoApp;
-import net.nurigo.sdk.message.model.Message;
-import net.nurigo.sdk.message.service.DefaultMessageService;
-import org.apache.commons.lang3.RandomStringUtils;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 @Service
 @Transactional

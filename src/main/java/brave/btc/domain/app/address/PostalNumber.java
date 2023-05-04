@@ -1,4 +1,4 @@
-package brave.btc.domain.persistence.address;
+package brave.btc.domain.app.address;
 
 import org.hibernate.annotations.Comment;
 

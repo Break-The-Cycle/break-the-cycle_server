@@ -1,4 +1,4 @@
-package brave.btc.constant.enums;
+package brave.btc.config.enums;
 
 import java.util.Arrays;
 

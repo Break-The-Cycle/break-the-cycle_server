@@ -18,32 +18,33 @@ import org.springframework.transaction.PlatformTransactionManager;
 import lombok.RequiredArgsConstructor;
 
 @EnableJpaRepositories(
-	basePackages = "brave.btc.repository.persistence", // main Repository 경로
-	entityManagerFactoryRef = "mainEntityManager",
-	transactionManagerRef = "mainTransactionManager"
+	basePackages = "brave.btc.repository.app", // app Repository 경로
+	entityManagerFactoryRef = "appEntityManager",
+	transactionManagerRef = "appTransactionManager"
 )
 @RequiredArgsConstructor
 @Profile("dev")
 @Configuration
-public class MainConfig {
+public class AppConfig {
 
-	private final Environment env;
-
+	private final Environment environment;
 
 	@Primary
 	@Bean
-	@ConfigurationProperties("spring.datasource")
-	public DataSource mainDataSource() {
-		return DataSourceBuilder.create().build();
+	@ConfigurationProperties("spring.datasource.app")
+	public DataSource appDataSource() {
+		return DataSourceBuilder.create()
+			.url(environment.getProperty("spring.datasource.jdbc-url"))
+			.build();
 	}
 
 	@Primary
 	@Bean
-	public LocalContainerEntityManagerFactoryBean mainEntityManager() {
-		LocalContainerEntityManagerFactoryBean em =
+	public LocalContainerEntityManagerFactoryBean appEntityManager() {
+		LocalContainerEntityManagerFactoryBean em=
 			new LocalContainerEntityManagerFactoryBean();
-		em.setDataSource(mainDataSource());
-		em.setPackagesToScan("brave.btc.domain.persistence");
+		em.setDataSource(appDataSource());
+		em.setPackagesToScan("brave.btc.domain.app");
 		em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 
 		return em;
@@ -52,9 +53,9 @@ public class MainConfig {
 
 	@Primary
 	@Bean
-	public PlatformTransactionManager mainTransactionManager() {
+	public PlatformTransactionManager appTransactionManager() {
 		JpaTransactionManager transactionManager = new JpaTransactionManager();
-		transactionManager.setEntityManagerFactory(mainEntityManager().getObject());
+		transactionManager.setEntityManagerFactory(appEntityManager().getObject());
 		return transactionManager;
 	}
 }

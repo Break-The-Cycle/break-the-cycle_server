@@ -1,8 +1,8 @@
-package brave.btc.repository.persistence.record;
+package brave.btc.repository.app.record;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import brave.btc.domain.persistence.record.Record;
+import brave.btc.domain.app.record.Record;
 
 public interface RecordRepository extends JpaRepository<Record, Integer> {
 }

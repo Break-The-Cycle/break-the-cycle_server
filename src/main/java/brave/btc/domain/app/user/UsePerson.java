@@ -1,4 +1,4 @@
-package brave.btc.domain.persistence.user;
+package brave.btc.domain.app.user;
 
 import java.time.Period;
 

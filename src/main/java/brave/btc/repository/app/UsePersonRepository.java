@@ -1,11 +1,11 @@
-package brave.btc.repository.persistence;
+package brave.btc.repository.app;
 
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import brave.btc.domain.persistence.user.UsePerson;
+import brave.btc.domain.app.user.UsePerson;
 
 public interface UsePersonRepository extends JpaRepository<UsePerson, Integer> {
 

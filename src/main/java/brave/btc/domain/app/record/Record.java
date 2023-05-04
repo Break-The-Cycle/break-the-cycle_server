@@ -1,10 +1,10 @@
-package brave.btc.domain.persistence.record;
+package brave.btc.domain.app.record;
 
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.Comment;
 
-import brave.btc.domain.persistence.user.UsePerson;
+import brave.btc.domain.app.user.UsePerson;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.DiscriminatorType;

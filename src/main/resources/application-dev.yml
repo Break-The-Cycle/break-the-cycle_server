@@ -1,10 +1,15 @@
 
 spring:
   datasource:
-#    url: ${ secrets.MYSQL_URL }
-    username: ${ secrets.MYSQL_USERNAME }
-    password: ${ secrets.MYSQL_PASSWORD }
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    app:
+      username: ${ secrets.APP_MYSQL_USERNAME }
+      password: ${ secrets.APP_MYSQL_PASSWORD }
+      driver-class-name: com.mysql.cj.jdbc.Driver
+    bo:
+      username: ${ secrets.BO_MYSQL_USERNAME }
+      password: ${ secrets.BO_MYSQL_PASSWORD }
+      driver-class-name: com.mysql.cj.jdbc.Driver
+
 
   jpa:
     hibernate:

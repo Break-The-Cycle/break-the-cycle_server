@@ -1,4 +1,4 @@
-package brave.btc.domain.persistence.address;
+package brave.btc.domain.app.address;
 
 import org.hibernate.annotations.Comment;
 
@@ -20,8 +20,8 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "ADDRESS")
-public class Address {
+@Table(name = "ADDRESS_NAME")
+public class AddressName {
 
 
 	@Comment("지역 ID")
@@ -30,6 +30,6 @@ public class Address {
 	private Integer id;
 
 	@Comment("지역 구분")
-	@Column(name = "ADDRESS_DVSN", columnDefinition = "VARCHAR(3) NOT NULL")
-	private String division;
+	@Column(name = "ADDRESS_NAME", columnDefinition = "VARCHAR(100) NOT NULL")
+	private String name;
 }
