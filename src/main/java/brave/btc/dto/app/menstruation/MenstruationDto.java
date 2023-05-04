@@ -18,6 +18,24 @@ import lombok.NoArgsConstructor;
 @Schema(name = "생리 기록", description = "사용자의 생리 기록에 대한 정보")
 public class MenstruationDto {
 
+
+	@Data
+	@Builder
+	@AllArgsConstructor
+	@NoArgsConstructor
+	@Schema(name = "생리 기록 응답 dto",description = "Menstruation response dto")
+	public static class Response {
+
+		@Schema(description = "pk")
+		private Integer id;
+
+		@Schema(description = "생리를 시작한 날짜")
+		private LocalDate startDate;
+
+		@Schema(description = "생리가 끝난 날짜")
+		private LocalDate endDate;
+	}
+
 	@Data
 	@Builder
 	@AllArgsConstructor

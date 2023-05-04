@@ -40,18 +40,18 @@ public class Record {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "USE_PERSON_RECORD_ID", columnDefinition = "INT NOT NULL")
-	private Integer id;
+	protected Integer id;
 
 	@Comment("기록 구분")
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="USE_PERSON_ID", columnDefinition = "INT NOT NULL", nullable = false)
 	@ToString.Exclude
-	private UsePerson usePerson;
+	protected UsePerson usePerson;
 
 	@Builder.Default
 	@Comment("기록일시")
 	@Column(name = "REPORT_DATETIME", columnDefinition = "TIMESTAMP NOT NULL", nullable = false)
-	private LocalDateTime datetime =LocalDateTime.now();
+	protected LocalDateTime datetime =LocalDateTime.now();
 
 	// @Comment("기록구분")
 	// @Convert(converter = RecordDivisionToCodeConverter.class)
