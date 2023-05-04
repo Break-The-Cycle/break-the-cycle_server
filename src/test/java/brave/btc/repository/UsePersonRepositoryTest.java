@@ -11,8 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import brave.btc.domain.persistence.user.UsePerson;
-import brave.btc.repository.persistence.UsePersonRepository;
+import brave.btc.domain.app.user.UsePerson;
+import brave.btc.repository.app.UsePersonRepository;
 
 @SpringBootTest
 @ActiveProfiles("local")

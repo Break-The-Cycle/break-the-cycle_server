@@ -1,8 +1,8 @@
-package brave.btc.domain.persistence.record;
+package brave.btc.domain.app.record;
 
 import org.hibernate.annotations.Comment;
 
-import brave.btc.constant.enums.RecordDivision;
+import brave.btc.config.enums.RecordDivision;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;

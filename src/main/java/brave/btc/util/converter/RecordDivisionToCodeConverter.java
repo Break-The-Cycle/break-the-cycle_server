@@ -1,6 +1,6 @@
 package brave.btc.util.converter;
 
-import brave.btc.constant.enums.RecordDivision;
+import brave.btc.config.enums.RecordDivision;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 
