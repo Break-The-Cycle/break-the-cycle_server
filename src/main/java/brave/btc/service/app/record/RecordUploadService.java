@@ -1,8 +1,8 @@
-package brave.btc.service.record;
+package brave.btc.service.app.record;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import brave.btc.dto.record.DiaryDto;
+import brave.btc.dto.app.record.DiaryDto;
 
 public interface RecordUploadService {
 

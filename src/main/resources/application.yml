@@ -21,4 +21,7 @@ spring:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 
-
+springdoc:
+  swagger-ui:
+    operations-sorter: method
+    tags-sorter: alpha

@@ -19,6 +19,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -47,9 +48,10 @@ public class Record {
 	@ToString.Exclude
 	private UsePerson usePerson;
 
+	@Builder.Default
 	@Comment("기록일시")
 	@Column(name = "REPORT_DATETIME", columnDefinition = "TIMESTAMP NOT NULL", nullable = false)
-	private LocalDateTime date;
+	private LocalDateTime datetime =LocalDateTime.now();
 
 	// @Comment("기록구분")
 	// @Convert(converter = RecordDivisionToCodeConverter.class)
