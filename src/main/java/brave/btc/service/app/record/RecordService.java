@@ -1,7 +1,7 @@
-package brave.btc.service.record;
+package brave.btc.service.app.record;
 
 import brave.btc.dto.CommonResponseDto;
-import brave.btc.dto.record.RecordRequestDto;
+import brave.btc.dto.app.record.RecordRequestDto;
 
 public interface RecordService {
 

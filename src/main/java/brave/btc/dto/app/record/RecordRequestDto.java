@@ -1,6 +1,5 @@
-package brave.btc.dto.record;
+package brave.btc.dto.app.record;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -23,9 +22,6 @@ public class RecordRequestDto {
 
 	@Schema(title = "내용", example = "내용을 입력해주세요.")
 	private String contents;
-
-	@Schema(title = "등록 시간")
-	private LocalDateTime date;
 
 	@Schema(title = "사용자 로그인 id", example = "login123")
 	private String loginId;

@@ -1,4 +1,4 @@
-package brave.btc.service.record;
+package brave.btc.service.app.record;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -14,8 +14,8 @@ import brave.btc.domain.app.record.Picture;
 import brave.btc.domain.app.record.Record;
 import brave.btc.domain.app.user.UsePerson;
 import brave.btc.dto.CommonResponseDto;
-import brave.btc.dto.record.DiaryDto;
-import brave.btc.dto.record.RecordRequestDto;
+import brave.btc.dto.app.record.DiaryDto;
+import brave.btc.dto.app.record.RecordRequestDto;
 import brave.btc.repository.app.record.RecordRepository;
 import brave.btc.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -56,7 +56,6 @@ public class RecordServiceImpl implements RecordService {
 		String diaryS3Url = recordUploadService.uploadDiary(diaryDto, objectPath, password);
 		Record newDiary = Diary.builder()
 			.usePerson(usePerson)
-			.date(requestDto.getDate())
 			.content(diaryS3Url).build();
 		newRecordList.add(newDiary);
 	}
@@ -69,7 +68,6 @@ public class RecordServiceImpl implements RecordService {
 					return recordUploadService.uploadPicture(multipartFile, objectPath, password);})
 			.map(pictureS3Url -> (Record) Picture.builder()
 					.usePerson(usePerson)
-					.date(requestDto.getDate())
 					.content(pictureS3Url)
 					.build())
 			.forEach(newRecordList::add);

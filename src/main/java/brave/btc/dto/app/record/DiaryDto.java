@@ -1,4 +1,4 @@
-package brave.btc.dto.record;
+package brave.btc.dto.app.record;
 
 import java.io.Serializable;
 

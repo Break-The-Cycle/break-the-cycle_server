@@ -1,4 +1,4 @@
-package brave.btc.service.record;
+package brave.btc.service.app.record;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.SerializationUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import brave.btc.dto.record.DiaryDto;
+import brave.btc.dto.app.record.DiaryDto;
 import io.awspring.cloud.s3.S3Exception;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

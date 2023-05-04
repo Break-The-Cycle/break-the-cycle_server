@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import brave.btc.dto.CommonResponseDto;
-import brave.btc.dto.auth.login.LoginRequestDto;
-import brave.btc.dto.auth.register.RegisterRequestDto;
-import brave.btc.dto.auth.register.SmsCertificationDto;
+import brave.btc.dto.app.auth.login.LoginRequestDto;
+import brave.btc.dto.app.auth.register.RegisterRequestDto;
+import brave.btc.dto.app.auth.register.SmsCertificationDto;
 import brave.btc.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
