@@ -5,5 +5,7 @@ import brave.btc.dto.app.menstruation.MenstruationDto;
 
 public interface UsePersonAndMenstruationService {
 
-	CommonResponseDto<?> createMenstruationInfo(int usePersonId, MenstruationDto.Create mensttCreateDto);
+	CommonResponseDto<?> createMenstruationInfo(int usePersonId, MenstruationDto.Create mnsttCreateDto);
+
+	CommonResponseDto<?> modifyUsePersonMenstruationPeriod(int usePersonId, int mnsttPeriod);
 }

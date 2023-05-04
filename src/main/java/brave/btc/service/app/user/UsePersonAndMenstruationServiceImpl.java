@@ -45,4 +45,15 @@ public class UsePersonAndMenstruationServiceImpl implements UsePersonAndMenstrua
 			.message("생리 기록이 정상적으로 등록되었습니다.")
 			.build();
 	}
+
+	@Override
+	public CommonResponseDto<?> modifyUsePersonMenstruationPeriod(int usePersonId, int mnsttPeriod) {
+
+		UsePerson usePerson = usePersonRepository.findById(usePersonId)
+			.orElseThrow(()->new UserPrincipalNotFoundException("해당하는 유저가 존재하지 않습니다."));
+		usePerson.changeMenstruationPeriod(mnsttPeriod);
+		return CommonResponseDto.builder()
+			.message("유저의 생리 주기가 정상적으로 변경되었습니다.")
+			.build();
+	}
 }
