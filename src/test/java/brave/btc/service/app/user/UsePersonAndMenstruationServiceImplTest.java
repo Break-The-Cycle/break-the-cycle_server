@@ -35,6 +35,7 @@ class UsePersonAndMenstruationServiceImplTest {
 	@Mock
 	private RecordRepository recordRepository;
 
+
 	@InjectMocks
 	private UsePersonAndMenstruationServiceImpl menstruationService;
 

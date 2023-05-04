@@ -1,6 +1,8 @@
 package brave.btc.service.app.user;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +14,7 @@ import brave.btc.dto.app.menstruation.MenstruationDto;
 import brave.btc.exception.auth.UserPrincipalNotFoundException;
 import brave.btc.exception.menstruation.InvalidMenstruationInfoException;
 import brave.btc.repository.app.UsePersonRepository;
+import brave.btc.repository.app.record.MenstruationRepository;
 import brave.btc.repository.app.record.RecordRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,8 +26,21 @@ import lombok.extern.slf4j.Slf4j;
 public class UsePersonAndMenstruationServiceImpl implements UsePersonAndMenstruationService{
 
 	private final UsePersonRepository usePersonRepository;
+	private final MenstruationRepository menstruationRepository;
 	private final RecordRepository recordRepository;
 
+
+	@Override
+	public List<MenstruationDto.Response> findMenstruationList(int usePersonId, LocalDate fromDate, LocalDate toDate) {
+
+		//TODO : QueryDSL 로 마이그레이션
+		List<Menstruation> menstruationList =
+			menstruationRepository.findAllByUsePersonIdAndStartDateBetweenOrEndDateBetweenOrderByStartDateDesc(
+				usePersonId, fromDate, toDate, fromDate, toDate);
+		return menstruationList.stream()
+			.map(Menstruation::toDto)
+			.collect(Collectors.toList());
+	}
 
 	@Override
 	public CommonResponseDto<?> createMenstruationInfo(int usePersonId, MenstruationDto.Create mensttCreateDto) {

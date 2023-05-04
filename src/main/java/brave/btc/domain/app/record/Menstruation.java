@@ -6,6 +6,7 @@ import java.time.Period;
 import org.hibernate.annotations.Comment;
 
 import brave.btc.config.enums.RecordDivision;
+import brave.btc.dto.app.menstruation.MenstruationDto;
 import brave.btc.util.converter.PeriodToIntegerConverter;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
@@ -40,4 +41,12 @@ public class Menstruation extends Record{
 	@Comment("생리기간")
 	@Column(name = "MNSTT_PERIOD", columnDefinition = "INT NULL")
 	private Period period;
+
+	public MenstruationDto.Response toDto() {
+		return MenstruationDto.Response.builder()
+			.id(id)
+			.startDate(startDate)
+			.endDate(endDate)
+			.build();
+	}
 }

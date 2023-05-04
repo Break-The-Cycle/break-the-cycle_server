@@ -48,7 +48,6 @@ public class UsePerson extends User{
 	@Column(name = "USE_PERSON_PNBR", columnDefinition = "VARCHAR(18) NOT NULL" , nullable = false)
 	private String phoneNumber;
 
-
 	@Builder.Default
 	@Convert(converter= PeriodToIntegerConverter.class)
 	@Comment("사용개인생리주기")
