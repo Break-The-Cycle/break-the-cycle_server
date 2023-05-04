@@ -18,6 +18,7 @@ import brave.btc.domain.app.record.Menstruation;
 import brave.btc.domain.app.user.UsePerson;
 import brave.btc.dto.CommonResponseDto;
 import brave.btc.dto.app.menstruation.MenstruationDto;
+import brave.btc.exception.auth.UserPrincipalNotFoundException;
 import brave.btc.exception.menstruation.InvalidMenstruationInfoException;
 import brave.btc.repository.app.UsePersonRepository;
 import brave.btc.repository.app.record.RecordRepository;
@@ -27,6 +28,9 @@ class UsePersonAndMenstruationServiceImplTest {
 
 	@Mock
 	private UsePersonRepository usePersonRepository;
+
+	@Mock
+	private UsePerson usePerson;
 
 	@Mock
 	private RecordRepository recordRepository;
@@ -43,11 +47,7 @@ class UsePersonAndMenstruationServiceImplTest {
 		MenstruationDto.Create createDto = new MenstruationDto.Create(startDate, endDate);
 
 		int usePersonId = 1;
-		UsePerson usePerson = UsePerson.builder()
-			.id(usePersonId).build();
-
-		when(usePersonRepository.findById(eq(usePersonId)))
-			.thenReturn(Optional.of(usePerson));
+		when(usePersonRepository.findById(eq(usePersonId))).thenReturn(Optional.of(usePerson));
 
 		// when
 		CommonResponseDto<?> result = menstruationService.createMenstruationInfo(usePersonId, createDto);
@@ -76,4 +76,39 @@ class UsePersonAndMenstruationServiceImplTest {
 		verifyNoMoreInteractions(recordRepository);
 	}
 
+	@Test
+	@DisplayName("사용자 생리 주기 수정")
+	public void testModifyUsePersonMenstruationPeriod() {
+		// given
+		int usePersonId = 1;
+		int menstruationPeriod = 30;
+		when(usePersonRepository.findById(eq(usePersonId))).thenReturn(Optional.of(usePerson));
+
+		// when
+		CommonResponseDto<?> result = menstruationService.modifyUsePersonMenstruationPeriod(usePersonId, menstruationPeriod);
+
+		// then
+		verify(usePersonRepository, times(1)).findById(eq(usePersonId));
+		verify(usePerson, times(1)).changeMenstruationPeriod(eq(menstruationPeriod));
+		verify(usePersonRepository, times(0)).save(eq(usePerson));
+		verifyNoMoreInteractions(usePersonRepository, usePerson);
+		// check result
+		assertThat(result.getMessage()).isEqualTo("유저의 생리 주기가 정상적으로 변경되었습니다.");
+	}
+
+	@Test
+	@DisplayName("사용자 생리 주기 수정 - 유저 찾을 수 없음")
+	public void testModifyUsePersonMenstruationPeriod_UserNotFound() {
+		// given
+		int usePersonId = 1;
+		int menstruationPeriod = 30;
+		when(usePersonRepository.findById(eq(usePersonId))).thenReturn(Optional.empty());
+
+		// when, then
+		assertThrows(UserPrincipalNotFoundException.class, () -> {
+			menstruationService.modifyUsePersonMenstruationPeriod(usePersonId, menstruationPeriod);
+		});
+		verify(usePersonRepository, times(1)).findById(eq(usePersonId));
+		verifyNoMoreInteractions(usePersonRepository);
+	}
 }

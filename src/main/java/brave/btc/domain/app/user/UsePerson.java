@@ -59,5 +59,12 @@ public class UsePerson extends User{
 	@Column(name = "EMRGN_REPORT_CONTENT", columnDefinition = "VARCHAR(200)")
 	private String emergencyReportContent;
 
+	public void changeMenstruationPeriod(int newPeriod) {
+		this.menstruationPeriod = Period.ofDays(newPeriod);
+	}
+	public void changeMenstruationPeriod(Period newPeriod) {
+		this.menstruationPeriod = newPeriod;
+	}
+
 
 }
