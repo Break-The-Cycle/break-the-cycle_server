@@ -9,8 +9,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import brave.btc.dto.CommonResponseDto;
 import brave.btc.dto.app.record.RecordRequestDto;
+import brave.btc.exception.ErrorResponseDto;
 import brave.btc.service.app.record.RecordService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -30,8 +33,15 @@ public class RecordController {
 
 	@Operation(summary = "기록/일기 업로드", description = "가정 폭력 사실에 대한 기록을 업로드한다.",
 		responses = {
-			@ApiResponse(responseCode = "200", description = "업로드 성공"),
-			@ApiResponse(responseCode = "400", description = "회원 정보 불일치")
+			@ApiResponse(responseCode = "200", description = "업로드 성공",
+				content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+					schema = @Schema(implementation = CommonResponseDto.class))),
+			@ApiResponse(responseCode = "400", description = "회원 정보 불일치",
+				content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+					schema = @Schema(implementation = ErrorResponseDto.class))),
+			@ApiResponse(responseCode = "500", description = "aws 업로드 실패",
+				content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+					schema = @Schema(implementation = ErrorResponseDto.class)))
 		})
 	@PostMapping(consumes = {
 		MediaType.MULTIPART_FORM_DATA_VALUE

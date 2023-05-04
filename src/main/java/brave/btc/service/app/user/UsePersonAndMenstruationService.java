@@ -10,6 +10,8 @@ public interface UsePersonAndMenstruationService {
 
 	List<MenstruationDto.Response> findMenstruationList(int usePersonId, LocalDate fromDate, LocalDate toDate);
 
+	CommonResponseDto<?> createOnBoardMenstruationInfo(int usePersonId, MenstruationDto.OnBoardCreate mnsttOnBoardCreateDto);
+
 	CommonResponseDto<?> createMenstruationInfo(int usePersonId, MenstruationDto.Create mnsttCreateDto);
 
 	CommonResponseDto<?> modifyUsePersonMenstruationPeriod(int usePersonId, int mnsttPeriod);

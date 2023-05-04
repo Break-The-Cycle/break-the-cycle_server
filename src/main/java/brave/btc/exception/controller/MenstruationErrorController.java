@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import brave.btc.exception.ErrorResponseDto;
-import brave.btc.exception.menstruation.InvalidMenstruationInfoException;
+import brave.btc.exception.menstruation.InvalidMenstruationException;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -13,8 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 public class MenstruationErrorController {
 
 
-	@ExceptionHandler(InvalidMenstruationInfoException.class)
-	public ResponseEntity<ErrorResponseDto<?>> handleInvalidMenstruationDateException(InvalidMenstruationInfoException e) {
+	@ExceptionHandler(InvalidMenstruationException.class)
+	public ResponseEntity<ErrorResponseDto<?>> handleInvalidMenstruationDateException(InvalidMenstruationException e) {
 
 		log.error("[handleInvalidMenstruationDateException] 생리 정보 이상");
 		ErrorResponseDto<Object> errorResponseDto = ErrorResponseDto.builder()

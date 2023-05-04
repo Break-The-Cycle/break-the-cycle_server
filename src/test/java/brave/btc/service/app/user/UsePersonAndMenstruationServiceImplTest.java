@@ -19,7 +19,7 @@ import brave.btc.domain.app.user.UsePerson;
 import brave.btc.dto.CommonResponseDto;
 import brave.btc.dto.app.menstruation.MenstruationDto;
 import brave.btc.exception.auth.UserPrincipalNotFoundException;
-import brave.btc.exception.menstruation.InvalidMenstruationInfoException;
+import brave.btc.exception.menstruation.InvalidMenstruationException;
 import brave.btc.repository.app.UsePersonRepository;
 import brave.btc.repository.app.record.RecordRepository;
 
@@ -71,7 +71,7 @@ class UsePersonAndMenstruationServiceImplTest {
 		int usePersonId = 1;
 
 		// when, then
-		assertThrows(InvalidMenstruationInfoException.class, () -> {
+		assertThrows(InvalidMenstruationException.class, () -> {
 			menstruationService.createMenstruationInfo(usePersonId, createDto);
 		});
 		verifyNoMoreInteractions(recordRepository);

@@ -8,7 +8,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import brave.btc.config.enums.RecordDivision;
+import brave.btc.constant.enums.RecordDivision;
 import brave.btc.domain.app.record.Diary;
 import brave.btc.domain.app.record.Picture;
 import brave.btc.domain.app.record.Record;
