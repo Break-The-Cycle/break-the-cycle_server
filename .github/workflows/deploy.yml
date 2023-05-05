@@ -9,20 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest #github action 스크립트가 작동될 os 환경
-    env:
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      CLOUD_AWS_CREDENTIALS_ACCESSKEY: ${{ secrets.CLOUD_AWS_CREDENTIALS_ACCESSKEY }}
-      CLOUD_AWS_CREDENTIALS_SECRETKEY: ${{ secrets.CLOUD_AWS_CREDENTIALS_SECRETKEY }}
-      SMS_DOMAIN: ${{ secrets.SMS_DOMAIN }}
-      SMS_PUBLIC_KEY: ${{ secrets.SMS_PUBLIC_KEY }}
-      SMS_SECRET_KEY: ${{ secrets.SMS_SECRET_KEY }}
-      SPRING_DATASOURCE_JDBC_URL: ${{ secrets.SPRING_DATASOURCE_JDBC_URL }}
-      SPRING_DATASOURCE_APP_USERNAME: ${{ secrets.SPRING_DATASOURCE_APP_USERNAME }}
-      SPRING_DATASOURCE_APP_PASSWORD: ${{ secrets.SPRING_DATASOURCE_APP_PASSWORD }}
-      SPRING_DATASOURCE_BO_USERNAME: ${{ secrets.SPRING_DATASOURCE_BO_USERNAME }}
-      SPRING_DATASOURCE_BO_PASSWORD: ${{ secrets.SPRING_DATASOURCE_BO_PASSWORD }}
-
 
     steps:
       - name: Checkout # 저장소 체크아웃
