@@ -86,6 +86,7 @@ tasks.named('test') {
     environment "SPRING_DATASOURCE_BO_PASSWORD",  System.getenv('SPRING_DATASOURCE_BO_PASSWORD')
     environment "AWS_ACCESS_KEY_ID",  System.getenv('AWS_ACCESS_KEY_ID')
     environment "AWS_SECRET_ACCESS_KEY",  System.getenv('AWS_SECRET_ACCESS_KEY')
+    environment "AWS_REGION",  System.getenv('AWS_REGION')
     environment "SMS_DOMAIN",  System.getenv('SMS_DOMAIN')
     environment "SMS_PUBLIC_KEY",  System.getenv('SMS_PUBLIC_KEY')
     environment "SMS_SECRET_KEY",  System.getenv('SMS_SECRET_KEY')
