@@ -10,6 +10,8 @@ jobs:
   build:
     runs-on: ubuntu-latest #github action 스크립트가 작동될 os 환경
     env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       SMS_DOMAIN: ${{ secrets.SMS_DOMAIN }}
       SMS_PUBLIC_KEY: ${{ secrets.SMS_PUBLIC_KEY }}
       SMS_SECRET_KEY: ${{ secrets.SMS_SECRET_KEY }}
@@ -35,7 +37,7 @@ jobs:
         shell: bash
 
       - name: Build with Gradle #빌드
-        run: ./gradlew clean build --info
+        run: ./gradlew clean build -PSMS_DOMAIN=$SMS_DOMAIN -PSMS_PUBLIC_KEY=$SMS_PUBLIC_KEY -PSMS_SECRET_KEY=$SMS_SECRET_KEY -PSPRING_DATASOURCE_JDBC_URL=$SPRING_DATASOURCE_JDBC_URL -PSPRING_DATASOURCE_APP_USERNAME=$SPRING_DATASOURCE_APP_USERNAME -PSPRING_DATASOURCE_APP_PASSWORD=$SPRING_DATASOURCE_APP_PASSWORD  -PSPRING_DATASOURCE_BO_USERNAME=$SPRING_DATASOURCE_BO_USERNAME -PSPRING_DATASOURCE_BO_PASSWORD=$SPRING_DATASOURCE_BO_PASSWORD -PAWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -PAWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY  --info
         shell: bash
 
       - name: Get current time #현재 시간 가져오기
