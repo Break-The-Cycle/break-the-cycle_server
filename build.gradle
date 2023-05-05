@@ -88,8 +88,8 @@ tasks.named('test') {
     environment "AWS_SECRET_ACCESS_KEY",  System.getenv('AWS_SECRET_ACCESS_KEY')
     environment "AWS_REGION",  System.getenv('AWS_REGION')
     environment "SMS_DOMAIN",  System.getenv('SMS_DOMAIN')
-    environment "SMS_PUBLIC_KEY",  System.getenv('SMS_PUBLIC_KEY')
-    environment "SMS_SECRET_KEY",  System.getenv('SMS_SECRET_KEY')
+    environment "SMS_PUBLICKEY",  System.getenv('SMS_PUBLIC_KEY')
+    environment "SMS_SECRETKEY",  System.getenv('SMS_SECRET_KEY')
 
     useJUnitPlatform()
 }
