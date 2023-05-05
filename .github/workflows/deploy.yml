@@ -21,7 +21,7 @@ jobs:
           java-version: 17
           distribution: adopt
 
-      - nane: Set up github action secrets as environment variables
+      - name: Set up github action secrets as environment variables
         uses: oNaiPs/secrets-to-env-action@v1
         with:
           secrets: ${{ toJSON(secrets) }}
