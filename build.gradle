@@ -15,16 +15,6 @@ plugins {
 group = 'brave'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
-def SPRING_DATASOURCE_JDBC_URL = System.getProperty('SPRING_DATASOURCE_JDBC_URL')
-def SPRING_DATASOURCE_APP_USERNAME = System.getProperty('SPRING_DATASOURCE_APP_USERNAME')
-def SPRING_DATASOURCE_APP_PASSWORD = System.getProperty('SPRING_DATASOURCE_APP_PASSWORD')
-def SPRING_DATASOURCE_BO_USERNAME = System.getProperty('SPRING_DATASOURCE_BO_USERNAME')
-def SPRING_DATASOURCE_BO_PASSWORD = System.getProperty('SPRING_DATASOURCE_BO_PASSWORD')
-def AWS_ACCESS_KEY_ID = System.getProperty('AWS_ACCESS_KEY_ID')
-def AWS_SECRET_ACCESS_KEY = System.getProperty('AWS_SECRET_ACCESS_KEY')
-def SMS_DOMAIN = System.getProperty('SMS_DOMAIN')
-def SMS_PUBLIC_KEY = System.getProperty('SMS_PUBLIC_KEY')
-def SMS_SECRET_KEY = System.getProperty('SMS_SECRET_KEY')
 
 configurations {
     compileOnly {
@@ -89,5 +79,16 @@ clean.doLast {
 }
 
 tasks.named('test') {
+    environment "SPRING_DATASOURCE_JDBC_URL",  System.getenv('SPRING_DATASOURCE_JDBC_URL')
+    environment "SPRING_DATASOURCE_APP_USERNAME",  System.getenv('SPRING_DATASOURCE_APP_USERNAME')
+    environment "SPRING_DATASOURCE_APP_PASSWORD",  System.getenv('SPRING_DATASOURCE_APP_PASSWORD')
+    environment "SPRING_DATASOURCE_BO_USERNAME",  System.getenv('SPRING_DATASOURCE_BO_USERNAME')
+    environment "SPRING_DATASOURCE_BO_PASSWORD",  System.getenv('SPRING_DATASOURCE_BO_PASSWORD')
+    environment "AWS_ACCESS_KEY_ID",  System.getenv('AWS_ACCESS_KEY_ID')
+    environment "AWS_SECRET_ACCESS_KEY",  System.getenv('AWS_SECRET_ACCESS_KEY')
+    environment "SMS_DOMAIN",  System.getenv('SMS_DOMAIN')
+    environment "SMS_PUBLIC_KEY",  System.getenv('SMS_PUBLIC_KEY')
+    environment "SMS_SECRET_KEY",  System.getenv('SMS_SECRET_KEY')
+
     useJUnitPlatform()
 }
