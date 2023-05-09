@@ -5,6 +5,7 @@ import brave.btc.exception.auth.AuthenticationInvalidException;
 import brave.btc.exception.auth.SmsCertificationNumberExpiredException;
 import brave.btc.exception.auth.SmsCertificationNumberNotSameException;
 import brave.btc.exception.auth.UserPrincipalNotFoundException;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import lombok.extern.slf4j.Slf4j;
 
 import net.nurigo.sdk.message.exception.NurigoMessageNotReceivedException;
@@ -20,7 +21,8 @@ public class ErrorController {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponseDto<?>> handleException(Exception e) {
 
-        log.error("[handleException] 특정 되지 않은 예외");
+        log.error("[handleException] 특정 되지 않은 예외={}", e.getClass());
+
         ErrorResponseDto<Object> errorResponseDto = ErrorResponseDto.builder()
             .message(e.getMessage())
             .build();
@@ -35,9 +37,10 @@ public class ErrorController {
         ErrorResponseDto<Object> errorResponseDto = ErrorResponseDto.builder()
             .message(e.getMessage())
             .build();
-        return ResponseEntity.badRequest()
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
             .body(errorResponseDto);
     }
+
     @ExceptionHandler(UserPrincipalNotFoundException.class)
     public ResponseEntity<ErrorResponseDto<?>> handleUserPrincipalNotFoundException(UserPrincipalNotFoundException e) {
 
@@ -45,8 +48,19 @@ public class ErrorController {
         ErrorResponseDto<Object> errorResponseDto = ErrorResponseDto.builder()
             .message(e.getMessage())
             .build();
-        return ResponseEntity.badRequest()
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
             .body(errorResponseDto);
+    }
+
+    @ExceptionHandler(JWTVerificationException.class)
+    public ResponseEntity<ErrorResponseDto<?>> handleInvalidTokenException(JWTVerificationException e) {
+
+        log.error("[handleJWTVerificationException] 유효하지 않은 토큰입니다.");
+        ErrorResponseDto<Object> errorResponseDto = ErrorResponseDto.builder()
+                .message("유효하지 않은 토큰입니다.")
+                .build();
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(errorResponseDto);
     }
 
     @ExceptionHandler(NurigoMessageNotReceivedException.class)
@@ -81,5 +95,7 @@ public class ErrorController {
         return ResponseEntity.badRequest()
                 .body(errorResponseDto);
     }
+
+
 
 }
