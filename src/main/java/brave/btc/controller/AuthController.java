@@ -1,5 +1,10 @@
 package brave.btc.controller;
 
+import brave.btc.config.jwt.JwtProperties;
+import brave.btc.dto.app.auth.register.SmsRequestDto;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -23,6 +28,8 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.Map;
 
 @Tag(name = "01. Auth", description = "회원가입/로그인")
 @Slf4j
@@ -76,12 +83,14 @@ public class AuthController {
     @Operation(summary = "Login", description = "로그인 ID PW 확인",
             responses = {
                     @ApiResponse(responseCode = "200", description = "로그인 성공"),
-                    @ApiResponse(responseCode = "400", description = "로그인 실패")
+                    @ApiResponse(responseCode = "401", description = "로그인 실패")
             })
     @PostMapping ("/login")
     public ResponseEntity<?> loginV1(
         @RequestBody @Valid LoginRequestDto request) {
-        CommonResponseDto<Object> responseDto = authService.login(request);
+        CommonResponseDto<Object> responseDto = CommonResponseDto.builder()
+                .message("로그인에 성공하였습니다.")
+                .build();
         return ResponseEntity.ok()
             .body(responseDto);
     }
@@ -92,7 +101,7 @@ public class AuthController {
             @ApiResponse(responseCode = "400", description = "인증번호 요청 실패")
     })
     @PostMapping("/sms-certification/send")
-    public ResponseEntity<?> sendSms(@RequestBody SmsCertificationDto request){
+    public ResponseEntity<?> sendSms(@RequestBody SmsRequestDto request){
         CommonResponseDto<Object> responseDto = authService.sendAuthNumber(publicKey,secretKey,smsDomain,request.getPhoneNumber());
         return ResponseEntity.ok()
                 .body(responseDto);
@@ -109,6 +118,45 @@ public class AuthController {
         return ResponseEntity.ok()
                 .body(responseDto);
     }
+
+    @Operation(summary = "Access Token Validation", description = "Access Token 유효성 검사(30초)",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "유효성 통과"),
+                    @ApiResponse(responseCode = "401", description = "유효하지 않음")
+            })
+    @GetMapping("/user")
+    public ResponseEntity<?> user() {
+        CommonResponseDto<Object> responseDto = CommonResponseDto.builder()
+                .message("Access Token으로 진입 완료.")
+                .build();
+        return ResponseEntity.ok()
+                .body(responseDto);
+    }
+
+    @Operation(summary = "Refresh Token Validation", description = "Refresh Token 유효성 검사",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "유효성 통과"),
+                    @ApiResponse(responseCode = "401", description = "유효하지 않음")
+            })
+    @Parameter(name = "Refresh-Token",in = ParameterIn.HEADER)
+    @GetMapping("/refresh")
+    public ResponseEntity<?> refresh(HttpServletRequest request, HttpServletResponse response) {
+        String refreshToken = request.getHeader(JwtProperties.RT_HEADER);
+        Map<String, String> tokens = authService.refresh(refreshToken);
+        String newAccessToken = tokens.get("accessToken");
+        String newRefreshToken = tokens.get("refreshToken");
+        response.addHeader("Authorization", newAccessToken);
+        response.addHeader("Refresh-Token", newRefreshToken);
+        CommonResponseDto<Object> responseDto = CommonResponseDto.builder()
+                .message("Access Token, Refresh 토큰이 갱신되었습니다.")
+                .build();
+        return ResponseEntity.ok()
+                .body(responseDto);
+    }
+
+
+
+
 
 
 }
