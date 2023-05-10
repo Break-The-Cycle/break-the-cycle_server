@@ -23,7 +23,7 @@ import brave.btc.exception.auth.SmsCertificationNumberNotSameException;
 import brave.btc.exception.auth.UserPrincipalNotFoundException;
 import brave.btc.repository.app.UsePersonRepository;
 import brave.btc.repository.temporary.SmsCertificationRepository;
-import brave.btc.repository.RefreshTokenRepository;
+import brave.btc.repository.temporary.RefreshTokenRepository;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
