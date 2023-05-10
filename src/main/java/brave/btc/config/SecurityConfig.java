@@ -1,11 +1,5 @@
 package brave.btc.config;
 
-import brave.btc.config.jwt.JwtAuthenticationFilter;
-import brave.btc.config.jwt.JwtAuthorizationFilter;
-import brave.btc.config.jwt.JwtExceptionFilter;
-import brave.btc.repository.app.UsePersonRepository;
-import brave.btc.service.AuthService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,6 +10,13 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.expression.WebExpressionAuthorizationManager;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import brave.btc.config.jwt.JwtAuthenticationFilter;
+import brave.btc.config.jwt.JwtAuthorizationFilter;
+import brave.btc.config.jwt.JwtExceptionFilter;
+import brave.btc.repository.app.UsePersonRepository;
+import brave.btc.service.AuthService;
+import lombok.RequiredArgsConstructor;
 
 
 @Configuration
@@ -38,12 +39,15 @@ public class SecurityConfig {
                 .httpBasic().disable()
                 .apply(new MyCustomDsl())  //@CrossOrigin(인증X) 인증이 필요한 것에는 필터 추가
                 .and()
+                .headers()
+                .frameOptions().disable()
+                .and()
                 .authorizeHttpRequests()
-                .requestMatchers("/v1/auth/user/**")
+                .requestMatchers("/api/v1/auth/user/**")
                 .access(new WebExpressionAuthorizationManager("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER')"))
-                .requestMatchers("/v1/manager/**")
+                .requestMatchers("/api/v1/manager/**")
                 .access(new WebExpressionAuthorizationManager("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER')"))
-                .requestMatchers("/v1/admin/**")
+                .requestMatchers("/api/v1/admin/**")
                 .access(new WebExpressionAuthorizationManager("hasRole('ROLE_ADMIN')"))
                 .anyRequest().permitAll();
 

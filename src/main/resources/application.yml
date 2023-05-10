@@ -14,6 +14,9 @@ server:
 spring:
   profiles:
     active: dev
+  h2:
+    console:
+        enabled: true
 
   jpa:
     open-in-view: true

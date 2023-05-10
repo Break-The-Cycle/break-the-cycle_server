@@ -13,7 +13,7 @@ import brave.btc.domain.temporary.SmsCertification;
 
 public interface SmsCertificationRepository extends JpaRepository<SmsCertification, Long> {
 
-    Optional<SmsCertification> findByPhoneNumber(String phoneNum);
+    Optional<SmsCertification> findByPhoneNumber(String phoneNumber);
 
     @Modifying
     @Transactional
