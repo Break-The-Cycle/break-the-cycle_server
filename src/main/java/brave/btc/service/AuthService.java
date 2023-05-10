@@ -1,11 +1,13 @@
 package brave.btc.service;
 
-import brave.btc.config.jwt.JwtProperties;
-import brave.btc.domain.temporary.jwt.RefreshToken;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,8 +15,15 @@ import net.nurigo.sdk.NurigoApp;
 import net.nurigo.sdk.message.model.Message;
 import net.nurigo.sdk.message.service.DefaultMessageService;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
+
+import brave.btc.config.jwt.JwtProperties;
 import brave.btc.domain.app.user.UsePerson;
 import brave.btc.domain.temporary.SmsCertification;
+import brave.btc.domain.temporary.jwt.RefreshToken;
 import brave.btc.dto.CommonResponseDto;
 import brave.btc.dto.app.auth.register.RegisterRequestDto;
 import brave.btc.exception.auth.AuthenticationInvalidException;
@@ -24,18 +33,8 @@ import brave.btc.exception.auth.UserPrincipalNotFoundException;
 import brave.btc.repository.app.UsePersonRepository;
 import brave.btc.repository.temporary.SmsCertificationRepository;
 import brave.btc.repository.temporary.jwt.RefreshTokenRepository;
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 @Transactional
@@ -129,6 +128,7 @@ public class AuthService {
             saveCertificationNumber(phoneNumber, authNumber);
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            saveCertificationNumber(phoneNumber, "1234"); //일단 돈이 없어서 이렇게 만듭니다.
         }
 
         return CommonResponseDto.builder()
