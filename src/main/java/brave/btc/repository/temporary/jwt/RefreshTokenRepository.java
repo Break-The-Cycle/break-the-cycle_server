@@ -1,6 +1,6 @@
-package brave.btc.repository.app.jwt;
+package brave.btc.repository.temporary.jwt;
 
-import brave.btc.domain.app.jwt.RefreshToken;
+import brave.btc.domain.temporary.jwt.RefreshToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

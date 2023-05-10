@@ -1,4 +1,4 @@
-package brave.btc.domain.app.jwt;
+package brave.btc.domain.temporary.jwt;
 
 import jakarta.persistence.*;
 import lombok.*;
