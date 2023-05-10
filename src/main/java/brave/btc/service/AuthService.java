@@ -1,7 +1,7 @@
 package brave.btc.service;
 
 import brave.btc.config.jwt.JwtProperties;
-import brave.btc.domain.app.jwt.RefreshToken;
+import brave.btc.domain.temporary.jwt.RefreshToken;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
@@ -23,7 +23,7 @@ import brave.btc.exception.auth.SmsCertificationNumberNotSameException;
 import brave.btc.exception.auth.UserPrincipalNotFoundException;
 import brave.btc.repository.app.UsePersonRepository;
 import brave.btc.repository.temporary.SmsCertificationRepository;
-import brave.btc.repository.app.jwt.RefreshTokenRepository;
+import brave.btc.repository.temporary.jwt.RefreshTokenRepository;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
