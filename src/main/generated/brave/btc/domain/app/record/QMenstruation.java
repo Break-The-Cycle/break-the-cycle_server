@@ -34,6 +34,9 @@ public class QMenstruation extends EntityPathBase<Menstruation> {
 
     public final SimplePath<java.time.Period> period = createSimple("period", java.time.Period.class);
 
+    //inherited
+    public final EnumPath<brave.btc.constant.enums.RecordDivision> recordDivision;
+
     public final DatePath<java.time.LocalDate> startDate = createDate("startDate", java.time.LocalDate.class);
 
     // inherited
@@ -60,6 +63,7 @@ public class QMenstruation extends EntityPathBase<Menstruation> {
         this._super = new QRecord(type, metadata, inits);
         this.datetime = _super.datetime;
         this.id = _super.id;
+        this.recordDivision = _super.recordDivision;
         this.usePerson = _super.usePerson;
     }
 

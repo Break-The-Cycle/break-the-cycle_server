@@ -1,5 +1,7 @@
-
 spring:
+  config:
+    activate:
+      on-profile: dev
   datasource:
     app:
       username: ${ secrets.APP_MYSQL_USERNAME }

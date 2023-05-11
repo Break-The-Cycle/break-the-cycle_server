@@ -1,5 +1,7 @@
 package brave.btc.service.app.record;
 
+import java.io.ByteArrayInputStream;
+import java.io.ObjectInputStream;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -17,8 +19,11 @@ import brave.btc.dto.app.record.DiaryDto;
 import io.awspring.cloud.s3.S3Exception;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.GetObjectRequest;
+import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.utils.BinaryUtils;
 import software.amazon.awssdk.utils.Md5Utils;
@@ -30,7 +35,7 @@ import software.amazon.awssdk.utils.Md5Utils;
 public class AWSS3ServiceImpl implements AWSS3Service {
 
 	@Value("${cloud.aws.s3.bucket}")
-	private String bucketName;
+	private String BUCKET_NAME;
 
 	private final String S3_BUCKET_PREFIX_URL = "s3://break-the-cycle-use-person-record";
 	private final S3Client s3Client;
@@ -52,7 +57,7 @@ public class AWSS3ServiceImpl implements AWSS3Service {
 	}
 
 	@Override
-	public String uploadDiary(DiaryDto diaryDto, String objectPath, String encodePassword) {
+	public String uploadDiary(DiaryDto.Create diaryDto, String objectPath, String encodePassword) {
 
 		try {
 			s3Client.putObject(
@@ -66,12 +71,57 @@ public class AWSS3ServiceImpl implements AWSS3Service {
 		return S3_BUCKET_PREFIX_URL+objectPath;
 	}
 
+	@Override
+	public byte[] downloadPicture(String objectUrl, String encodePassword) {
+
+		try {
+			ResponseInputStream<GetObjectResponse> pictureObject = s3Client.getObject(
+				getGetObjectRequest(objectUrl, encodePassword)
+			);
+			return pictureObject.readAllBytes();
+		} catch (Exception e) {
+			throw new S3Exception("S3 다운로드 도중 에러 발생: "+e.getMessage(), e);
+		}
+	}
+
+	@Override
+	public DiaryDto.Response downloadDiary(String objectUrl, String encodePassword) {
+		try {
+			ResponseInputStream<GetObjectResponse> diaryObject = s3Client.getObject(
+				getGetObjectRequest(objectUrl, encodePassword)
+			);
+			byte[] bytes = diaryObject.readAllBytes();
+
+			ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
+			ObjectInputStream ois = new ObjectInputStream(bis);
+			DiaryDto.Create diary = (DiaryDto.Create) ois.readObject();
+			return diary.toDiaryResponseDto();
+
+		} catch (Exception e) {
+			throw new S3Exception("S3 다운로드 도중 에러 발생: "+e.getMessage(), e);
+		}
+	}
+
+	private GetObjectRequest getGetObjectRequest(String objectUrl, String encodePassword) throws NoSuchAlgorithmException {
+		String encodeAlgorithm = "AES256";
+		String objectKey = objectUrl.substring(5);
+
+		byte[] keyBytes = convertAES256ValidKey(encodePassword);
+		return GetObjectRequest.builder()
+			.bucket(BUCKET_NAME)
+			.key(objectKey)
+			.sseCustomerKey(BinaryUtils.toBase64(keyBytes))
+			.sseCustomerKeyMD5(Md5Utils.md5AsBase64(keyBytes))
+			.sseCustomerAlgorithm(encodeAlgorithm)
+			.build();
+	}
+
 	private PutObjectRequest getPutObjectRequest(String objectPath, String encodePassword) throws NoSuchAlgorithmException {
 		String encodeAlgorithm = "AES256";
-		String fullPath = bucketName + objectPath;
+		String fullPath = BUCKET_NAME + objectPath;
 		byte[] keyBytes = convertAES256ValidKey(encodePassword);
 		return PutObjectRequest.builder()
-			.bucket(bucketName)
+			.bucket(BUCKET_NAME)
 			.key(fullPath)
 			.sseCustomerKey(BinaryUtils.toBase64(keyBytes))
 			.sseCustomerKeyMD5(Md5Utils.md5AsBase64(keyBytes))

@@ -34,6 +34,9 @@ public class QRecording extends EntityPathBase<Recording> {
     //inherited
     public final NumberPath<Integer> id;
 
+    //inherited
+    public final EnumPath<brave.btc.constant.enums.RecordDivision> recordDivision;
+
     // inherited
     public final brave.btc.domain.app.user.QUsePerson usePerson;
 
@@ -58,6 +61,7 @@ public class QRecording extends EntityPathBase<Recording> {
         this._super = new QRecord(type, metadata, inits);
         this.datetime = _super.datetime;
         this.id = _super.id;
+        this.recordDivision = _super.recordDivision;
         this.usePerson = _super.usePerson;
     }
 

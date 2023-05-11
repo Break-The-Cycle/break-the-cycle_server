@@ -26,6 +26,8 @@ public class QRecord extends EntityPathBase<Record> {
 
     public final NumberPath<Integer> id = createNumber("id", Integer.class);
 
+    public final EnumPath<brave.btc.constant.enums.RecordDivision> recordDivision = createEnum("recordDivision", brave.btc.constant.enums.RecordDivision.class);
+
     public final brave.btc.domain.app.user.QUsePerson usePerson;
 
     public QRecord(String variable) {

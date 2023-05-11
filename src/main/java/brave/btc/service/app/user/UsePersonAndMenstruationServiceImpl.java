@@ -32,6 +32,7 @@ public class UsePersonAndMenstruationServiceImpl implements UsePersonAndMenstrua
 	private final RecordRepository recordRepository;
 
 
+
 	@Override
 	public List<MenstruationDto.Response> findMenstruationList(int usePersonId, LocalDate fromDate, LocalDate toDate) {
 
