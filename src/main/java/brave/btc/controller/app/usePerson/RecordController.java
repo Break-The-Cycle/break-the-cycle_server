@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import brave.btc.dto.CommonResponseDto;
-import brave.btc.dto.app.record.RecordRequestDto;
+import brave.btc.dto.app.record.ViolentRecordDto;
 import brave.btc.exception.ErrorResponseDto;
 import brave.btc.service.app.record.RecordService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -47,7 +47,7 @@ public class RecordController {
 		MediaType.MULTIPART_FORM_DATA_VALUE
 	})
 	public ResponseEntity<?> uploadRecord(
-		 @ModelAttribute  RecordRequestDto requestDto) {
+		 @ModelAttribute ViolentRecordDto.Create requestDto) {
 
 		log.info("[uploadRecord] requestDto: {}", requestDto);
 		CommonResponseDto<Object> responseDto = recordService.uploadRecord(requestDto);

@@ -1,7 +1,7 @@
 package brave.btc.service.app.record;
 
 import brave.btc.dto.CommonResponseDto;
-import brave.btc.dto.app.record.RecordRequestDto;
+import brave.btc.dto.app.record.ViolentRecordDto;
 
 public interface RecordService {
 
@@ -10,5 +10,5 @@ public interface RecordService {
 	 * @param requestDto 제목, 내용, 사진을 포함한 req dto
 	 * @return 응답 메세지
 	 */
-	CommonResponseDto<Object> uploadRecord(RecordRequestDto requestDto);
+	CommonResponseDto<Object> uploadRecord(ViolentRecordDto.Create requestDto);
 }

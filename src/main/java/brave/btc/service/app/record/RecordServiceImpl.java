@@ -15,7 +15,7 @@ import brave.btc.domain.app.record.Record;
 import brave.btc.domain.app.user.UsePerson;
 import brave.btc.dto.CommonResponseDto;
 import brave.btc.dto.app.record.DiaryDto;
-import brave.btc.dto.app.record.RecordRequestDto;
+import brave.btc.dto.app.record.ViolentRecordDto;
 import brave.btc.repository.app.record.RecordRepository;
 import brave.btc.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +32,7 @@ public class RecordServiceImpl implements RecordService {
 	private final RecordUploadService recordUploadService;
 
 	@Override
-	public CommonResponseDto<Object> uploadRecord(RecordRequestDto requestDto) {
+	public CommonResponseDto<Object> uploadRecord(ViolentRecordDto.Create requestDto) {
 
 		String loginId = requestDto.getLoginId();
 		String password = requestDto.getPassword();
@@ -50,7 +50,7 @@ public class RecordServiceImpl implements RecordService {
 			.build();
 	}
 
-	private void makeNewDiaryRecord(RecordRequestDto requestDto, String password, UsePerson usePerson, List<Record> newRecordList) {
+	private void makeNewDiaryRecord(ViolentRecordDto.Create requestDto, String password, UsePerson usePerson, List<Record> newRecordList) {
 		DiaryDto diaryDto = requestDto.toDiaryDto();
 		String objectPath = makeObjectPath(requestDto.getLoginId(), RecordDivision.DIARY);
 		String diaryS3Url = recordUploadService.uploadDiary(diaryDto, objectPath, password);
@@ -60,7 +60,7 @@ public class RecordServiceImpl implements RecordService {
 		newRecordList.add(newDiary);
 	}
 
-	private void makeNewPictureRecordList(RecordRequestDto requestDto, String password, UsePerson usePerson, List<Record> newRecordList) {
+	private void makeNewPictureRecordList(ViolentRecordDto.Create requestDto, String password, UsePerson usePerson, List<Record> newRecordList) {
 		requestDto.getPictureList()
 			.stream()
 			.map(multipartFile -> {

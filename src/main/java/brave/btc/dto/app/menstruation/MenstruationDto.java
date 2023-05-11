@@ -46,7 +46,7 @@ public class MenstruationDto {
 	@Builder
 	@AllArgsConstructor
 	@NoArgsConstructor
-	@Schema(name = "생리 기록 등록 dto",description = "Menstruation request dto")
+	@Schema(name = "생리 기록 등록 dto",description = "Menstruation create request dto")
 	public static class Create {
 		@Schema(description = "생리를 시작한 날짜")
 		@NotBlank(message = "생리 시작일은 필수 값입니다.")
