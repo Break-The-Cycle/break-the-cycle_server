@@ -60,8 +60,10 @@ public class ViolentRecordServiceImpl implements ViolentRecordService {
 						log.debug("[findViolentRecordList] pictureS3Url: {}", pictureS3Url);
 						byte[] imageByteArrayResponse = recordDownloadService.downloadPicture(pictureS3Url, password);
 						return ViolentRecordDto.Response.builder()
+							.id(record.getId())
 							.image(imageByteArrayResponse)
 							.division(RecordDivision.PICTURE)
+							.targetDateTime(record.getDatetime())
 							.build();
 
 					} else if (record.getRecordDivision() == RecordDivision.DIARY) {
@@ -70,8 +72,10 @@ public class ViolentRecordServiceImpl implements ViolentRecordService {
 						log.debug("[findViolentRecordList] diaryS3Url: {}", diaryS3Url);
 						DiaryDto.Response diaryResponse = recordDownloadService.downloadDiary(diaryS3Url, password);
 						return ViolentRecordDto.Response.builder()
+							.id(record.getId())
 							.diary(diaryResponse)
 							.division(RecordDivision.DIARY)
+							.targetDateTime(record.getDatetime())
 							.build();
 					}
 					throw new IllegalStateException("상태 이상 에러. 다른 종류가 들어올 수 없음");
