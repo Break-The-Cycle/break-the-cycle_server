@@ -5,6 +5,9 @@
   -->
   <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
 
+  <springProfile name="jms">
+    <property resource="application-jms.yml" />
+  </springProfile>
   <springProfile name="local">
     <property resource="application-local.yml" />
   </springProfile>
@@ -50,6 +53,13 @@
   </appender>
 
   <!-- spring profile별 로그 설정 -->
+  <springProfile name="jms">
+    <root level="debug">
+      <!--     참조할 appender - STDOUT -->
+      <appender-ref ref="STDOUT" />
+    </root>
+  </springProfile>
+
   <springProfile name="local">
     <root level="debug">
       <!--     참조할 appender - STDOUT -->

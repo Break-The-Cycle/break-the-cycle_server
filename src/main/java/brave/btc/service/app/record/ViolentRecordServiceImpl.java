@@ -1,6 +1,7 @@
 package brave.btc.service.app.record;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -25,23 +26,36 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 @RequiredArgsConstructor
 @Slf4j
-public class RecordServiceImpl implements RecordService {
+public class ViolentRecordServiceImpl implements ViolentRecordService {
 
 	private final RecordRepository recordRepository;
 	private final AuthService authService;
 	private final RecordUploadService recordUploadService;
 
+
 	@Override
-	public CommonResponseDto<Object> uploadRecord(ViolentRecordDto.Create requestDto) {
+	public List<LocalDate>
+	findSimpleViolentRecordList(int usePersonId, LocalDate fromDate, LocalDate toDate) {
+		List<String> dateStringList = recordRepository.searchSimpleViolentRecordList(usePersonId, fromDate, toDate);
+		List<LocalDate> dateList = new ArrayList<>();
+		for (String dateString : dateStringList) {
+			LocalDate localDate = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+			dateList.add(localDate);
+		}
+		return dateList;
+	}
+
+	@Override
+	public CommonResponseDto<Object> uploadViolentRecord(ViolentRecordDto.Create requestDto) {
 
 		String loginId = requestDto.getLoginId();
-		String password = requestDto.getPassword();
-		UsePerson usePerson = authService.checkIsPasswordEqual(loginId, password);
+		String rawPassword = requestDto.getPassword();
+		UsePerson usePerson = authService.checkIsPasswordEqual(loginId, rawPassword);
 		log.debug("[uploadRecord] usePerson: {}", usePerson);
 
 		List<Record> newRecordList = new ArrayList<>();
-		makeNewPictureRecordList(requestDto, password, usePerson, newRecordList);
-		makeNewDiaryRecord(requestDto, password, usePerson, newRecordList);
+		makeNewPictureRecordList(requestDto, rawPassword, usePerson, newRecordList);
+		makeNewDiaryRecord(requestDto, rawPassword, usePerson, newRecordList);
 		recordRepository.saveAll(newRecordList);
 
 		log.info("[uploadRecord] 업로드 완료");
@@ -56,7 +70,9 @@ public class RecordServiceImpl implements RecordService {
 		String diaryS3Url = recordUploadService.uploadDiary(diaryDto, objectPath, password);
 		Record newDiary = Diary.builder()
 			.usePerson(usePerson)
-			.content(diaryS3Url).build();
+			.content(diaryS3Url)
+			.datetime(requestDto.getTargetDateTime())
+			.build();
 		newRecordList.add(newDiary);
 	}
 
@@ -69,6 +85,7 @@ public class RecordServiceImpl implements RecordService {
 			.map(pictureS3Url -> (Record) Picture.builder()
 					.usePerson(usePerson)
 					.content(pictureS3Url)
+					.datetime(requestDto.getTargetDateTime())
 					.build())
 			.forEach(newRecordList::add);
 	}

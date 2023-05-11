@@ -9,16 +9,16 @@
 spring:
   config:
     activate:
-      on-profile: local
+      on-profile: jms
   datasource:
-    url: jdbc:h2:mem://localhost/~/btc;MODE=MySQL
+    url: jdbc:h2:tcp://localhost/~/test;MODE=MySQL
     username: sa
-    password: 1
+    password:
     driver-class-name: org.h2.Driver
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     properties:
       hibernate:
         show_sql: true

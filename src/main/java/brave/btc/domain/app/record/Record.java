@@ -4,8 +4,11 @@ import java.time.LocalDateTime;
 
 import org.hibernate.annotations.Comment;
 
+import brave.btc.constant.enums.RecordDivision;
 import brave.btc.domain.app.user.UsePerson;
+import brave.btc.util.converter.RecordDivisionToCodeConverter;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Entity;
@@ -52,6 +55,10 @@ public class Record {
 	@Comment("기록일시")
 	@Column(name = "REPORT_DATETIME", columnDefinition = "TIMESTAMP NOT NULL", nullable = false)
 	protected LocalDateTime datetime =LocalDateTime.now();
+
+	@Convert(converter = RecordDivisionToCodeConverter.class)
+	@Column(name = "REPORT_DVSN", insertable = false, updatable = false)
+	protected RecordDivision recordDivision;
 
 	// @Comment("기록구분")
 	// @Convert(converter = RecordDivisionToCodeConverter.class)
