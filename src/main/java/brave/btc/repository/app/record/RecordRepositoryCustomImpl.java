@@ -14,6 +14,7 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.StringTemplate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
+import brave.btc.domain.app.record.Record;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,7 +26,7 @@ public class RecordRepositoryCustomImpl implements RecordRepositoryCustom{
 	private final JPAQueryFactory queryFactory;
 	private final Environment environment;
 	@Override
-	public List<String> searchSimpleViolentRecordList(int usePersonId, LocalDate fromDate, LocalDate toDate) {
+	public List<String> searchViolentRecordDateList(int usePersonId, LocalDate fromDate, LocalDate toDate) {
 
 		String[] activeProfiles = environment.getActiveProfiles();
 		String activeProfile = activeProfiles[0];
@@ -50,6 +51,17 @@ public class RecordRepositoryCustomImpl implements RecordRepositoryCustom{
 				btwDateTime(fromDate, toDate)
 			)
 			.groupBy(formattedDate)
+			.orderBy(record.datetime.asc())
+			.fetch();
+	}
+
+	@Override
+	public List<Record> searchViolentRecordList(int usePersonId, LocalDate targetDate) {
+		return queryFactory.selectFrom(record)
+			.where(
+				eqUsePerson(usePersonId),
+				eqDate(targetDate)
+			)
 			.orderBy(record.datetime.asc())
 			.fetch();
 	}

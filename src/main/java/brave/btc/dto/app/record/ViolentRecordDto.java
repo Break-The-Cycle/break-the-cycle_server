@@ -41,8 +41,8 @@ public class ViolentRecordDto {
 		@Schema(title = "피해를 당한 날과 시간", requiredMode = Schema.RequiredMode.REQUIRED, implementation = LocalDateTime.class)
 		private LocalDateTime targetDateTime;
 
-		public DiaryDto toDiaryDto() {
-			return DiaryDto.builder()
+		public DiaryDto.Create toDiaryDto() {
+			return DiaryDto.Create.builder()
 				.title(this.title)
 				.contents(this.contents)
 				.build();
@@ -64,8 +64,27 @@ public class ViolentRecordDto {
 		@Schema(title = "기록 구분자")
 		private RecordDivision division;
 
+		@Schema(title = "이미지")
+		private byte[] image;
+		
+		@Schema(title = "일기 내용")
+		private DiaryDto.Response diary;
+
 		@Schema(title = "피해를 당한 날과 시간")
 		private LocalDateTime targetDateTime;
 
 	}
+	@Data
+	@Builder
+	@AllArgsConstructor
+	@NoArgsConstructor
+	@Schema(name = "사용자 패스워드가 담긴 dto",
+		description = "s3 객체를 다운로드 하기 위해서는 사용자 패스워드가 필요함. 이것을 담는 dto")
+	public static class Credential {
+
+		@Schema(title = "사용자 로그인 패스워드 / s3 암호화 패스워드 (하나로 통일되어 있는 상태)", defaultValue = "kang123!")
+		private String password;
+
+	}
+	
 }

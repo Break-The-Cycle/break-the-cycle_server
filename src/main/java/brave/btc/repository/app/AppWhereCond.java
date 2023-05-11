@@ -30,6 +30,12 @@ public abstract class AppWhereCond {
 			LocalDateTime.of(fromDate, LocalTime.of(0,0,0)),
 			LocalDateTime.of(toDate, LocalTime.of(23,59,59))) : null;
 	}
+	public static BooleanExpression eqDate(LocalDate targetDate) {
+		return targetDate!=null ?
+			record.datetime.between(
+			LocalDateTime.of(targetDate, LocalTime.of(0,0,0)),
+			LocalDateTime.of(targetDate, LocalTime.of(23,59,59))) : null;
+	}
 
 
 }

@@ -22,5 +22,5 @@ public interface RecordUploadService {
 	 * @param encodePassword 암호화 비밀번호
 	 * @return 업로드된 주소
 	 */
-	String uploadDiary(DiaryDto diaryDto, String objectKey, String encodePassword);
+	String uploadDiary(DiaryDto.Create diaryDto, String objectKey, String encodePassword);
 }

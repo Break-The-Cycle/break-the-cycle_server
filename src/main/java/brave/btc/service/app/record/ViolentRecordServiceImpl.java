@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,18 +32,49 @@ public class ViolentRecordServiceImpl implements ViolentRecordService {
 	private final RecordRepository recordRepository;
 	private final AuthService authService;
 	private final RecordUploadService recordUploadService;
+	private final RecordDownloadService recordDownloadService;
 
 
 	@Override
-	public List<LocalDate>
-	findSimpleViolentRecordList(int usePersonId, LocalDate fromDate, LocalDate toDate) {
-		List<String> dateStringList = recordRepository.searchSimpleViolentRecordList(usePersonId, fromDate, toDate);
+	public List<LocalDate> findViolentRecordDateList(Integer usePersonId, LocalDate fromDate, LocalDate toDate) {
+		List<String> dateStringList = recordRepository.searchViolentRecordDateList(usePersonId, fromDate, toDate);
 		List<LocalDate> dateList = new ArrayList<>();
 		for (String dateString : dateStringList) {
 			LocalDate localDate = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 			dateList.add(localDate);
 		}
 		return dateList;
+	}
+
+	@Override
+	public List<ViolentRecordDto.Response> findViolentRecordList(Integer usePersonId, LocalDate targetDate, ViolentRecordDto.Credential credential) {
+
+		List<Record> recordList = recordRepository.searchViolentRecordList(usePersonId, targetDate);
+		String password = credential.getPassword();
+		return recordList.stream()
+			.filter(record -> (record.getRecordDivision() == RecordDivision.PICTURE) || (record.getRecordDivision() == RecordDivision.DIARY))
+			.map(record -> {
+					if (record.getRecordDivision() == RecordDivision.PICTURE) {
+						Picture picture = (Picture)record;
+						String pictureS3Url = picture.getContent();
+						log.debug("[findViolentRecordList] pictureS3Url: {}", pictureS3Url);
+						byte[] imageByteArrayResponse = recordDownloadService.downloadPicture(pictureS3Url, password);
+						return ViolentRecordDto.Response.builder()
+							.image(imageByteArrayResponse)
+							.build();
+
+					} else if (record.getRecordDivision() == RecordDivision.DIARY) {
+						Diary diary = (Diary)record;
+						String diaryS3Url = diary.getContent();
+						log.debug("[findViolentRecordList] diaryS3Url: {}", diaryS3Url);
+						DiaryDto.Response diaryResponse = recordDownloadService.downloadDiary(diaryS3Url, password);
+						return ViolentRecordDto.Response.builder()
+							.diary(diaryResponse)
+							.build();
+					}
+					throw new IllegalStateException("상태 이상 에러. 다른 종류가 들어올 수 없음");
+				}
+			).collect(Collectors.toList());
 	}
 
 	@Override
@@ -65,7 +97,7 @@ public class ViolentRecordServiceImpl implements ViolentRecordService {
 	}
 
 	private void makeNewDiaryRecord(ViolentRecordDto.Create requestDto, String password, UsePerson usePerson, List<Record> newRecordList) {
-		DiaryDto diaryDto = requestDto.toDiaryDto();
+		DiaryDto.Create diaryDto = requestDto.toDiaryDto();
 		String objectPath = makeObjectPath(requestDto.getLoginId(), RecordDivision.DIARY);
 		String diaryS3Url = recordUploadService.uploadDiary(diaryDto, objectPath, password);
 		Record newDiary = Diary.builder()

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,17 +41,17 @@ public class ViolentRecordController {
 
 	@Operation(summary = "폭력 일기 기록 범위만큼 불러오기 (내용은 포함 x)", description = "업로드한 폭력 일기 기록을 fromDate ~ toDate에 속해있는 날짜만 불러온다. 자세한 내용은 포함하지 않는다.",
 		responses = {
-			@ApiResponse(responseCode = "200", description = "폭력 일기 기록 리스트 가져오기 성공",
+			@ApiResponse(responseCode = "200", description = "폭력 일기 날짜 리스트 가져오기 성공",
 				content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
 					array = @ArraySchema(schema = @Schema(implementation = LocalDate.class)))),
-			@ApiResponse(responseCode = "400", description = "회원 조회 실패",
+			@ApiResponse(responseCode = "400", description = "조회 실패",
 				content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
 					schema = @Schema(implementation = ErrorResponseDto.class))),
 			@ApiResponse(responseCode = "500", description = "내부 오류 / 조회 실패",
 				content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
 					schema = @Schema(implementation = ErrorResponseDto.class)))
 		})
-	@GetMapping("/{usePersonId}")
+	@GetMapping("/{usePersonId}/dates")
 	public ResponseEntity<?> violentRecordList(
 		@Parameter(description = "use person pk",required = true) @PathVariable("usePersonId") Integer usePersonId,
 		@Parameter(description = "조회 시작 날짜",required = true) @RequestParam(name = "fromDate") LocalDate fromDate,
@@ -59,12 +60,40 @@ public class ViolentRecordController {
 		log.info("[violentRecordList] usePersonId: {} fromDate: {} toDate: {}", usePersonId, fromDate, toDate);
 
 		List<LocalDate> responseDto =
-			violentRecordService.findSimpleViolentRecordList(usePersonId, fromDate, toDate);
+			violentRecordService.findViolentRecordDateList(usePersonId, fromDate, toDate);
 
 		return ResponseEntity.ok()
 			.body(responseDto);
 	}
 
+
+	@Operation(summary = "특정 날짜 폭력 일기 기록 불러오기 (내용 포함 o)"
+		, description = "업로드한 폭력 일기 기록을 targetDate에 속해있는 날짜 것을 불러온다. 자세한 내용은 포함한다. *비밀번호를 암호화 하기 위해 POST 요청을 사용한다.*",
+		responses = {
+			@ApiResponse(responseCode = "200", description = "폭력 일기 기록 자세히 가져오기 성공",
+				content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+					array = @ArraySchema(schema = @Schema(implementation = LocalDate.class)))),
+			@ApiResponse(responseCode = "400", description = "조회 실패",
+				content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+					schema = @Schema(implementation = ErrorResponseDto.class))),
+			@ApiResponse(responseCode = "500", description = "내부 오류 / 조회 실패",
+				content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+					schema = @Schema(implementation = ErrorResponseDto.class)))
+		})
+	@PostMapping("/{usePersonId}")
+	public ResponseEntity<?> violentRecordDetails(
+		@Parameter(description = "use person pk",required = true) @PathVariable("usePersonId") Integer usePersonId,
+		@Parameter(description = "조회 날짜",required = true) @RequestParam(name = "targetDate") LocalDate targetDate,
+		@RequestBody(required = true) ViolentRecordDto.Credential credential) {
+
+		log.info("[violentRecordDetails] usePersonId: {} targetDate: {}", usePersonId,targetDate);
+
+		List<ViolentRecordDto.Response> responseDto =
+			violentRecordService.findViolentRecordList(usePersonId, targetDate, credential);
+
+		return ResponseEntity.ok()
+			.body(responseDto);
+	}
 
 	@Operation(summary = "폭력 기록/일기 업로드", description = "가정 폭력 사실에 대한 기록을 업로드한다.",
 		responses = {
