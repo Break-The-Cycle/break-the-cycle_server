@@ -41,15 +41,6 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @Value("${sms.publicKey}")
-    private String publicKey;
-
-    @Value("${sms.secretKey}")
-    private String secretKey;
-
-    @Value("${sms.domain}")
-    private String smsDomain;
-
     @Operation(summary = "Login ID Duplication Check", description = "아이디 중복 체크",
         responses = {
             @ApiResponse(responseCode = "200", description = "사용 가능한 아이디"),
@@ -102,7 +93,7 @@ public class AuthController {
     })
     @PostMapping("/sms-certification/send")
     public ResponseEntity<?> sendSms(@RequestBody SmsRequestDto request){
-        CommonResponseDto<Object> responseDto = authService.sendAuthNumber(publicKey,secretKey,smsDomain,request.getPhoneNumber());
+        CommonResponseDto<Object> responseDto = authService.sendAuthNumber(request.getPhoneNumber());
         return ResponseEntity.ok()
                 .body(responseDto);
     }
