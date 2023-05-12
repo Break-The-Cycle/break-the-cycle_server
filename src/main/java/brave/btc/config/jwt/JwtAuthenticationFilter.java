@@ -2,7 +2,7 @@ package brave.btc.config.jwt;
 
 import brave.btc.config.auth.PrincipalDetails;
 import brave.btc.dto.app.auth.login.LoginRequestDto;
-import brave.btc.service.AuthService;
+import brave.btc.service.app.auth.AuthServiceImpl;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,12 +31,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
 
     private final AuthenticationManager authenticationManager;
-    private final AuthService authService;
+    private final AuthServiceImpl authServiceImpl;
 
 
-    public JwtAuthenticationFilter(AuthenticationManager authenticationManager, AuthService authService) {
+    public JwtAuthenticationFilter(AuthenticationManager authenticationManager, AuthServiceImpl authServiceImpl) {
         this.authenticationManager = authenticationManager;
-        this.authService = authService;
+        this.authServiceImpl = authServiceImpl;
         setFilterProcessesUrl("/v1/auth/login");
     }
 
@@ -103,7 +103,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .sign(Algorithm.HMAC512(JwtProperties.SECRET));
         log.info("[Authentication] refreshToken 생성 완료: " + refreshToken);
 
-        authService.updateRefreshToken(refreshToken, principalDetails.getUser().getId());
+        authServiceImpl.updateRefreshToken(refreshToken, principalDetails.getUser().getId());
         log.info("[Authentication] refreshToken DB에 저장 완료: " + refreshToken);
 
         response.setContentType("application/json; charset=UTF-8");
