@@ -5,7 +5,10 @@ import brave.btc.domain.temporary.jwt.RefreshToken;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
+import brave.btc.exception.auth.*;
+import net.nurigo.sdk.message.exception.NurigoMessageNotReceivedException;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,10 +20,6 @@ import brave.btc.domain.app.user.UsePerson;
 import brave.btc.domain.temporary.SmsCertification;
 import brave.btc.dto.CommonResponseDto;
 import brave.btc.dto.app.auth.register.RegisterRequestDto;
-import brave.btc.exception.auth.AuthenticationInvalidException;
-import brave.btc.exception.auth.SmsCertificationNumberExpiredException;
-import brave.btc.exception.auth.SmsCertificationNumberNotSameException;
-import brave.btc.exception.auth.UserPrincipalNotFoundException;
 import brave.btc.repository.app.UsePersonRepository;
 import brave.btc.repository.temporary.SmsCertificationRepository;
 import brave.btc.repository.temporary.jwt.RefreshTokenRepository;
@@ -50,6 +49,15 @@ public class AuthService {
     private final RefreshTokenRepository refreshTokenRepository;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Value("${sms.publicKey}")
+    private String publicKey;
+
+    @Value("${sms.secretKey}")
+    private String secretKey;
+
+    @Value("${sms.domain}")
+    private String smsDomain;
 
     public UsePerson checkIsPasswordEqual(String loginId, String rawPassword) {
         UsePerson usePerson = usePersonRepository.findByLoginId(loginId)
@@ -110,12 +118,12 @@ public class AuthService {
     }
 
 
-    public CommonResponseDto<Object> sendAuthNumber(String apiKey, String secretKey, String smsDomain, String phoneNumber) {
+    public CommonResponseDto<Object> sendAuthNumber(String phoneNumber) {
 
         log.info("[register] 인증번호 요청");
         String authNumber = RandomStringUtils.randomNumeric(6);
 
-        DefaultMessageService messageService = NurigoApp.INSTANCE.initialize(apiKey, secretKey, smsDomain);
+        DefaultMessageService messageService = NurigoApp.INSTANCE.initialize(publicKey, secretKey, smsDomain);
 
         Message message = new Message();
         message.setFrom("01099236825");
@@ -128,7 +136,8 @@ public class AuthService {
             messageService.send(message);
             saveCertificationNumber(phoneNumber, authNumber);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            log.error(e.getMessage());
+            throw new SmsSendFailedException(e.getMessage());
         }
 
         return CommonResponseDto.builder()
@@ -161,8 +170,8 @@ public class AuthService {
         if (smsCertification != null) {
             checkCertificationTime(smsCertification.getCreated(), 3);
             if (smsCertification.getCertificationNumber().equals(authNumber)) {
-                System.out.println("smsCertification.getCertificationNumber() = " + smsCertification.getCertificationNumber());
-                System.out.println("authNumber = " + authNumber);
+                log.info("smsCertification.getCertificationNumber() = " + smsCertification.getCertificationNumber());
+                log.info("authNumber = " + authNumber);
                 return CommonResponseDto.builder()
                         .message("인증번호 인증이 완료되었습니다.")
                         .build();
