@@ -44,10 +44,12 @@ public class AuthServiceImpl implements AuthService {
                 .orElseThrow(() -> new UserPrincipalNotFoundException("해당하는 유저를 찾을 수 없습니다."));
 
         //비밀번호 확인 로직
-        //보통 DB에는 해시된 값이 들어가 있기 때문에 rawPassword를 해싱한 후에 비교해봄
-        String encPassword = usePerson.getPassword();
 
-        if (rawPassword.equals(encPassword)) {
+        String orgPassword = usePerson.getPassword();
+        boolean isMatches = bCryptPasswordEncoder.matches(rawPassword, orgPassword);
+        log.debug("[checkIsPasswordEqual] isMatches: {}", isMatches);
+
+        if (isMatches) {
             log.info("[checkIsPasswordEqual] 비밀번호 일치");
             return usePerson;
         }
