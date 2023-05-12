@@ -72,7 +72,7 @@ public class AuthServiceImpl implements AuthService {
         }
         return CommonResponseDto.builder()
                 .message("이미 사용중인 아이디입니다.")
-                .code(HttpStatus.OK.value())
+                .code(HttpStatus.CONFLICT.value())
                 .build();
     }
 

@@ -47,7 +47,7 @@ public class AuthController {
                     @ApiResponse(responseCode = "200", description = "사용 가능한 아이디",
                             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                                     schema = @Schema(implementation = CommonResponseDto.class))),
-                    @ApiResponse(responseCode = "200", description = "이미 존재하는 아이디",
+                    @ApiResponse(responseCode = "409", description = "이미 존재하는 아이디",
                             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                                     schema = @Schema(implementation = CommonResponseDto.class)))
             })

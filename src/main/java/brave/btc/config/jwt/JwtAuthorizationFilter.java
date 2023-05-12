@@ -39,7 +39,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
 
         String atHeader = request.getHeader(JwtProperties.AT_HEADER);
-        System.out.println("request = " + request.getServletPath());
+        log.info("request = " + request.getServletPath());
         //토큰 헤더가 없다면 통과
         if (atHeader == null || !request.getServletPath().startsWith("/v1/auth/user")) {
             chain.doFilter(request, response);
