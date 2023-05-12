@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import brave.btc.service.app.auth.AuthService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +20,6 @@ import brave.btc.dto.CommonResponseDto;
 import brave.btc.dto.app.record.DiaryDto;
 import brave.btc.dto.app.record.ViolentRecordDto;
 import brave.btc.repository.app.record.RecordRepository;
-import brave.btc.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
