@@ -48,10 +48,10 @@ public class AuthServiceImpl implements AuthService {
         String encPassword = usePerson.getPassword();
 
         if (rawPassword.equals(encPassword)) {
-            log.info("[login] 비밀번호 일치");
+            log.info("[checkIsPasswordEqual] 비밀번호 일치");
             return usePerson;
         }
-        log.error("[login] 비밀번호 불일치 에러");
+        log.error("[checkIsPasswordEqual] 비밀번호 불일치 에러");
         throw new AuthenticationInvalidException("비밀번호가 일치하지 않습니다.");
     }
 
