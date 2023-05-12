@@ -1,10 +1,7 @@
 package brave.btc.exception.controller;
 
 import brave.btc.exception.ErrorResponseDto;
-import brave.btc.exception.auth.AuthenticationInvalidException;
-import brave.btc.exception.auth.SmsCertificationNumberExpiredException;
-import brave.btc.exception.auth.SmsCertificationNumberNotSameException;
-import brave.btc.exception.auth.UserPrincipalNotFoundException;
+import brave.btc.exception.auth.*;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import lombok.extern.slf4j.Slf4j;
 
@@ -63,10 +60,10 @@ public class ErrorController {
                 .body(errorResponseDto);
     }
 
-    @ExceptionHandler(NurigoMessageNotReceivedException.class)
-    public ResponseEntity<ErrorResponseDto<?>> handleNurigoMessageNotReceivedException(NurigoMessageNotReceivedException e) {
+    @ExceptionHandler(SmsSendFailedException.class)
+    public ResponseEntity<ErrorResponseDto<?>> SmsSendFailedException(SmsSendFailedException e) {
 
-        log.error("[handleNurigoMessageNotReceivedException] 인증 번호 전송 실패");
+        log.error("[handleSmsSendFailedException] 인증 번호 전송 실패");
         ErrorResponseDto<Object> errorResponseDto = ErrorResponseDto.builder()
                 .message(e.getMessage())
                 .build();
