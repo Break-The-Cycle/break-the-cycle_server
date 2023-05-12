@@ -4,7 +4,7 @@ import brave.btc.config.jwt.JwtAuthenticationFilter;
 import brave.btc.config.jwt.JwtAuthorizationFilter;
 import brave.btc.config.jwt.JwtExceptionFilter;
 import brave.btc.repository.app.UsePersonRepository;
-import brave.btc.service.AuthService;
+import brave.btc.service.app.auth.AuthServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,7 +25,7 @@ public class SecurityConfig {
 
     private final CorsConfig corsConfig;
     private final UsePersonRepository usePersonRepository;
-    private final AuthService authService;
+    private final AuthServiceImpl authServiceImpl;
     private final JwtExceptionFilter jwtExceptionFilter;
 
     @Bean
@@ -57,7 +57,7 @@ public class SecurityConfig {
             AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
             http
                     .addFilter(corsConfig.corsFilter())
-                    .addFilter(new JwtAuthenticationFilter(authenticationManager, authService))
+                    .addFilter(new JwtAuthenticationFilter(authenticationManager, authServiceImpl))
                     .addFilter(new JwtAuthorizationFilter(authenticationManager, usePersonRepository));
         }
     }

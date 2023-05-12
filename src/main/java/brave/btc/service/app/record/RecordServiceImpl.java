@@ -17,7 +17,7 @@ import brave.btc.dto.CommonResponseDto;
 import brave.btc.dto.app.record.DiaryDto;
 import brave.btc.dto.app.record.RecordRequestDto;
 import brave.btc.repository.app.record.RecordRepository;
-import brave.btc.service.AuthService;
+import brave.btc.service.app.auth.AuthServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 public class RecordServiceImpl implements RecordService {
 
 	private final RecordRepository recordRepository;
-	private final AuthService authService;
+	private final AuthServiceImpl authServiceImpl;
 	private final RecordUploadService recordUploadService;
 
 	@Override
@@ -36,7 +36,7 @@ public class RecordServiceImpl implements RecordService {
 
 		String loginId = requestDto.getLoginId();
 		String password = requestDto.getPassword();
-		UsePerson usePerson = authService.checkIsPasswordEqual(loginId, password);
+		UsePerson usePerson = authServiceImpl.checkIsPasswordEqual(loginId, password);
 		log.debug("[uploadRecord] usePerson: {}", usePerson);
 
 		List<Record> newRecordList = new ArrayList<>();
