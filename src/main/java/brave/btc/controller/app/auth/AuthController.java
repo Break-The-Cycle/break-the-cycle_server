@@ -1,11 +1,9 @@
-package brave.btc.controller;
+package brave.btc.controller.app.auth;
 
 import brave.btc.config.jwt.JwtProperties;
-import brave.btc.dto.app.auth.register.SmsRequestDto;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,8 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import brave.btc.dto.CommonResponseDto;
 import brave.btc.dto.app.auth.login.LoginRequestDto;
 import brave.btc.dto.app.auth.register.RegisterRequestDto;
-import brave.btc.dto.app.auth.register.SmsCertificationDto;
-import brave.btc.service.AuthService;
+import brave.btc.service.app.auth.AuthServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -31,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
 
-@Tag(name = "01. Auth", description = "회원가입/로그인")
+@Tag(name = "01-1. Auth", description = "회원가입/로그인")
 @Slf4j
 @Valid
 @RequiredArgsConstructor
@@ -39,7 +36,7 @@ import java.util.Map;
 @RequestMapping("/v1/auth")
 public class AuthController {
 
-    private final AuthService authService;
+    private final AuthServiceImpl authServiceImpl;
 
     @Operation(summary = "Login ID Duplication Check", description = "아이디 중복 체크",
         responses = {
@@ -52,7 +49,7 @@ public class AuthController {
         @Pattern(regexp = "^[a-z]+[a-zA-Z1-9]{6,20}",message = "아이디는 영문 소문자로 시작하고 숫자를 포함하여 7~20자로 구성되어야 합니다.")
         @PathVariable("loginId") String loginId) {
 
-        CommonResponseDto<Object> responseDto = authService.loginIdIdDuplicateCheck(loginId);
+        CommonResponseDto<Object> responseDto = authServiceImpl.loginIdIdDuplicateCheck(loginId);
         return ResponseEntity.ok()
                 .body(responseDto);
     }
@@ -66,7 +63,7 @@ public class AuthController {
     public ResponseEntity<?> registerV1(
         @RequestBody @Valid RegisterRequestDto request,
         BindingResult bindingResult) {
-        CommonResponseDto<Object> responseDto = authService.register(request);
+        CommonResponseDto<Object> responseDto = authServiceImpl.register(request);
         return ResponseEntity.ok()
             .body(responseDto);
     }
@@ -84,30 +81,6 @@ public class AuthController {
                 .build();
         return ResponseEntity.ok()
             .body(responseDto);
-    }
-
-    @Operation(summary = "Sms Certification Send", description = "인증번호 요청",
-    responses = {
-            @ApiResponse(responseCode = "200", description = "인증번호 요청 성공"),
-            @ApiResponse(responseCode = "400", description = "인증번호 요청 실패")
-    })
-    @PostMapping("/sms-certification/send")
-    public ResponseEntity<?> sendSms(@RequestBody SmsRequestDto request){
-        CommonResponseDto<Object> responseDto = authService.sendAuthNumber(request.getPhoneNumber());
-        return ResponseEntity.ok()
-                .body(responseDto);
-    }
-
-    @Operation(summary = "Sms Certification Confirm", description = "인증번호 확인",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "인증번호 일치"),
-                    @ApiResponse(responseCode = "400", description = "인증번호 불일치")
-            })
-    @PostMapping("/sms-certification/confirm")
-    public ResponseEntity<?> smsCertification(@RequestBody SmsCertificationDto request) {
-        CommonResponseDto<Object> responseDto = authService.checkAuthNumber(request.getCertificationNumber(), request.getPhoneNumber());
-        return ResponseEntity.ok()
-                .body(responseDto);
     }
 
     @Operation(summary = "Access Token Validation", description = "Access Token 유효성 검사(30초)",
@@ -133,7 +106,7 @@ public class AuthController {
     @GetMapping("/refresh")
     public ResponseEntity<?> refresh(HttpServletRequest request, HttpServletResponse response) {
         String refreshToken = request.getHeader(JwtProperties.RT_HEADER);
-        Map<String, String> tokens = authService.refresh(refreshToken);
+        Map<String, String> tokens = authServiceImpl.refresh(refreshToken);
         String newAccessToken = tokens.get("accessToken");
         String newRefreshToken = tokens.get("refreshToken");
         response.addHeader("Authorization", newAccessToken);
