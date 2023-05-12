@@ -47,14 +47,14 @@ public class AuthController {
                     @ApiResponse(responseCode = "200", description = "사용 가능한 아이디",
                             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                                     schema = @Schema(implementation = CommonResponseDto.class))),
-                    @ApiResponse(responseCode = "400", description = "이미 존재하는 아이디",
+                    @ApiResponse(responseCode = "200", description = "이미 존재하는 아이디",
                             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                                     schema = @Schema(implementation = CommonResponseDto.class)))
             })
     @GetMapping("/duplicate-check/{loginId}")
     public ResponseEntity<?> dupCheckV1(
             @Parameter(description = "중복 확인할 아이디")
-            @Pattern(regexp = "^[a-z]+[a-zA-Z1-9]{6,20}", message = "아이디는 영문 소문자로 시작하고 숫자를 포함하여 7~20자로 구성되어야 합니다.")
+            @Pattern(regexp = "^[a-z]+[a-zA-Z0-9]{6,19}", message = "아이디는 영문 소문자로 시작하고 숫자를 포함하여 7~20자로 구성되어야 합니다.")
             @PathVariable("loginId") String loginId) {
 
         CommonResponseDto<Object> responseDto = authServiceImpl.loginIdIdDuplicateCheck(loginId);
