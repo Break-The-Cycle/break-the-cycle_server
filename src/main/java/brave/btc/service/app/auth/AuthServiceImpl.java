@@ -1,58 +1,47 @@
-package brave.btc.service;
+package brave.btc.service.app.auth;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import brave.btc.config.jwt.JwtProperties;
+import brave.btc.domain.temporary.jwt.RefreshToken;
 
-import org.apache.commons.lang3.RandomStringUtils;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import brave.btc.exception.auth.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import net.nurigo.sdk.NurigoApp;
-import net.nurigo.sdk.message.model.Message;
-import net.nurigo.sdk.message.service.DefaultMessageService;
-
+import brave.btc.domain.app.user.UsePerson;
+import brave.btc.dto.CommonResponseDto;
+import brave.btc.dto.app.auth.register.RegisterRequestDto;
+import brave.btc.repository.app.UsePersonRepository;
+import brave.btc.repository.temporary.jwt.RefreshTokenRepository;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-
-import brave.btc.config.jwt.JwtProperties;
-import brave.btc.domain.app.user.UsePerson;
-import brave.btc.domain.temporary.SmsCertification;
-import brave.btc.domain.temporary.jwt.RefreshToken;
-import brave.btc.dto.CommonResponseDto;
-import brave.btc.dto.app.auth.register.RegisterRequestDto;
-import brave.btc.exception.auth.AuthenticationInvalidException;
-import brave.btc.exception.auth.SmsCertificationNumberExpiredException;
-import brave.btc.exception.auth.SmsCertificationNumberNotSameException;
-import brave.btc.exception.auth.UserPrincipalNotFoundException;
-import brave.btc.repository.app.UsePersonRepository;
-import brave.btc.repository.temporary.SmsCertificationRepository;
-import brave.btc.repository.temporary.jwt.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@Service
-@Transactional
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 @RequiredArgsConstructor
+@Transactional
 @Slf4j
-public class AuthService {
+@Service
+public class AuthServiceImpl implements AuthService {
 
     private final UsePersonRepository usePersonRepository;
-
-    private final SmsCertificationRepository smsCertificationRepository;
 
     private final RefreshTokenRepository refreshTokenRepository;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Override
     public UsePerson checkIsPasswordEqual(String loginId, String rawPassword) {
         UsePerson usePerson = usePersonRepository.findByLoginId(loginId)
-            .orElseThrow(() -> new UserPrincipalNotFoundException("해당하는 유저를 찾을 수 없습니다."));
+                .orElseThrow(() -> new UserPrincipalNotFoundException("해당하는 유저를 찾을 수 없습니다."));
 
         //비밀번호 확인 로직
 
@@ -68,23 +57,27 @@ public class AuthService {
         throw new AuthenticationInvalidException("비밀번호가 일치하지 않습니다.");
     }
 
+    @Override
     @Transactional(readOnly = true)
     public CommonResponseDto<Object> loginIdIdDuplicateCheck(String loginId) {
 
         UsePerson user = usePersonRepository.findByLoginId(loginId)
-            .orElse(null);
+                .orElse(null);
 
         if (user == null) {
             return CommonResponseDto.builder()
                     .message("사용 가능한 아이디입니다.")
+                    .code(HttpStatus.OK.value())
                     .build();
         }
         return CommonResponseDto.builder()
                 .message("이미 사용중인 아이디입니다.")
+                .code(HttpStatus.OK.value())
                 .build();
     }
 
 
+    @Override
     public CommonResponseDto<Object> register(RegisterRequestDto request) {
 
         log.debug("[register] request: {}", request);
@@ -104,89 +97,11 @@ public class AuthService {
             log.info("[register] 회원 가입 완료");
             return CommonResponseDto.builder()
                     .message("회원 가입이 완료되었습니다.")
+                    .code(HttpStatus.OK.value())
                     .build();
         }
         log.error("[register] 회원 가입 실패");
         throw new AuthenticationInvalidException("비밀번호와 확인 비밀번호가 일치하지 않습니다.");
-    }
-
-
-    public CommonResponseDto<Object> sendAuthNumber(String apiKey, String secretKey, String smsDomain, String phoneNumber) {
-
-        log.info("[register] 인증번호 요청");
-        String authNumber = RandomStringUtils.randomNumeric(6);
-
-        DefaultMessageService messageService = NurigoApp.INSTANCE.initialize(apiKey, secretKey, smsDomain);
-
-        Message message = new Message();
-        message.setFrom("01099236825");
-        message.setTo(phoneNumber);
-        message.setText("[로즈 데이즈] 인증번호는 " + authNumber + "입니다.");
-
-        //인증 번호 저장하고 check에서 비교할 때 사용
-
-        try {
-            messageService.send(message);
-            saveCertificationNumber(phoneNumber, authNumber);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            saveCertificationNumber(phoneNumber, "1234"); //일단 돈이 없어서 이렇게 만듭니다.
-        }
-
-        return CommonResponseDto.builder()
-                .message("인증번호 전송이 완료되었습니다.")
-                .build();
-    }
-
-    public void saveCertificationNumber(String phoneNumber, String authNumber) {
-
-        log.info("[register] 인증번호 저장");
-        SmsCertification smsCertification = smsCertificationRepository.findByPhoneNumber(phoneNumber)
-                .orElse(null);
-        if (smsCertification != null) {
-            smsCertificationRepository.updateCertificationNum(authNumber, getNowTimeStamp(), phoneNumber);
-        } else {
-            SmsCertification requestDto = SmsCertification.builder()
-                    .phoneNumber(phoneNumber)
-                    .certificationNumber(authNumber)
-                    .build();
-            smsCertificationRepository.save(requestDto);
-        }
-
-    }
-
-    public CommonResponseDto<Object> checkAuthNumber(String authNumber, String phoneNumber) {
-
-        log.info("[register] 인증번호 확인 요청");
-        SmsCertification smsCertification = smsCertificationRepository.findByPhoneNumber(phoneNumber)
-                .orElse(null);
-        if (smsCertification != null) {
-            checkCertificationTime(smsCertification.getCreated(), 3);
-            if (smsCertification.getCertificationNumber().equals(authNumber)) {
-                System.out.println("smsCertification.getCertificationNumber() = " + smsCertification.getCertificationNumber());
-                System.out.println("authNumber = " + authNumber);
-                return CommonResponseDto.builder()
-                        .message("인증번호 인증이 완료되었습니다.")
-                        .build();
-            }
-        }
-
-        throw new SmsCertificationNumberNotSameException("인증번호가 일치하지 않습니다.");
-
-    }
-
-    public Timestamp getNowTimeStamp() {
-        return new Timestamp(System.currentTimeMillis());
-    }
-
-    public void checkCertificationTime(Timestamp timestamp, int validationTime) {
-
-        LocalDateTime localDateTime = timestamp.toLocalDateTime()
-                .plusMinutes(validationTime);
-        LocalDateTime now = LocalDateTime.now();
-        if (localDateTime.isBefore(now)) {
-            throw new SmsCertificationNumberExpiredException("인증번호가 만료되었습니다.");
-        }
     }
 
     public void updateRefreshToken(String refreshToken, Integer userId) {

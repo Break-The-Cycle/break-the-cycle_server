@@ -1,5 +1,11 @@
 package brave.btc.config;
 
+import brave.btc.config.jwt.JwtAuthenticationFilter;
+import brave.btc.config.jwt.JwtAuthorizationFilter;
+import brave.btc.config.jwt.JwtExceptionFilter;
+import brave.btc.repository.app.UsePersonRepository;
+import brave.btc.service.app.auth.AuthServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,13 +17,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.expression.WebExpressionAuthorizationManager;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import brave.btc.config.jwt.JwtAuthenticationFilter;
-import brave.btc.config.jwt.JwtAuthorizationFilter;
-import brave.btc.config.jwt.JwtExceptionFilter;
-import brave.btc.repository.app.UsePersonRepository;
-import brave.btc.service.AuthService;
-import lombok.RequiredArgsConstructor;
-
 
 @Configuration
 @EnableWebSecurity
@@ -26,7 +25,7 @@ public class SecurityConfig {
 
     private final CorsConfig corsConfig;
     private final UsePersonRepository usePersonRepository;
-    private final AuthService authService;
+    private final AuthServiceImpl authServiceImpl;
     private final JwtExceptionFilter jwtExceptionFilter;
 
     @Bean
@@ -43,11 +42,11 @@ public class SecurityConfig {
                 .frameOptions().disable()
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers("/api/v1/auth/user/**")
+                .requestMatchers("/v1/auth/user/**")
                 .access(new WebExpressionAuthorizationManager("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER')"))
-                .requestMatchers("/api/v1/manager/**")
+                .requestMatchers("/v1/manager/**")
                 .access(new WebExpressionAuthorizationManager("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER')"))
-                .requestMatchers("/api/v1/admin/**")
+                .requestMatchers("/v1/admin/**")
                 .access(new WebExpressionAuthorizationManager("hasRole('ROLE_ADMIN')"))
                 .anyRequest().permitAll();
 
@@ -61,7 +60,7 @@ public class SecurityConfig {
             AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
             http
                     .addFilter(corsConfig.corsFilter())
-                    .addFilter(new JwtAuthenticationFilter(authenticationManager, authService))
+                    .addFilter(new JwtAuthenticationFilter(authenticationManager, authServiceImpl))
                     .addFilter(new JwtAuthorizationFilter(authenticationManager, usePersonRepository));
         }
     }
