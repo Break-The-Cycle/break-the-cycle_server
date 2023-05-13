@@ -85,7 +85,7 @@ public class JwtServiceImpl implements JwtService {
         return JwtResponseDto.builder()
                 .accessToken(JwtProperties.TOKEN_PREFIX + accessToken)
                 .refreshToken(JwtProperties.TOKEN_PREFIX + newRefreshToken)
-                .message("Access Token, Refresh 토큰이 갱신되었습니다.")
+                .message("Access Token, Refresh Token이 갱신되었습니다.")
                 .code(HttpStatus.OK.value())
                 .build();
     }
