@@ -54,7 +54,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
         if (rtHeader != null) {
             if (!rtHeader.startsWith(JwtProperties.TOKEN_PREFIX)) {
-                throw new JwtException("유효하지 않은 AccessToken입니다.");
+                throw new JwtException("유효하지 않은 Refresh Token입니다.");
             }
             String refreshToken = rtHeader.replace(JwtProperties.TOKEN_PREFIX, "");
             JwtResponseDto responseDto = jwtService.refresh(refreshToken);
