@@ -1,18 +1,19 @@
 package brave.btc.config.jwt;
 
+import brave.btc.dto.app.auth.jwt.JwtResponseDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
+@Slf4j
 @Component
 public class JwtExceptionFilter extends OncePerRequestFilter {
 
@@ -26,15 +27,16 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
     }
 
     private void setErrorResponse(HttpServletRequest request, HttpServletResponse response, Throwable e) throws IOException {
+        log.error("[Authentication] {}", e.getMessage());
         response.setContentType("application/json; charset=UTF-8");
-        Map<String, Object> body = new HashMap<>();
-        body.put("error", "Unauthorized");
-        body.put("message", e.getMessage());
-        body.put("path", request.getServletPath());
+        JwtResponseDto responseDto = JwtResponseDto.builder()
+                .message(e.getMessage())
+                .code(401)
+                .build();
 
         ObjectMapper mapper = new ObjectMapper();
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        mapper.writeValue(response.getOutputStream(), body);
+        mapper.writeValue(response.getOutputStream(), responseDto);
     }
 
 }
