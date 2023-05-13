@@ -34,8 +34,6 @@ public class AuthServiceImpl implements AuthService {
 
     private final UsePersonRepository usePersonRepository;
 
-    private final RefreshTokenRepository refreshTokenRepository;
-
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
@@ -104,60 +102,4 @@ public class AuthServiceImpl implements AuthService {
         throw new AuthenticationInvalidException("비밀번호와 확인 비밀번호가 일치하지 않습니다.");
     }
 
-    public void updateRefreshToken(String refreshToken, Integer userId) {
-        RefreshToken findToken = refreshTokenRepository.findById(userId)
-                .orElse(RefreshToken.builder()
-                        .token(refreshToken)
-                        .id(userId)
-                        .build());
-        findToken.changeToken(refreshToken);
-    }
-
-    public Map<String, String> refresh(String refreshToken) {
-        log.info("[Authorization] refresh 토큰 유효성 검사");
-        refreshToken = refreshToken.replace(JwtProperties.TOKEN_PREFIX, "");
-
-        //refresh 토큰 유효성 검사
-        DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512(JwtProperties.SECRET)).build()
-                .verify(refreshToken);
-
-        Integer userId = decodedJWT.getClaim("id").asInt();
-
-        UsePerson usePerson = usePersonRepository.findById(userId)
-                .orElseThrow(() -> new JWTVerificationException("유효하지 않은 Refresh Token 입니다."));
-        log.info("[Authorization] refresh 토큰 유효성 검사 완료");
-
-        //Access Token 재발급
-        log.info("[Authorization] Access Token 재발급");
-        String accessToken = JWT.create()
-                //토큰 이름
-                .withSubject("accessToken")
-                //만료시간
-                .withExpiresAt(new Date(System.currentTimeMillis() + JwtProperties.AT_EXP_TIME))
-                //비공개 값
-                .withClaim("id", usePerson.getId())
-                .withClaim("phoneNumber", usePerson.getPhoneNumber())
-                //암호화 방식
-                .sign(Algorithm.HMAC512(JwtProperties.SECRET));
-        log.info("[Authorization] Access Token 재발급 완료");
-
-        //Refresh Token 재발급
-        log.info("[Authorization] Refresh Token 재발급");
-        String newRefreshToken = JWT.create()
-                //토큰 이름
-                .withSubject("refreshToken")
-                //만료시간
-                .withExpiresAt(new Date(System.currentTimeMillis() + JwtProperties.RT_EXP_TIME))
-                //비공개 값
-                .withClaim("id", usePerson.getId())
-                //암호화 방식
-                .sign(Algorithm.HMAC512(JwtProperties.SECRET));
-        log.info("[Authorization] Refresh Token 재발급 완료");
-        updateRefreshToken(newRefreshToken, userId);
-        Map<String, String> token = new HashMap<>();
-        token.put("accessToken", JwtProperties.TOKEN_PREFIX + accessToken);
-        token.put("refreshToken", JwtProperties.TOKEN_PREFIX + newRefreshToken);
-
-        return token;
-    }
 }
