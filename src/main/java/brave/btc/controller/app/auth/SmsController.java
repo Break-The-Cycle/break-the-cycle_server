@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Valid
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/v1/sms-certification")
+@RequestMapping("/v1/auth")
 public class SmsController {
 
     private final SmsServiceImpl smsServiceImpl;
