@@ -4,6 +4,7 @@ import brave.btc.dto.app.auth.jwt.JwtResponseDto;
 import brave.btc.exception.ErrorResponseDto;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -53,7 +54,7 @@ public class AuthController {
             @PathVariable("loginId") String loginId) {
 
         CommonResponseDto<Object> responseDto = authService.loginIdIdDuplicateCheck(loginId);
-        return ResponseEntity.ok()
+        return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(responseDto);
     }
 
