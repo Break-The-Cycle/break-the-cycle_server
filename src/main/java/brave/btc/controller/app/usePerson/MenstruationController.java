@@ -28,7 +28,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@Tag(name = "03-2. Use-person & menstruation", description = "앱 사용자 생리 관련 API")
+@Tag(name = "10-2. APP_Use-person & menstruation", description = "앱 사용자 생리 관련 API")
 @Slf4j
 @Valid
 @RequiredArgsConstructor

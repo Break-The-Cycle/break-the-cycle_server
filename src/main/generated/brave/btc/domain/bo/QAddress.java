@@ -1,4 +1,4 @@
-package brave.btc.domain.app.address;
+package brave.btc.domain.bo;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -15,13 +15,27 @@ import com.querydsl.core.types.Path;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QAddress extends EntityPathBase<Address> {
 
-    private static final long serialVersionUID = -2098451762L;
+    private static final long serialVersionUID = -1179312814L;
 
     public static final QAddress address = new QAddress("address");
 
-    public final StringPath division = createString("division");
+    public final StringPath bungee = createString("bungee");
+
+    public final EnumPath<brave.btc.constant.enums.AddressDivision> division = createEnum("division", brave.btc.constant.enums.AddressDivision.class);
+
+    public final StringPath eupmyeondong = createString("eupmyeondong");
 
     public final NumberPath<Integer> id = createNumber("id", Integer.class);
+
+    public final StringPath island = createString("island");
+
+    public final StringPath li = createString("li");
+
+    public final StringPath postalNumber = createString("postalNumber");
+
+    public final StringPath sido = createString("sido");
+
+    public final StringPath sigungu = createString("sigungu");
 
     public QAddress(String variable) {
         super(Address.class, forVariable(variable));

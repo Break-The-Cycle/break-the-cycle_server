@@ -2,7 +2,7 @@ package brave.btc.service.app.auth;
 
 import brave.btc.domain.app.user.UsePerson;
 import brave.btc.dto.CommonResponseDto;
-import brave.btc.dto.app.auth.register.RegisterDto;
+import brave.btc.dto.common.auth.register.RegisterDto;
 
 public interface AuthService {
 

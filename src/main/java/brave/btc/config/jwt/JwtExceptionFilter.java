@@ -1,6 +1,6 @@
 package brave.btc.config.jwt;
 
-import brave.btc.dto.app.auth.jwt.JwtResponseDto;
+import brave.btc.dto.common.auth.jwt.JwtResponseDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

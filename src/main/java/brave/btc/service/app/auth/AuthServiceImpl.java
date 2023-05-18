@@ -13,7 +13,7 @@ import brave.btc.domain.bo.user.CounselingPerson;
 import brave.btc.domain.bo.user.ManagePerson;
 import brave.btc.domain.bo.user.PolicePerson;
 import brave.btc.dto.CommonResponseDto;
-import brave.btc.dto.app.auth.register.RegisterDto;
+import brave.btc.dto.common.auth.register.RegisterDto;
 import brave.btc.exception.auth.AuthenticationInvalidException;
 import brave.btc.exception.auth.UserPrincipalNotFoundException;
 import brave.btc.repository.app.UsePersonRepository;
@@ -85,12 +85,8 @@ public class AuthServiceImpl implements AuthService {
             throw new AuthenticationInvalidException("비밀번호와 확인 비밀번호가 일치하지 않습니다.");
         }
 
-        UsePerson newUsePerson = UsePerson.builder()
-            .loginId(request.getLoginId())
-            .password(bCryptPasswordEncoder.encode(password))
-            .name(request.getName())
-            .phoneNumber(request.getPhoneNumber())
-            .build();
+        String encodedPassword = bCryptPasswordEncoder.encode(password);
+        UsePerson newUsePerson = request.toUsePersonEntity(encodedPassword);
         usePersonRepository.save(newUsePerson);
         log.info("[register] 사용 개인 회원 가입 완료");
         return CommonResponseDto.builder()

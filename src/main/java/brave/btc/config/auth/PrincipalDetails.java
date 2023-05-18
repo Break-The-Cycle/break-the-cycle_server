@@ -46,12 +46,12 @@ public class PrincipalDetails implements UserDetails {
 
         UserType userType = user.getUserType();
         if (userType == UserType.USE_PERSON) {
-            authorities.add((GrantedAuthority)() -> "ROLE_USER");
+            authorities.add((GrantedAuthority)() -> "ROLE_USE_PERSON");
         } else if (userType == UserType.MANAGE_PERSON) {
-            authorities.add((GrantedAuthority)() -> "ROLE_USER");
+            authorities.add((GrantedAuthority)() -> "ROLE_USE_PERSON");
             authorities.add((GrantedAuthority)() -> "ROLE_MANAGER");
         } else if (userType == UserType.ADMIN) {
-            authorities.add((GrantedAuthority)() -> "ROLE_USER");
+            authorities.add((GrantedAuthority)() -> "ROLE_USE_PERSON");
             authorities.add((GrantedAuthority)() -> "ROLE_MANAGER");
             authorities.add((GrantedAuthority)() -> "ROLE_ADMIN");
         } else {

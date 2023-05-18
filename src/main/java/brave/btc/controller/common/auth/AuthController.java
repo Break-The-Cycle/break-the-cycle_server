@@ -1,4 +1,4 @@
-package brave.btc.controller.app.auth;
+package brave.btc.controller.common.auth;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import brave.btc.dto.CommonResponseDto;
-import brave.btc.dto.app.auth.jwt.JwtResponseDto;
-import brave.btc.dto.app.auth.login.LoginRequestDto;
-import brave.btc.dto.app.auth.register.RegisterDto;
+import brave.btc.dto.common.auth.jwt.JwtResponseDto;
+import brave.btc.dto.common.auth.login.LoginRequestDto;
+import brave.btc.dto.common.auth.register.RegisterDto;
 import brave.btc.exception.ErrorResponseDto;
 import brave.btc.service.app.auth.AuthServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,7 +28,7 @@ import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@Tag(name = "01-1. Auth", description = "회원가입/로그인")
+@Tag(name = "01-1. COMMON_Auth", description = "회원가입/로그인")
 @Slf4j
 @Valid
 @RequiredArgsConstructor

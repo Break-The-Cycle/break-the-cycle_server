@@ -1,8 +1,15 @@
-package brave.btc.controller.app.auth;
+package brave.btc.controller.common.auth;
+
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import brave.btc.dto.CommonResponseDto;
-import brave.btc.dto.app.auth.sms.SmsCertificationDto;
-import brave.btc.dto.app.auth.sms.SmsRequestDto;
+import brave.btc.dto.common.auth.sms.SmsCertificationDto;
+import brave.btc.dto.common.auth.sms.SmsRequestDto;
 import brave.btc.exception.ErrorResponseDto;
 import brave.btc.service.app.auth.SmsServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,14 +20,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "01-2. Sms-Certification", description = "인증번호 전송/확인")
+@Tag(name = "01-2. COMMON_Sms-Certification", description = "인증번호 전송/확인")
 @Slf4j
 @Valid
 @RequiredArgsConstructor

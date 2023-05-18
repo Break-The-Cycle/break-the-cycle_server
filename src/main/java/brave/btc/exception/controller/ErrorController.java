@@ -1,6 +1,6 @@
 package brave.btc.exception.controller;
 
-import brave.btc.dto.app.auth.jwt.JwtResponseDto;
+import brave.btc.dto.common.auth.jwt.JwtResponseDto;
 import brave.btc.exception.ErrorResponseDto;
 import brave.btc.exception.auth.*;
 import brave.btc.exception.sms.SmsCertificationNumberExpiredException;

@@ -18,8 +18,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import brave.btc.config.auth.PrincipalDetails;
 import brave.btc.domain.common.user.User;
-import brave.btc.dto.app.auth.jwt.JwtResponseDto;
-import brave.btc.dto.app.auth.login.LoginRequestDto;
+import brave.btc.dto.common.auth.jwt.JwtResponseDto;
+import brave.btc.dto.common.auth.login.LoginRequestDto;
 import brave.btc.service.app.auth.JwtServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

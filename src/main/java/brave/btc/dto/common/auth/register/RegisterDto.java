@@ -1,6 +1,9 @@
-package brave.btc.dto.app.auth.register;
+package brave.btc.dto.common.auth.register;
 
 import brave.btc.constant.enums.ManageDivision;
+import brave.btc.domain.app.user.UsePerson;
+import brave.btc.domain.bo.user.PolicePerson;
+import brave.btc.dto.common.AddressDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -12,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Builder
-@Schema(title = "회원가입 요청", description = "회원가입 DTO ")
+@Schema(title = "회원가입", description = "회원가입 DTO ")
 public class RegisterDto {
 
 	@Data
@@ -48,6 +51,15 @@ public class RegisterDto {
 		@Pattern(regexp="^(?=.*[A-Za-z])(?=.*[~!@#$%^&*()+|=])[A-Za-z\\d~!@#$%^&*()+|=]{8,20}$",
 			message ="확인 비밀번호는 영문 대문자, 소문자, 특수문자를 포함하여 8~20자로 구성되어야 합니다.")
 		private String password2;
+
+		public UsePerson toUsePersonEntity(String encodedPassword) {
+			return UsePerson.builder()
+				.name(name)
+				.loginId(loginId)
+				.password(encodedPassword)
+				.phoneNumber(phoneNumber)
+				.build();
+		}
 	}
 
 	@Data
@@ -87,7 +99,17 @@ public class RegisterDto {
 		@Schema(description = "COUNSELOR | POLICE_OFFICER", example = "POLICE_OFFICER")
 		private ManageDivision manageDivision;
 
+		@Schema(description = "주소 생성 DTO")
+		private AddressDto.Create address;
 
+		public PolicePerson toPolicePersonEntity(String encodedPassword) {
+			return PolicePerson.builder()
+				.name(name)
+				.loginId(loginId)
+				.password(encodedPassword)
+				.phoneNumber(phoneNumber)
+				.build();
+		}
 	}
 
 }

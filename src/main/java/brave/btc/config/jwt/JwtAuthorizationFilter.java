@@ -20,7 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import brave.btc.config.auth.PrincipalDetails;
 import brave.btc.domain.app.user.UsePerson;
 import brave.btc.domain.bo.user.ManagePerson;
-import brave.btc.dto.app.auth.jwt.JwtResponseDto;
+import brave.btc.dto.common.auth.jwt.JwtResponseDto;
 import brave.btc.exception.auth.UserPrincipalNotFoundException;
 import brave.btc.repository.app.UsePersonRepository;
 import brave.btc.repository.bo.ManagePersonRepository;

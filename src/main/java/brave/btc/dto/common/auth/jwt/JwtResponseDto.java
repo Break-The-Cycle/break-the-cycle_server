@@ -1,4 +1,4 @@
-package brave.btc.dto.app.auth.jwt;
+package brave.btc.dto.common.auth.jwt;
 
 import lombok.*;
 

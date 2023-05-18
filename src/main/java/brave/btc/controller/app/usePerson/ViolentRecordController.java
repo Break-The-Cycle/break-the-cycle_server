@@ -29,7 +29,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@Tag(name = "02. Violent Record", description = "기록/사진/녹음/일기")
+@Tag(name = "11. APP_Violent Record", description = "기록/사진/녹음/일기")
 @Slf4j
 @Valid
 @RequiredArgsConstructor
