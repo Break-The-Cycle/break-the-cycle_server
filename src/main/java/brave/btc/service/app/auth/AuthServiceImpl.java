@@ -1,30 +1,22 @@
 package brave.btc.service.app.auth;
 
-import brave.btc.config.jwt.JwtProperties;
-import brave.btc.domain.temporary.jwt.RefreshToken;
+import java.util.Optional;
 
-import brave.btc.exception.auth.*;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import brave.btc.domain.app.user.UsePerson;
+import brave.btc.domain.bo.user.ManagePerson;
 import brave.btc.dto.CommonResponseDto;
 import brave.btc.dto.app.auth.register.RegisterRequestDto;
+import brave.btc.exception.auth.AuthenticationInvalidException;
+import brave.btc.exception.auth.UserPrincipalNotFoundException;
 import brave.btc.repository.app.UsePersonRepository;
-import brave.btc.repository.temporary.jwt.RefreshTokenRepository;
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.auth0.jwt.interfaces.DecodedJWT;
+import brave.btc.repository.bo.ManagePersonRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 @RequiredArgsConstructor
 @Transactional
@@ -33,7 +25,7 @@ import java.util.Map;
 public class AuthServiceImpl implements AuthService {
 
     private final UsePersonRepository usePersonRepository;
-
+    private final ManagePersonRepository managePersonRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
@@ -59,19 +51,21 @@ public class AuthServiceImpl implements AuthService {
     @Transactional(readOnly = true)
     public CommonResponseDto<Object> loginIdIdDuplicateCheck(String loginId) {
 
-        UsePerson user = usePersonRepository.findByLoginId(loginId)
-                .orElse(null);
+        Optional<UsePerson> usePersonOptional = usePersonRepository.findByLoginId(loginId);
+        Optional<ManagePerson> managePersonOptional = managePersonRepository.findByLoginId(loginId);
 
-        if (user == null) {
+        if (usePersonOptional.isEmpty() && managePersonOptional.isEmpty()) {
             return CommonResponseDto.builder()
-                    .message("사용 가능한 아이디입니다.")
-                    .code(HttpStatus.OK.value())
-                    .build();
-        }
-        return CommonResponseDto.builder()
+                .message("사용 가능한 아이디입니다.")
+                .code(HttpStatus.OK.value())
+                .build();
+
+        }else {
+            return CommonResponseDto.builder()
                 .message("이미 사용중인 아이디입니다.")
                 .code(HttpStatus.CONFLICT.value())
                 .build();
+        }
     }
 
 
