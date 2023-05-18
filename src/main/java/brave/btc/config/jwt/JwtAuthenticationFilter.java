@@ -2,7 +2,9 @@ package brave.btc.config.jwt;
 
 import brave.btc.config.auth.PrincipalDetails;
 import brave.btc.dto.app.auth.login.LoginRequestDto;
-import brave.btc.service.app.auth.AuthServiceImpl;
+import brave.btc.dto.app.auth.jwt.JwtResponseDto;
+import brave.btc.exception.auth.AuthenticationInvalidException;
+import brave.btc.service.app.auth.JwtServiceImpl;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,7 +12,10 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,8 +26,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 // "/login" 요청에서 username, password 전송 시 동작
 
@@ -31,12 +34,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
 
     private final AuthenticationManager authenticationManager;
-    private final AuthServiceImpl authServiceImpl;
+    private final JwtServiceImpl jwtService;
 
 
-    public JwtAuthenticationFilter(AuthenticationManager authenticationManager, AuthServiceImpl authServiceImpl) {
+    public JwtAuthenticationFilter(AuthenticationManager authenticationManager, JwtServiceImpl jwtService) {
         this.authenticationManager = authenticationManager;
-        this.authServiceImpl = authServiceImpl;
+        this.jwtService = jwtService;
         setFilterProcessesUrl("/v1/auth/login");
     }
 
@@ -50,7 +53,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             ObjectMapper om = new ObjectMapper();
             LoginRequestDto user = om.readValue(request.getInputStream(), LoginRequestDto.class);
             log.info("[Authentication] loginRequest = " + user);
-
             //PrincipalDetailsService 함수 실행
             try {
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getLoginId(), user.getPassword());
@@ -59,7 +61,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 log.info("[Authentication] 인증된 유저 = " + principalDetails.getUser());
                 return authentication;
             } catch (BadCredentialsException e) {
-                throw new JwtException("로그인 실패");
+                throw new JwtException("로그인에 실패하였습니다.");
             }
             //authentication을 세션 영역에 저장 -> 인증에 성공
         } catch (IOException e) {
@@ -103,16 +105,19 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .sign(Algorithm.HMAC512(JwtProperties.SECRET));
         log.info("[Authentication] refreshToken 생성 완료: " + refreshToken);
 
-        authServiceImpl.updateRefreshToken(refreshToken, principalDetails.getUser().getId());
+        jwtService.updateRefreshToken(refreshToken, principalDetails.getUser().getId());
         log.info("[Authentication] refreshToken DB에 저장 완료: " + refreshToken);
 
-        response.setContentType("application/json; charset=UTF-8");
-        Map<String, Object> body = new HashMap<>();
-        body.put("message", "로그인에 성공하였습니다.");
+        JwtResponseDto responseDto = JwtResponseDto.builder()
+                .accessToken(JwtProperties.TOKEN_PREFIX+accessToken)
+                .refreshToken(JwtProperties.TOKEN_PREFIX+refreshToken)
+                .message("로그인에 성공하였습니다.")
+                .code(HttpStatus.OK.value())
+                .build();
         ObjectMapper mapper = new ObjectMapper();
+        response.setContentType("application/json; charset=UTF-8");
         response.setStatus(HttpServletResponse.SC_OK);
-        response.addHeader(JwtProperties.AT_HEADER, JwtProperties.TOKEN_PREFIX +accessToken);
-        response.addHeader(JwtProperties.RT_HEADER, JwtProperties.TOKEN_PREFIX + refreshToken);
-        mapper.writeValue(response.getOutputStream(), body);
+        mapper.writeValue(response.getOutputStream(), responseDto);
     }
+
 }

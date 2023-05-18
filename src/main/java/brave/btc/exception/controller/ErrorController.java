@@ -1,5 +1,6 @@
 package brave.btc.exception.controller;
 
+import brave.btc.dto.app.auth.jwt.JwtResponseDto;
 import brave.btc.exception.ErrorResponseDto;
 import brave.btc.exception.auth.*;
 import brave.btc.exception.sms.SmsCertificationNumberExpiredException;
@@ -55,11 +56,11 @@ public class ErrorController {
     }
 
     @ExceptionHandler(JWTVerificationException.class)
-    public ResponseEntity<ErrorResponseDto<?>> handleInvalidTokenException(JWTVerificationException e) {
+    public ResponseEntity<JwtResponseDto> handleInvalidTokenException(JWTVerificationException e) {
 
         log.error("[handleJWTVerificationException] 유효하지 않은 토큰입니다.");
-        ErrorResponseDto<Object> errorResponseDto = ErrorResponseDto.builder()
-                .message("유효하지 않은 토큰입니다.")
+        JwtResponseDto errorResponseDto = JwtResponseDto.builder()
+                .message(e.getMessage())
                 .code(HttpStatus.UNAUTHORIZED.value())
                 .build();
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)

@@ -2,12 +2,15 @@ package brave.btc.config.jwt;
 
 import brave.btc.config.auth.PrincipalDetails;
 import brave.btc.domain.app.user.UsePerson;
+import brave.btc.dto.app.auth.jwt.JwtResponseDto;
 import brave.btc.repository.app.UsePersonRepository;
+import brave.btc.service.app.auth.JwtServiceImpl;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,19 +32,45 @@ import java.io.IOException;
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
     private final UsePersonRepository usePersonRepository;
+    private final JwtServiceImpl jwtService;
 
-    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, UsePersonRepository usePersonRepository) {
+    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, UsePersonRepository usePersonRepository, JwtServiceImpl jwtService) {
         super(authenticationManager);
         this.usePersonRepository = usePersonRepository;
+        this.jwtService = jwtService;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
 
-        String atHeader = request.getHeader(JwtProperties.AT_HEADER);
         log.info("request = " + request.getServletPath());
+        if (!request.getServletPath().startsWith("/v1/auth/")) {
+            chain.doFilter(request, response);
+            return;
+        }
+
+        log.info("[Authorization] Refresh Token 유무 확인");
+        String rtHeader = request.getHeader(JwtProperties.RT_HEADER);
+
+        if (rtHeader != null) {
+            if (!rtHeader.startsWith(JwtProperties.TOKEN_PREFIX)) {
+                throw new JwtException("유효하지 않은 Refresh Token입니다.");
+            }
+            String refreshToken = rtHeader.replace(JwtProperties.TOKEN_PREFIX, "");
+            JwtResponseDto responseDto = jwtService.refresh(refreshToken);
+            ObjectMapper mapper = new ObjectMapper();
+            response.setContentType("application/json; charset=UTF-8");
+            response.setStatus(HttpServletResponse.SC_OK);
+            mapper.writeValue(response.getOutputStream(), responseDto);
+            chain.doFilter(request, response);
+            return;
+        }
+        log.info("[Authorization] Refresh Token 없음 확인");
+
+        log.info("[Authorization] Access Token 유무 확인");
+        String atHeader = request.getHeader(JwtProperties.AT_HEADER);
         //토큰 헤더가 없다면 통과
-        if (atHeader == null || !request.getServletPath().startsWith("/v1/auth/user")) {
+        if (atHeader == null) {
             chain.doFilter(request, response);
             return;
         } else {
@@ -51,7 +80,9 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             }
         }
 
-        String atToken = request.getHeader(JwtProperties.AT_HEADER).replace(JwtProperties.TOKEN_PREFIX, "");
+        //토큰 헤더가 없다면 통과
+
+        String atToken = atHeader.replace(JwtProperties.TOKEN_PREFIX, "");
         log.info("atToken= {}", atToken);
         //서명 확인
         try {
@@ -84,7 +115,6 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             log.info("[Authorization] 유효하지 않은 Access Token");
             throw new JwtException("유효하지 않은 Access Token입니다.");
         }
-
 
         chain.doFilter(request, response);
 
