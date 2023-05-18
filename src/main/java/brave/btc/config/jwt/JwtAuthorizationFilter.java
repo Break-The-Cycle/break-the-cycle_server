@@ -1,21 +1,8 @@
 package brave.btc.config.jwt;
 
-import brave.btc.config.auth.PrincipalDetails;
-import brave.btc.domain.app.user.UsePerson;
-import brave.btc.dto.app.auth.jwt.JwtResponseDto;
-import brave.btc.repository.app.UsePersonRepository;
-import brave.btc.service.app.auth.JwtServiceImpl;
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.auth0.jwt.exceptions.TokenExpiredException;
-import com.auth0.jwt.interfaces.DecodedJWT;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
+import java.io.IOException;
+import java.util.Optional;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,7 +10,26 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
-import java.io.IOException;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import brave.btc.config.auth.PrincipalDetails;
+import brave.btc.domain.app.user.UsePerson;
+import brave.btc.domain.bo.user.ManagePerson;
+import brave.btc.dto.app.auth.jwt.JwtResponseDto;
+import brave.btc.exception.auth.UserPrincipalNotFoundException;
+import brave.btc.repository.app.UsePersonRepository;
+import brave.btc.repository.bo.ManagePersonRepository;
+import brave.btc.service.app.auth.JwtServiceImpl;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 
 //시큐리티 필터 중 BasicAuthentication 필터가 있음
 //권한이나 인증이 필요한 특정 주소를 요청했을 때 위 필터에 들어감
@@ -32,11 +38,17 @@ import java.io.IOException;
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
     private final UsePersonRepository usePersonRepository;
+    private final ManagePersonRepository managePersonRepository;
     private final JwtServiceImpl jwtService;
 
-    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, UsePersonRepository usePersonRepository, JwtServiceImpl jwtService) {
+    public JwtAuthorizationFilter(
+        AuthenticationManager authenticationManager,
+        UsePersonRepository usePersonRepository,
+        ManagePersonRepository managePersonRepository,
+        JwtServiceImpl jwtService) {
         super(authenticationManager);
         this.usePersonRepository = usePersonRepository;
+        this.managePersonRepository = managePersonRepository;
         this.jwtService = jwtService;
     }
 
@@ -90,18 +102,28 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             log.info("[Authorization] Access Token 유효성 검사 시작");
             DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512(JwtProperties.SECRET)).build()
                     .verify(atToken);
-            String phoneNumber = decodedJWT.getClaim("phoneNumber").asString();
+            String loginId = decodedJWT.getClaim("loginId").asString();
 
-            usePersonRepository.findByPhoneNumber(phoneNumber)
-                    .orElseThrow(() -> new JWTVerificationException("유효하지 않은 Access Token 입니다."));
+            //TODO : ADMIN 추가하기
+            Optional<UsePerson> findUsePersonOptional = usePersonRepository.findByLoginId(loginId);
+            Optional<ManagePerson> findManagePersonOptional = managePersonRepository.findByLoginId(loginId);
+
+            PrincipalDetails principalDetails;
+            if (findUsePersonOptional.isEmpty() && findManagePersonOptional.isEmpty()) {
+                throw new UserPrincipalNotFoundException("해당하는 유저가 존재하지 않습니다.");
+            } else if (findUsePersonOptional.isPresent()) {
+                principalDetails = new PrincipalDetails(findUsePersonOptional.get());
+            } else if (findManagePersonOptional.isPresent()) {
+                principalDetails = new PrincipalDetails(findManagePersonOptional.get());
+            } else {
+                throw new IllegalStateException("비정상 상태");
+            }
+
             log.info("[Authorization] Access Token 유효성 검사 통과");
-            log.info("phoneNumber= {}", phoneNumber);
+            log.debug("loginId= {}", loginId);
 
             //서명 통과
             log.info("[Authorization] 서명 통과");
-            UsePerson userEntity = usePersonRepository.findByPhoneNumber(phoneNumber)
-                    .orElseThrow(() -> new JwtException("서명과 일치하는 사용자가 없습니다."));
-            PrincipalDetails principalDetails = new PrincipalDetails(userEntity);
 
             //JWT 토큰 서명을 통해 서명이 정상이면 Authentication 객체를 만들어준다
             Authentication authentication = new UsernamePasswordAuthenticationToken(principalDetails, null, principalDetails.getAuthorities());

@@ -19,7 +19,7 @@ public class QUsePerson extends EntityPathBase<UsePerson> {
 
     public static final QUsePerson usePerson = new QUsePerson("usePerson");
 
-    public final QUser _super = new QUser(this);
+    public final brave.btc.domain.common.user.QUser _super = new brave.btc.domain.common.user.QUser(this);
 
     public final StringPath emergencyReportContent = createString("emergencyReportContent");
 

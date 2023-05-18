@@ -1,4 +1,4 @@
-package brave.btc.domain.app.user;
+package brave.btc.domain.bo.user;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -15,13 +15,13 @@ import com.querydsl.core.types.Path;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QManagePerson extends EntityPathBase<ManagePerson> {
 
-    private static final long serialVersionUID = 1242475633L;
+    private static final long serialVersionUID = -327631237L;
 
     public static final QManagePerson managePerson = new QManagePerson("managePerson");
 
-    public final QUser _super = new QUser(this);
+    public final brave.btc.domain.common.user.QUser _super = new brave.btc.domain.common.user.QUser(this);
 
-    public final StringPath division = createString("division");
+    public final EnumPath<brave.btc.constant.enums.ManageDivision> division = createEnum("division", brave.btc.constant.enums.ManageDivision.class);
 
     public final NumberPath<Integer> id = createNumber("id", Integer.class);
 

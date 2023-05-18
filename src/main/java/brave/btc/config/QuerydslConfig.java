@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 @Configuration
 @Slf4j
 public class QuerydslConfig {
+
+
 	@Bean
 	public JPAQueryFactory jpaQueryFactory(EntityManager entityManager) {
 		return new JPAQueryFactory(entityManager);

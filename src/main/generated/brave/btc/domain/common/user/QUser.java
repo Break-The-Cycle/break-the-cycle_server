@@ -1,4 +1,4 @@
-package brave.btc.domain.app.user;
+package brave.btc.domain.common.user;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -15,7 +15,7 @@ import com.querydsl.core.types.Path;
 @Generated("com.querydsl.codegen.DefaultSupertypeSerializer")
 public class QUser extends EntityPathBase<User> {
 
-    private static final long serialVersionUID = -1483531742L;
+    private static final long serialVersionUID = -1056063798L;
 
     public static final QUser user = new QUser("user");
 

@@ -1,20 +1,8 @@
 package brave.btc.config.jwt;
 
-import brave.btc.config.auth.PrincipalDetails;
-import brave.btc.dto.app.auth.login.LoginRequestDto;
-import brave.btc.dto.app.auth.jwt.JwtResponseDto;
-import brave.btc.exception.auth.AuthenticationInvalidException;
-import brave.btc.service.app.auth.JwtServiceImpl;
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.Valid;
-import lombok.Value;
-import lombok.extern.slf4j.Slf4j;
+import java.io.IOException;
+import java.util.Date;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -24,8 +12,20 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import java.io.IOException;
-import java.util.Date;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import brave.btc.config.auth.PrincipalDetails;
+import brave.btc.domain.common.user.User;
+import brave.btc.dto.app.auth.jwt.JwtResponseDto;
+import brave.btc.dto.app.auth.login.LoginRequestDto;
+import brave.btc.service.app.auth.JwtServiceImpl;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 
 // "/login" 요청에서 username, password 전송 시 동작
 
@@ -82,14 +82,15 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         log.info("==========로그인 완료=========");
         PrincipalDetails principalDetails = (PrincipalDetails) authResult.getPrincipal();
 
+        User loginSuccessUser = principalDetails.getUser();
         String accessToken = JWT.create()
                 //토큰 이름
                 .withSubject("accessToken")
                 //만료시간
                 .withExpiresAt(new Date(System.currentTimeMillis()+JwtProperties.AT_EXP_TIME))
                 //비공개 값
-                .withClaim("id", principalDetails.getUser().getId())
-                .withClaim("phoneNumber", principalDetails.getUser().getPhoneNumber())
+                .withClaim("id", loginSuccessUser.getId())
+                .withClaim("loginId", loginSuccessUser.getLoginId())
                 //암호화 방식
                 .sign(Algorithm.HMAC512(JwtProperties.SECRET));
         log.info("[Authentication] accessToken 생성 완료: " + accessToken);
@@ -100,12 +101,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 //만료시간
                 .withExpiresAt(new Date(System.currentTimeMillis()+JwtProperties.RT_EXP_TIME))
                 //비공개 값
-                .withClaim("id", principalDetails.getUser().getId())
+                .withClaim("id", loginSuccessUser.getId())
                 //암호화 방식
                 .sign(Algorithm.HMAC512(JwtProperties.SECRET));
         log.info("[Authentication] refreshToken 생성 완료: " + refreshToken);
 
-        jwtService.updateRefreshToken(refreshToken, principalDetails.getUser().getId());
+        jwtService.updateRefreshToken(refreshToken, loginSuccessUser.getId());
         log.info("[Authentication] refreshToken DB에 저장 완료: " + refreshToken);
 
         JwtResponseDto responseDto = JwtResponseDto.builder()
