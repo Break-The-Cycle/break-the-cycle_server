@@ -21,6 +21,8 @@ public class QAddress extends EntityPathBase<Address> {
 
     public final StringPath bungee = createString("bungee");
 
+    public final StringPath detail = createString("detail");
+
     public final EnumPath<brave.btc.constant.enums.AddressDivision> division = createEnum("division", brave.btc.constant.enums.AddressDivision.class);
 
     public final StringPath eupmyeondong = createString("eupmyeondong");

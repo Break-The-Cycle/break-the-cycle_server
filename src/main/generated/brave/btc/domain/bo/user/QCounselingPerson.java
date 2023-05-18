@@ -61,7 +61,7 @@ public class QCounselingPerson extends EntityPathBase<CounselingPerson> {
 
     public QCounselingPerson(Class<? extends CounselingPerson> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.officialInstitution = inits.isInitialized("officialInstitution") ? new QOfficialInstitution(forProperty("officialInstitution")) : null;
+        this.officialInstitution = inits.isInitialized("officialInstitution") ? new QOfficialInstitution(forProperty("officialInstitution"), inits.get("officialInstitution")) : null;
     }
 
 }

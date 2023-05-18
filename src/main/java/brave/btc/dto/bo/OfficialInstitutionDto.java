@@ -21,6 +21,34 @@ public class OfficialInstitutionDto {
 	@NoArgsConstructor
 	@AllArgsConstructor
 	@Builder
+	@Schema(title = "공식 기관 응답", description = "공식 기관 응답하는 dto")
+	public static class Response {
+
+		@Schema(description="공식 기관 이름")
+		private Integer id;
+
+		@Schema(description="공식 기관 이름")
+		private String name;
+
+		@Schema(description = "공식 기관 전화 번호")
+		private String phoneNumber;
+
+		@Schema(description = "공식 기관 코드")
+		private OfficialInstitutionDivision code;
+
+		@Schema(description = "기관 운영 시작 시간")
+		private Time startTime;
+
+		@Schema(description = "기관 운영 종료 시간")
+		private Time endTime;
+	}
+
+
+
+	@Data
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Builder
 	@Schema(title = "공식 기관 생성 요청", description = "공식 기관 생성을 요청하는 dto")
 	public static class Create {
 
@@ -41,15 +69,14 @@ public class OfficialInstitutionDto {
 
 		@Schema(description = "공식 기관 주소")
 		private AddressDto.Create address;
-
-		public OfficialInstitution toOfficialInstitutionEntity() {
+		public OfficialInstitution toEntity() {
 			return OfficialInstitution.builder()
 				.name(name)
 				.phoneNumber(phoneNumber)
 				.code(code)
 				.startTime(startTime)
 				.endTime(endTime)
-				.address(address.toAddressEntity())
+				.address(address.toEntity())
 				.build();
 		}
 

@@ -49,7 +49,7 @@ public class AddressDto {
 		@Schema(description="상세지역")
 		private String detail;
 
-		public Address toAddressEntity() {
+		public Address toEntity() {
 			return Address.builder()
 				.division(division)
 				.postalNumber(postalNumber)

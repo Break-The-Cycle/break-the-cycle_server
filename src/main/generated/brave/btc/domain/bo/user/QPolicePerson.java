@@ -63,7 +63,7 @@ public class QPolicePerson extends EntityPathBase<PolicePerson> {
 
     public QPolicePerson(Class<? extends PolicePerson> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.officialInstitution = inits.isInitialized("officialInstitution") ? new QOfficialInstitution(forProperty("officialInstitution")) : null;
+        this.officialInstitution = inits.isInitialized("officialInstitution") ? new QOfficialInstitution(forProperty("officialInstitution"), inits.get("officialInstitution")) : null;
     }
 
 }

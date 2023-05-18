@@ -67,7 +67,7 @@ public class UsePersonAndMenstruationServiceImpl implements UsePersonAndMenstrua
 
 		LocalDate expectedMenstruationDate = latestStartDate;
 		//가장 가까운 미래에 생리를 할 날짜를 결정
-		while (expectedMenstruationDate.isBefore(ㄹtodayDate)) {
+		while (expectedMenstruationDate.isBefore(todayDate)) {
 			expectedMenstruationDate = expectedMenstruationDate.plus(menstruationPeriod);
 		}
 		int halfMenstruationPeriodDays = menstruationPeriod.getDays()/2;

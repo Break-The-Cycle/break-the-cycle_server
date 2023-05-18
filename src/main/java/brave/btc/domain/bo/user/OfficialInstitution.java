@@ -6,6 +6,7 @@ import org.hibernate.annotations.Comment;
 
 import brave.btc.constant.enums.OfficialInstitutionDivision;
 import brave.btc.domain.bo.Address;
+import brave.btc.dto.bo.OfficialInstitutionDto;
 import brave.btc.util.converter.OfficialInstitutionDivisionToCodeConverter;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -65,5 +66,16 @@ public class OfficialInstitution {
 	@OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
 	@ToString.Exclude
 	private Address address;
+
+	public OfficialInstitutionDto.Response toResponseDto() {
+		return OfficialInstitutionDto.Response.builder()
+			.id(id)
+			.name(name)
+			.phoneNumber(phoneNumber)
+			.code(code)
+			.startTime(startTime)
+			.endTime(endTime)
+			.build();
+	}
 
 }

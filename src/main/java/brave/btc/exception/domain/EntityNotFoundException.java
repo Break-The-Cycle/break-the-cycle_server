@@ -2,7 +2,7 @@ package brave.btc.exception.domain;
 
 public class EntityNotFoundException extends RuntimeException{
 
-	public EntityNotFoundException(String className, Long id) {
+	public EntityNotFoundException(String className, Integer id) {
 		super("Entity name: ".concat(className)
 			.concat(" / ")
 			.concat(" id: ".concat(id.toString())
