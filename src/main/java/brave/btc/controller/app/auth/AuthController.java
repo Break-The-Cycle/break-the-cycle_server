@@ -1,9 +1,5 @@
 package brave.btc.controller.app.auth;
 
-import brave.btc.dto.app.auth.jwt.JwtResponseDto;
-import brave.btc.exception.ErrorResponseDto;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,11 +12,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import brave.btc.dto.CommonResponseDto;
+import brave.btc.dto.app.auth.jwt.JwtResponseDto;
 import brave.btc.dto.app.auth.login.LoginRequestDto;
-import brave.btc.dto.app.auth.register.RegisterRequestDto;
+import brave.btc.dto.app.auth.register.RegisterDto;
+import brave.btc.exception.ErrorResponseDto;
 import brave.btc.service.app.auth.AuthServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -58,7 +58,7 @@ public class AuthController {
                 .body(responseDto);
     }
 
-    @Operation(summary = "register", description = "회원 가입 폼 제출",
+    @Operation(summary = "use person register", description = " 사용 개인 회원 가입",
             responses = {
                     @ApiResponse(responseCode = "200", description = "회원 가입 성공",
                             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
@@ -67,11 +67,29 @@ public class AuthController {
                             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                                     schema = @Schema(implementation = ErrorResponseDto.class)))
             })
-    @PostMapping("/register")
-    public ResponseEntity<?> registerV1(
-            @RequestBody @Valid RegisterRequestDto request,
+    @PostMapping("/register/use-person")
+    public ResponseEntity<?> registerUsePersonV1(
+            @RequestBody @Valid RegisterDto.UsePersonCreate request,
             BindingResult bindingResult) {
-        CommonResponseDto<Object> responseDto = authService.register(request);
+        CommonResponseDto<Object> responseDto = authService.registerUsePerson(request);
+        return ResponseEntity.ok()
+                .body(responseDto);
+    }
+
+    @Operation(summary = "manage person register", description = "관리 개인 회원 가입",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "회원 가입 성공",
+                            content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = CommonResponseDto.class))),
+                    @ApiResponse(responseCode = "400", description = "회원 가입 실패",
+                            content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = ErrorResponseDto.class)))
+            })
+    @PostMapping("/register/manage-person")
+    public ResponseEntity<?> registerManagePersonV1(
+            @RequestBody @Valid RegisterDto.ManagePersonCreate request,
+            BindingResult bindingResult) {
+        CommonResponseDto<Object> responseDto = authService.registerManagePerson(request);
         return ResponseEntity.ok()
                 .body(responseDto);
     }
@@ -89,6 +107,4 @@ public class AuthController {
     public void loginV1(
             @RequestBody @Valid LoginRequestDto request) {
     }
-
-
 }

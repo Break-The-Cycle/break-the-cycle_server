@@ -16,6 +16,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -50,6 +51,12 @@ public class ManagePerson extends User {
 	@Comment("관리개인이름")
 	@Column(name = "MANAGE_PERSON_NAME", columnDefinition = "VARCHAR(45) NOT NULL", nullable = false)
 	protected String name;
+
+	// @Comment("관리개인전화번호")
+	// @Column(name = "MANAGE_PERSON_PNBR", columnDefinition = "VARCHAR(18) NOT NULL" , nullable = false)
+	@Transient
+	private String phoneNumber;
+
 
 	@Convert(converter = ManageDivisionToCodeConverter.class)
 	@Comment("관리구분")

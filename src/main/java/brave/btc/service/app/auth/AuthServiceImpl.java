@@ -7,10 +7,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import brave.btc.constant.enums.ManageDivision;
 import brave.btc.domain.app.user.UsePerson;
+import brave.btc.domain.bo.user.CounselingPerson;
 import brave.btc.domain.bo.user.ManagePerson;
+import brave.btc.domain.bo.user.PolicePerson;
 import brave.btc.dto.CommonResponseDto;
-import brave.btc.dto.app.auth.register.RegisterRequestDto;
+import brave.btc.dto.app.auth.register.RegisterDto;
 import brave.btc.exception.auth.AuthenticationInvalidException;
 import brave.btc.exception.auth.UserPrincipalNotFoundException;
 import brave.btc.repository.app.UsePersonRepository;
@@ -70,30 +73,68 @@ public class AuthServiceImpl implements AuthService {
 
 
     @Override
-    public CommonResponseDto<Object> register(RegisterRequestDto request) {
+    public CommonResponseDto<Object> registerUsePerson(RegisterDto.UsePersonCreate request) {
 
         log.debug("[register] request: {}", request);
         //비밀번호 매칭 확인
         String password = request.getPassword();
         String password2 = request.getPassword2();
-        if (password.equals(password2)) {
-            //TODO : MapStruct 도입하기 ... (나중에 필드 많아지면 훨씬 편함) DTO <-> Entity Mapper
 
-            UsePerson newUsePerson = UsePerson.builder()
-                    .loginId(request.getLoginId())
-                    .password(bCryptPasswordEncoder.encode(password))
-                    .name(request.getName())
-                    .phoneNumber(request.getPhoneNumber())
-                    .build();
-            usePersonRepository.save(newUsePerson);
-            log.info("[register] 회원 가입 완료");
-            return CommonResponseDto.builder()
-                    .message("회원 가입이 완료되었습니다.")
-                    .code(HttpStatus.OK.value())
-                    .build();
+        if (!password.equals(password2)) {
+            log.error("[register] 사용 개인 회원 가입 실패 : 비밀번호, 확인 비밀번호 불일치");
+            throw new AuthenticationInvalidException("비밀번호와 확인 비밀번호가 일치하지 않습니다.");
         }
-        log.error("[register] 회원 가입 실패");
-        throw new AuthenticationInvalidException("비밀번호와 확인 비밀번호가 일치하지 않습니다.");
+
+        UsePerson newUsePerson = UsePerson.builder()
+            .loginId(request.getLoginId())
+            .password(bCryptPasswordEncoder.encode(password))
+            .name(request.getName())
+            .phoneNumber(request.getPhoneNumber())
+            .build();
+        usePersonRepository.save(newUsePerson);
+        log.info("[register] 사용 개인 회원 가입 완료");
+        return CommonResponseDto.builder()
+            .message("사용 개인 회원 가입이 완료되었습니다.")
+            .code(HttpStatus.OK.value())
+            .build();
     }
 
+    @Override
+    public CommonResponseDto<Object> registerManagePerson(RegisterDto.ManagePersonCreate request) {
+        log.debug("[register] request: {}", request);
+        //비밀번호 매칭 확인
+        String password = request.getPassword();
+        String password2 = request.getPassword2();
+
+        if (!password.equals(password2)) {
+            log.error("[register] 사용 개인 회원 가입 실패 : 비밀번호, 확인 비밀번호 불일치");
+            throw new AuthenticationInvalidException("비밀번호와 확인 비밀번호가 일치하지 않습니다.");
+        }
+
+        ManageDivision manageDivision = request.getManageDivision();
+        ManagePerson newManagePerson;
+        if (manageDivision == ManageDivision.COUNSELOR) {
+            newManagePerson = CounselingPerson.builder()
+                .loginId(request.getLoginId())
+                .password(bCryptPasswordEncoder.encode(password))
+                .name(request.getName())
+                .phoneNumber(request.getPhoneNumber())
+                .build();
+        } else if (manageDivision == ManageDivision.POLICE_OFFICER) {
+            newManagePerson = PolicePerson.builder()
+                .loginId(request.getLoginId())
+                .password(bCryptPasswordEncoder.encode(password))
+                .name(request.getName())
+                .phoneNumber(request.getPhoneNumber())
+                .build();
+        }else{
+            throw new IllegalStateException("비정상 상태");
+        }
+        managePersonRepository.save(newManagePerson);
+        log.info("[register] 회원 가입 완료");
+        return CommonResponseDto.builder()
+            .message("회원 가입이 완료되었습니다.")
+            .code(HttpStatus.OK.value())
+            .build();
+    }
 }
