@@ -1,4 +1,4 @@
-package brave.btc.dto.common;
+package brave.btc.dto.bo;
 
 
 import brave.btc.constant.enums.AddressDivision;

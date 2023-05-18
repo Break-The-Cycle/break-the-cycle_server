@@ -1,10 +1,9 @@
 package brave.btc.dto.bo;
 
-import java.sql.Time;
+import java.time.LocalTime;
 
 import brave.btc.constant.enums.OfficialInstitutionDivision;
 import brave.btc.domain.bo.user.OfficialInstitution;
-import brave.btc.dto.common.AddressDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,11 +35,11 @@ public class OfficialInstitutionDto {
 		@Schema(description = "공식 기관 코드")
 		private OfficialInstitutionDivision code;
 
-		@Schema(description = "기관 운영 시작 시간")
-		private Time startTime;
+		@Schema(description = "기관 운영 시작 시간", implementation = LocalTime.class)
+		private LocalTime startTime;
 
-		@Schema(description = "기관 운영 종료 시간")
-		private Time endTime;
+		@Schema(description = "기관 운영 종료 시간", implementation = LocalTime.class)
+		private LocalTime endTime;
 	}
 
 
@@ -61,14 +60,15 @@ public class OfficialInstitutionDto {
 		@Schema(description = "공식 기관 코드")
 		private OfficialInstitutionDivision code;
 
-		@Schema(description = "기관 운영 시작 시간")
-		private Time startTime;
+		@Schema(description = "기관 운영 시작 시간", implementation = LocalTime.class)
+		private LocalTime startTime;
 
-		@Schema(description = "기관 운영 종료 시간")
-		private Time endTime;
+		@Schema(description = "기관 운영 종료 시간", implementation = LocalTime.class)
+		private LocalTime endTime;
 
 		@Schema(description = "공식 기관 주소")
 		private AddressDto.Create address;
+
 		public OfficialInstitution toEntity() {
 			return OfficialInstitution.builder()
 				.name(name)

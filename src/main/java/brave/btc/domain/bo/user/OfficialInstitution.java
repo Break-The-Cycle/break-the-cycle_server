@@ -1,6 +1,6 @@
 package brave.btc.domain.bo.user;
 
-import java.sql.Time;
+import java.time.LocalTime;
 
 import org.hibernate.annotations.Comment;
 
@@ -55,11 +55,11 @@ public class OfficialInstitution {
 
 	@Comment("기관 운영 시작 시간")
 	@Column(name = "INSTT_OPRTN_START_TIME", nullable = true)
-	private Time startTime;
+	private LocalTime startTime;
 
 	@Comment("기관 운영 종료 시간")
 	@Column(name = "INSTT_OPRTN_END_TIME", nullable = true)
-	private Time endTime;
+	private LocalTime endTime;
 
 	@Comment("공식 기관 주소")
 	@JoinColumn(name = "ADDRESS_ID", columnDefinition = "INT NOT NULL", nullable = false)

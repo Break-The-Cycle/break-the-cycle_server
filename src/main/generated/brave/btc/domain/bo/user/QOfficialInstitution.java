@@ -26,7 +26,7 @@ public class QOfficialInstitution extends EntityPathBase<OfficialInstitution> {
 
     public final EnumPath<brave.btc.constant.enums.OfficialInstitutionDivision> code = createEnum("code", brave.btc.constant.enums.OfficialInstitutionDivision.class);
 
-    public final TimePath<java.sql.Time> endTime = createTime("endTime", java.sql.Time.class);
+    public final TimePath<java.time.LocalTime> endTime = createTime("endTime", java.time.LocalTime.class);
 
     public final NumberPath<Integer> id = createNumber("id", Integer.class);
 
@@ -34,7 +34,7 @@ public class QOfficialInstitution extends EntityPathBase<OfficialInstitution> {
 
     public final StringPath phoneNumber = createString("phoneNumber");
 
-    public final TimePath<java.sql.Time> startTime = createTime("startTime", java.sql.Time.class);
+    public final TimePath<java.time.LocalTime> startTime = createTime("startTime", java.time.LocalTime.class);
 
     public QOfficialInstitution(String variable) {
         this(OfficialInstitution.class, forVariable(variable), INITS);

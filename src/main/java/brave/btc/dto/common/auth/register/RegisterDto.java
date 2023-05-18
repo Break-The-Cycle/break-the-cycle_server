@@ -3,7 +3,7 @@ package brave.btc.dto.common.auth.register;
 import brave.btc.constant.enums.ManageDivision;
 import brave.btc.domain.app.user.UsePerson;
 import brave.btc.domain.bo.user.PolicePerson;
-import brave.btc.dto.common.AddressDto;
+import brave.btc.dto.bo.AddressDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
