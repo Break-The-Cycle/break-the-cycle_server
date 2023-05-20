@@ -4,6 +4,7 @@ import java.time.Period;
 
 import org.hibernate.annotations.Comment;
 
+import brave.btc.domain.common.user.User;
 import brave.btc.util.converter.PeriodToIntegerConverter;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
@@ -17,15 +18,16 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @ToString
 @Getter
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "USE_PERSON")
-public class UsePerson extends User{
+public class UsePerson extends User {
 
 	@Comment("사용개인ID")
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)

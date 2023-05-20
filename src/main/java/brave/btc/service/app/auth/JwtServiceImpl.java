@@ -3,7 +3,7 @@ package brave.btc.service.app.auth;
 import brave.btc.config.jwt.JwtProperties;
 import brave.btc.domain.app.user.UsePerson;
 import brave.btc.domain.temporary.jwt.RefreshToken;
-import brave.btc.dto.app.auth.jwt.JwtResponseDto;
+import brave.btc.dto.common.auth.jwt.JwtResponseDto;
 import brave.btc.repository.app.UsePersonRepository;
 import brave.btc.repository.temporary.jwt.RefreshTokenRepository;
 import com.auth0.jwt.JWT;

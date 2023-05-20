@@ -25,7 +25,7 @@ import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@Tag(name = "03-1. Use-person", description = "앱 사용자 관련 API")
+@Tag(name = "10-1. APP_Use-person", description = "앱 사용자 관련 API")
 @Slf4j
 @Validated
 @RequiredArgsConstructor

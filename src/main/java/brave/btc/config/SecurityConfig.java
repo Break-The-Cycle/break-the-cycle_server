@@ -1,12 +1,5 @@
 package brave.btc.config;
 
-import brave.btc.config.jwt.JwtAuthenticationFilter;
-import brave.btc.config.jwt.JwtAuthorizationFilter;
-import brave.btc.config.jwt.JwtExceptionFilter;
-import brave.btc.repository.app.UsePersonRepository;
-import brave.btc.service.app.auth.AuthServiceImpl;
-import brave.btc.service.app.auth.JwtServiceImpl;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,6 +11,14 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.expression.WebExpressionAuthorizationManager;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import brave.btc.config.jwt.JwtAuthenticationFilter;
+import brave.btc.config.jwt.JwtAuthorizationFilter;
+import brave.btc.config.jwt.JwtExceptionFilter;
+import brave.btc.repository.app.UsePersonRepository;
+import brave.btc.repository.bo.ManagePersonRepository;
+import brave.btc.service.app.auth.JwtServiceImpl;
+import lombok.RequiredArgsConstructor;
+
 
 @Configuration
 @EnableWebSecurity
@@ -26,6 +27,8 @@ public class SecurityConfig {
 
     private final CorsConfig corsConfig;
     private final UsePersonRepository usePersonRepository;
+
+    private final ManagePersonRepository managePersonRepository;
     private final JwtServiceImpl jwtService;
     private final JwtExceptionFilter jwtExceptionFilter;
 
@@ -43,8 +46,8 @@ public class SecurityConfig {
                 .frameOptions().disable()
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers("/v1/auth/user/**")
-                .access(new WebExpressionAuthorizationManager("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER')"))
+                .requestMatchers( "/v1/use-persons/**","/v1/violent-records/**")
+                .access(new WebExpressionAuthorizationManager("hasRole('ROLE_USE_PERSON') or hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER')"))
                 .requestMatchers("/v1/manager/**")
                 .access(new WebExpressionAuthorizationManager("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER')"))
                 .requestMatchers("/v1/admin/**")
@@ -62,7 +65,7 @@ public class SecurityConfig {
             http
                     .addFilter(corsConfig.corsFilter())
                     .addFilter(new JwtAuthenticationFilter(authenticationManager, jwtService))
-                    .addFilter(new JwtAuthorizationFilter(authenticationManager, usePersonRepository, jwtService));
+                    .addFilter(new JwtAuthorizationFilter(authenticationManager, usePersonRepository, managePersonRepository, jwtService));
         }
     }
 }

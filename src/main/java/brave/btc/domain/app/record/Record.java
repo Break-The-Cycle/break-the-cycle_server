@@ -57,13 +57,8 @@ public class Record {
 	protected LocalDateTime datetime =LocalDateTime.now();
 
 	@Convert(converter = RecordDivisionToCodeConverter.class)
+	@Comment("기록 구분")
 	@Column(name = "REPORT_DVSN", insertable = false, updatable = false)
 	protected RecordDivision recordDivision;
-
-	// @Comment("기록구분")
-	// @Convert(converter = RecordDivisionToCodeConverter.class)
-	// @Enumerated(EnumType.STRING)
-	// @Column(name = "REPORT_DVSN", nullable = false)
-	// private RecordDivision division;
 
 }

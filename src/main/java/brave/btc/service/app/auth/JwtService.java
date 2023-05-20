@@ -1,6 +1,6 @@
 package brave.btc.service.app.auth;
 
-import brave.btc.dto.app.auth.jwt.JwtResponseDto;
+import brave.btc.dto.common.auth.jwt.JwtResponseDto;
 
 public interface JwtService {
 
