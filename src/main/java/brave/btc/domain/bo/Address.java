@@ -35,7 +35,6 @@ public class Address {
 	private Integer id;
 
 	@Convert(converter= AddressDivisionToCodeConverter.class)
-	@Enumerated(EnumType.STRING)
 	@Comment("지역 구분")
 	@Column(name = "ADDRESS_DVSN", columnDefinition = "VARCHAR(3) NOT NULL", nullable = false)
 	private AddressDivision division;

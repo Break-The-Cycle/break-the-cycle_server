@@ -11,13 +11,16 @@ import brave.btc.constant.enums.ManageDivision;
 import brave.btc.domain.app.user.UsePerson;
 import brave.btc.domain.bo.user.CounselingPerson;
 import brave.btc.domain.bo.user.ManagePerson;
+import brave.btc.domain.bo.user.OfficialInstitution;
 import brave.btc.domain.bo.user.PolicePerson;
 import brave.btc.dto.CommonResponseDto;
 import brave.btc.dto.common.auth.register.RegisterDto;
 import brave.btc.exception.auth.AuthenticationInvalidException;
 import brave.btc.exception.auth.UserPrincipalNotFoundException;
+import brave.btc.exception.domain.EntityNotFoundException;
 import brave.btc.repository.app.UsePersonRepository;
 import brave.btc.repository.bo.ManagePersonRepository;
+import brave.btc.repository.bo.OfficialInstitutionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,6 +32,7 @@ public class AuthServiceImpl implements AuthService {
 
     private final UsePersonRepository usePersonRepository;
     private final ManagePersonRepository managePersonRepository;
+    private final OfficialInstitutionRepository officialInstitutionRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
@@ -107,22 +111,18 @@ public class AuthServiceImpl implements AuthService {
             throw new AuthenticationInvalidException("비밀번호와 확인 비밀번호가 일치하지 않습니다.");
         }
 
+        Integer officialInstitutionId = request.getOfficialInstitutionId();
+        OfficialInstitution officialInstitution = officialInstitutionRepository.findById(officialInstitutionId)
+            .orElseThrow(() -> new EntityNotFoundException(OfficialInstitution.class.getName(), officialInstitutionId));
+
         ManageDivision manageDivision = request.getManageDivision();
+        String encodedPassword = bCryptPasswordEncoder.encode(password);
         ManagePerson newManagePerson;
+
         if (manageDivision == ManageDivision.COUNSELOR) {
-            newManagePerson = CounselingPerson.builder()
-                .loginId(request.getLoginId())
-                .password(bCryptPasswordEncoder.encode(password))
-                .name(request.getName())
-                .phoneNumber(request.getPhoneNumber())
-                .build();
+            newManagePerson = request.toCounselingPersonEntity(encodedPassword, officialInstitution);
         } else if (manageDivision == ManageDivision.POLICE_OFFICER) {
-            newManagePerson = PolicePerson.builder()
-                .loginId(request.getLoginId())
-                .password(bCryptPasswordEncoder.encode(password))
-                .name(request.getName())
-                .phoneNumber(request.getPhoneNumber())
-                .build();
+            newManagePerson = request.toPolicePersonEntity(encodedPassword, officialInstitution);
         }else{
             throw new IllegalStateException("비정상 상태");
         }

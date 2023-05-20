@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.servers.Server;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import lombok.RequiredArgsConstructor;
@@ -44,8 +45,9 @@ public class SwaggerConfig {
                         .bearerFormat("JWT")); // 토큰 형식을 지정하는 임의의 문자(Optional)
 
         return new OpenAPI()
-                .addSecurityItem(securityRequirement)
-                .components(components);
+            .addSecurityItem(securityRequirement)
+            .components(components);
+
     }
 
 }

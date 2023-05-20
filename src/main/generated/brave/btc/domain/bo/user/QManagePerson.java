@@ -31,6 +31,8 @@ public class QManagePerson extends EntityPathBase<ManagePerson> {
 
     public final StringPath password = createString("password");
 
+    public final StringPath phoneNumber = createString("phoneNumber");
+
     public QManagePerson(String variable) {
         super(ManagePerson.class, forVariable(variable));
     }

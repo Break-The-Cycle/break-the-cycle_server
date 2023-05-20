@@ -1,6 +1,9 @@
 package brave.btc.dto.bo;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
 import brave.btc.constant.enums.OfficialInstitutionDivision;
 import brave.btc.domain.bo.user.OfficialInstitution;
@@ -35,14 +38,12 @@ public class OfficialInstitutionDto {
 		@Schema(description = "공식 기관 코드")
 		private OfficialInstitutionDivision code;
 
-		@Schema(description = "기관 운영 시작 시간", implementation = LocalTime.class)
+		@Schema(description = "기관 운영 시작 시간" ,example = "09:00:00", pattern = "HH:mm:ss")
 		private LocalTime startTime;
 
-		@Schema(description = "기관 운영 종료 시간", implementation = LocalTime.class)
+		@Schema(description = "기관 운영 종료 시간",example = "19:00:00", pattern = "HH:mm:ss")
 		private LocalTime endTime;
 	}
-
-
 
 	@Data
 	@NoArgsConstructor
@@ -51,23 +52,23 @@ public class OfficialInstitutionDto {
 	@Schema(title = "공식 기관 생성 요청", description = "공식 기관 생성을 요청하는 dto")
 	public static class Create {
 
-		@Schema(description="공식 기관 이름")
+		@Schema(description = "공식 기관 이름", example = "일산 동부 경찰서")
 		private String name;
 
-		@Schema(description = "공식 기관 전화 번호")
+		@Schema(description = "공식 기관 전화 번호", example = "031-123-1234")
 		private String phoneNumber;
 
-		@Schema(description = "공식 기관 코드")
+		@Schema(description = "공식 기관 코드", example = "NATIONAL_POLICE_STATION")
 		private OfficialInstitutionDivision code;
 
-		@Schema(description = "기관 운영 시작 시간", implementation = LocalTime.class)
+		@Schema(description = "기관 운영 시작 시간" ,example = "09:00:00", pattern = "HH:mm:ss")
 		private LocalTime startTime;
 
-		@Schema(description = "기관 운영 종료 시간", implementation = LocalTime.class)
+		@Schema(description = "기관 운영 종료 시간",example = "19:00:00", pattern = "HH:mm:ss")
 		private LocalTime endTime;
 
-		@Schema(description = "공식 기관 주소")
-		private AddressDto.Create address;
+		@Schema(description = "공식 기관 주소", implementation = AddressDto.class)
+		private AddressDto address;
 
 		public OfficialInstitution toEntity() {
 			return OfficialInstitution.builder()
