@@ -87,14 +87,21 @@ public class ViolentRecordDto {
 		private String password;
 	}
 
-	// @Data
-	// @Builder
-	// @AllArgsConstructor
-	// @NoArgsConstructor
-	// @Schema(name = "데이터 내보내기 요청 dto",
-	// 	description = "데이터 내보내기를 통해 aws s3에서 객체가 퍼블릭 객체로 복제되며 ")
-	// public static class OutRequest {
-	// }
+	@Data
+	@Builder
+	@AllArgsConstructor
+	@NoArgsConstructor
+	@Schema(name = "데이터 내보내기 요청 dto",
+		description = "데이터 내보내기를 통해 aws s3에서 객체가 퍼블릭 객체로 복제되어 이동됨.")
+	public static class OutRequest {
+
+		@Schema(title = "사용자 로그인 id", example = "kang123", requiredMode = Schema.RequiredMode.REQUIRED)
+		private String loginId;
+
+		@Schema(title = "로그인, 암호화 password", example = "kang123!", requiredMode = Schema.RequiredMode.REQUIRED )
+		private String password;
+
+	}
 
 
 	@Data

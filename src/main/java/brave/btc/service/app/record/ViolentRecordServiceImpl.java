@@ -102,6 +102,14 @@ public class ViolentRecordServiceImpl implements ViolentRecordService {
 			.build();
 	}
 
+	@Override
+	public ViolentRecordDto.OutResponse outViolentRecord(ViolentRecordDto.OutRequest requestDto) {
+
+		//유저의 record 전부 조회하기
+
+		return null;
+	}
+
 	private void makeNewDiaryRecord(ViolentRecordDto.Create requestDto, String password, UsePerson usePerson, List<Record> newRecordList) {
 		DiaryDto.Create diaryDto = requestDto.toDiaryDto();
 		String objectPath = makeObjectPath(requestDto.getLoginId(), RecordDivision.DIARY);

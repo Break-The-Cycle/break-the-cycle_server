@@ -134,9 +134,9 @@ public class ViolentRecordController {
 		})
 	@PostMapping("/out")
 	public ResponseEntity<?> ViolentRecordOut(
-		@ModelAttribute ViolentRecordDto.Create requestDto) {
+		@ModelAttribute ViolentRecordDto.OutRequest requestDto) {
 
-		log.info("[uploadRecord] requestDto: {}", requestDto);
+		log.info("[ViolentRecordOut] requestDto: {}", requestDto);
 		CommonResponseDto<Object> responseDto = violentRecordService.uploadViolentRecord(requestDto);
 		return ResponseEntity.ok()
 			.body(responseDto);
