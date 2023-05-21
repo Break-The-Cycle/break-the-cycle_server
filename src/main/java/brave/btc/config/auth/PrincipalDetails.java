@@ -6,6 +6,7 @@ import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import brave.btc.constant.enums.ManageDivision;
 import brave.btc.constant.enums.UserType;
 import brave.btc.domain.app.user.UsePerson;
 import brave.btc.domain.bo.user.ManagePerson;
@@ -32,16 +33,20 @@ public class PrincipalDetails implements UserDetails {
     }
 
     public PrincipalDetails(ManagePerson managePerson) {
+
+        UserType userType = managePerson.getDivision() == ManageDivision.BACKOFFICE_MANAGE_PERSON ?
+            UserType.ADMIN :
+            UserType.MANAGE_PERSON;
+
         this.user = User.builder()
             .id(managePerson.getId())
             .loginId(managePerson.getLoginId())
             .password(managePerson.getPassword())
             .phoneNumber(managePerson.getPhoneNumber())
-            .userType(UserType.MANAGE_PERSON)
+            .userType(userType)
             .build();
     }
 
-    //TODO : ADMIN 만들어서 수정하기
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> authorities = new ArrayList<>();

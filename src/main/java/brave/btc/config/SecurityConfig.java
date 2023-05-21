@@ -50,7 +50,7 @@ public class SecurityConfig {
                 .access(new WebExpressionAuthorizationManager("hasRole('ROLE_USE_PERSON') or hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER')"))
                 .requestMatchers("/v1/manager/**")
                 .access(new WebExpressionAuthorizationManager("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER')"))
-                .requestMatchers("/v1/admin/**")
+                .requestMatchers("/v1/admin/**","/v1/official-institutions")
                 .access(new WebExpressionAuthorizationManager("hasRole('ROLE_ADMIN')"))
                 .anyRequest().permitAll();
 

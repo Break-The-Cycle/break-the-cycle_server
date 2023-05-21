@@ -67,14 +67,13 @@ public class ManagePerson extends User {
 	@Column(name = "MANAGE_DVSN", columnDefinition = "VARCHAR(3) NOT NULL", nullable = false,  insertable = false, updatable = false)
 	protected ManageDivision division;
 
-<<<<<<< HEAD
 
 	@Comment("공식 기관 주소")
 	@JoinColumn(name = "ADDRESS_ID", columnDefinition = "INT NOT NULL", nullable = false)
 	@OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
 	@ToString.Exclude
 	private Address address;
-=======
+
 	@Comment("계정만료여부")
 	@Column(name = "IS_ACCOUNT_NON_EXPIRED", columnDefinition = "TINYINT", nullable = false)
 	private Boolean isAccountNonExpired=Boolean.TRUE;
@@ -91,5 +90,4 @@ public class ManagePerson extends User {
 	@Column(name = "IS_ENABLED", columnDefinition = "TINYINT", nullable = false)
 	private Boolean isEnabled=Boolean.FALSE;
 
->>>>>>> 37bc8a5 (modify : spring security userdetails 유저 상태 4가지 추가)
 }

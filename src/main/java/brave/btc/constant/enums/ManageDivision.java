@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public enum ManageDivision {
 
-	COUNSELOR("001"), POLICE_OFFICER("002");
+	BACKOFFICE_MANAGE_PERSON("000"),COUNSELOR("001"), POLICE_OFFICER("002");
 	private final String code;
 
 
@@ -23,6 +23,7 @@ public enum ManageDivision {
 	}
 
 	public static class Values{
+		public static final String BACKOFFICE_MANAGE_PERSON = "000";
 		public static final String COUNSELOR="001";
 		public static final String POLICE_OFFICER= "002";
 	}
