@@ -1,6 +1,5 @@
 package brave.btc.controller.common.auth;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -54,7 +53,7 @@ public class AuthController {
             @PathVariable("loginId") String loginId) {
 
         CommonResponseDto<Object> responseDto = authService.loginIdIdDuplicateCheck(loginId);
-        return ResponseEntity.status(HttpStatus.CONFLICT)
+        return ResponseEntity.status(responseDto.getStatusCode())
                 .body(responseDto);
     }
 
@@ -94,7 +93,9 @@ public class AuthController {
                 .body(responseDto);
     }
 
-    @Operation(summary = "bo manage person register", description = "백 오피스 관리자 개인 회원 가입(ADMIN)",
+    @Operation(summary = "bo manage person register",
+        description = "백 오피스 관리자 개인 회원 가입(ADMIN) / ADMIN 권한 있어야 사용 가능",
+
         responses = {
             @ApiResponse(responseCode = "200", description = "회원 가입 성공",
                 content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
