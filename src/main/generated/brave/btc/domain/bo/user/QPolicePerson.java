@@ -36,7 +36,23 @@ public class QPolicePerson extends EntityPathBase<PolicePerson> {
     public final NumberPath<Integer> id;
 
     //inherited
+<<<<<<< HEAD
     public final StringPath loginId;
+=======
+    public final BooleanPath isAccountNonExpired = _super.isAccountNonExpired;
+
+    //inherited
+    public final BooleanPath isAccountNonLocked = _super.isAccountNonLocked;
+
+    //inherited
+    public final BooleanPath isCredentialsNonExpired = _super.isCredentialsNonExpired;
+
+    //inherited
+    public final BooleanPath isEnabled = _super.isEnabled;
+
+    //inherited
+    public final StringPath loginId = _super.loginId;
+>>>>>>> 37bc8a5 (modify : spring security userdetails 유저 상태 4가지 추가)
 
     //inherited
     public final StringPath name;
@@ -48,6 +64,9 @@ public class QPolicePerson extends EntityPathBase<PolicePerson> {
 
     //inherited
     public final StringPath phoneNumber;
+
+    //inherited
+    public final StringPath phoneNumber = _super.phoneNumber;
 
     public final StringPath position = createString("position");
 

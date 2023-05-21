@@ -1,5 +1,6 @@
 package brave.btc.dto.app.record;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -38,8 +39,8 @@ public class ViolentRecordDto {
 		@Schema(title = "첨부 사진 리스트")
 		private List<MultipartFile> pictureList;
 
-		@Schema(title = "피해를 당한 날과 시간", requiredMode = Schema.RequiredMode.REQUIRED, implementation = LocalDateTime.class)
-		private LocalDateTime targetDateTime;
+		@Schema(title = "피해를 당한 날", requiredMode = Schema.RequiredMode.REQUIRED, implementation = LocalDate.class, example = "2023-05-19")
+		private LocalDate reportDate;
 
 		public DiaryDto.Create toDiaryDto() {
 			return DiaryDto.Create.builder()
@@ -70,8 +71,8 @@ public class ViolentRecordDto {
 		@Schema(title = "일기 내용")
 		private DiaryDto.Response diary;
 
-		@Schema(title = "피해를 당한 날과 시간")
-		private LocalDateTime targetDateTime;
+		@Schema(title = "피해를 당한 날", example = "2023-05-19")
+		private LocalDate reportDate;
 
 	}
 	@Data
@@ -86,14 +87,14 @@ public class ViolentRecordDto {
 		private String password;
 	}
 
-	@Data
-	@Builder
-	@AllArgsConstructor
-	@NoArgsConstructor
-	@Schema(name = "데이터 내보내기 요청 dto",
-		description = "데이터 내보내기를 통해 aws s3에서 객체가 퍼블릭 객체로 복제되며 ")
-	public static class OutRequest {
-	}
+	// @Data
+	// @Builder
+	// @AllArgsConstructor
+	// @NoArgsConstructor
+	// @Schema(name = "데이터 내보내기 요청 dto",
+	// 	description = "데이터 내보내기를 통해 aws s3에서 객체가 퍼블릭 객체로 복제되며 ")
+	// public static class OutRequest {
+	// }
 
 
 	@Data

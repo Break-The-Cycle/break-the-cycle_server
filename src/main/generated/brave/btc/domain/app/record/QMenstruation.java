@@ -25,7 +25,7 @@ public class QMenstruation extends EntityPathBase<Menstruation> {
     public final QRecord _super;
 
     //inherited
-    public final DateTimePath<java.time.LocalDateTime> datetime;
+    public final DateTimePath<java.time.LocalDateTime> createdAt;
 
     public final DatePath<java.time.LocalDate> endDate = createDate("endDate", java.time.LocalDate.class);
 
@@ -36,6 +36,9 @@ public class QMenstruation extends EntityPathBase<Menstruation> {
 
     //inherited
     public final EnumPath<brave.btc.constant.enums.RecordDivision> recordDivision;
+
+    //inherited
+    public final DatePath<java.time.LocalDate> reportDate;
 
     public final DatePath<java.time.LocalDate> startDate = createDate("startDate", java.time.LocalDate.class);
 
@@ -61,9 +64,10 @@ public class QMenstruation extends EntityPathBase<Menstruation> {
     public QMenstruation(Class<? extends Menstruation> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this._super = new QRecord(type, metadata, inits);
-        this.datetime = _super.datetime;
+        this.createdAt = _super.createdAt;
         this.id = _super.id;
         this.recordDivision = _super.recordDivision;
+        this.reportDate = _super.reportDate;
         this.usePerson = _super.usePerson;
     }
 

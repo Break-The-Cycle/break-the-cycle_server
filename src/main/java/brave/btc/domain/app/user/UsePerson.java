@@ -60,6 +60,24 @@ public class UsePerson extends User {
 	@Column(name = "EMRGN_REPORT_CONTENT", columnDefinition = "VARCHAR(200)")
 	private String emergencyReportContent;
 
+
+	@Comment("계정만료여부")
+	@Column(name = "IS_ACCOUNT_NON_EXPIRED", columnDefinition = "TINYINT", nullable = false)
+	private Boolean isAccountNonExpired=Boolean.TRUE;
+
+	@Comment("계정잠금여부")
+	@Column(name = "IS_ACCOUNT_NON_LOCKED", columnDefinition = "TINYINT", nullable = false)
+	private Boolean isAccountNonLocked=Boolean.TRUE;
+
+	@Comment("자격증명만료여부")
+	@Column(name = "IS_CREDENTIALS_NON_EXPIRED", columnDefinition = "TINYINT", nullable = false)
+	private Boolean isCredentialsNonExpired=Boolean.TRUE;
+
+	@Comment("계정활성화여부")
+	@Column(name = "IS_ENABLED", columnDefinition = "TINYINT", nullable = false)
+	private Boolean isEnabled=Boolean.TRUE;
+
+
 	public void changeMenstruationPeriod(int newPeriod) {
 		this.menstruationPeriod = Period.ofDays(newPeriod);
 	}

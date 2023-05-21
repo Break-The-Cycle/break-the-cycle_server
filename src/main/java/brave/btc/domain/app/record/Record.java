@@ -1,5 +1,6 @@
 package brave.btc.domain.app.record;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.Comment;
@@ -52,9 +53,15 @@ public class Record {
 	protected UsePerson usePerson;
 
 	@Builder.Default
-	@Comment("기록일시")
-	@Column(name = "REPORT_DATETIME", columnDefinition = "TIMESTAMP NOT NULL", nullable = false)
-	protected LocalDateTime datetime =LocalDateTime.now();
+	@Comment("기록일")
+	@Column(name = "REPORT_DATE", columnDefinition = "DATE NOT NULL", nullable = false)
+	protected LocalDate reportDate = LocalDate.now();
+
+
+	@Builder.Default
+	@Comment("생성일시")
+	@Column(name = "CREATED_AT", columnDefinition = "TIMESTAMP NOT NULL", nullable = false)
+	protected LocalDateTime createdAt = LocalDateTime.now();
 
 	@Convert(converter = RecordDivisionToCodeConverter.class)
 	@Comment("기록 구분")

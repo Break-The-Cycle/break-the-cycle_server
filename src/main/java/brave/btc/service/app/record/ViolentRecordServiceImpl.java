@@ -63,7 +63,7 @@ public class ViolentRecordServiceImpl implements ViolentRecordService {
 							.id(record.getId())
 							.image(imageByteArrayResponse)
 							.division(RecordDivision.PICTURE)
-							.targetDateTime(record.getDatetime())
+							.reportDate(record.getReportDate())
 							.build();
 
 					} else if (record.getRecordDivision() == RecordDivision.DIARY) {
@@ -75,7 +75,7 @@ public class ViolentRecordServiceImpl implements ViolentRecordService {
 							.id(record.getId())
 							.diary(diaryResponse)
 							.division(RecordDivision.DIARY)
-							.targetDateTime(record.getDatetime())
+							.reportDate(record.getReportDate())
 							.build();
 					}
 					throw new IllegalStateException("상태 이상 에러. 다른 종류가 들어올 수 없음");
@@ -109,7 +109,7 @@ public class ViolentRecordServiceImpl implements ViolentRecordService {
 		Record newDiary = Diary.builder()
 			.usePerson(usePerson)
 			.content(diaryS3Url)
-			.datetime(requestDto.getTargetDateTime())
+			.reportDate(requestDto.getReportDate())
 			.build();
 		newRecordList.add(newDiary);
 	}
@@ -123,7 +123,7 @@ public class ViolentRecordServiceImpl implements ViolentRecordService {
 			.map(pictureS3Url -> (Record) Picture.builder()
 					.usePerson(usePerson)
 					.content(pictureS3Url)
-					.datetime(requestDto.getTargetDateTime())
+					.reportDate(requestDto.getReportDate())
 					.build())
 			.forEach(newRecordList::add);
 	}

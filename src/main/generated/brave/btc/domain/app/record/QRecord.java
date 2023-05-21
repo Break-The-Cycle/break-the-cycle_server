@@ -22,11 +22,13 @@ public class QRecord extends EntityPathBase<Record> {
 
     public static final QRecord record = new QRecord("record");
 
-    public final DateTimePath<java.time.LocalDateTime> datetime = createDateTime("datetime", java.time.LocalDateTime.class);
+    public final DateTimePath<java.time.LocalDateTime> createdAt = createDateTime("createdAt", java.time.LocalDateTime.class);
 
     public final NumberPath<Integer> id = createNumber("id", Integer.class);
 
     public final EnumPath<brave.btc.constant.enums.RecordDivision> recordDivision = createEnum("recordDivision", brave.btc.constant.enums.RecordDivision.class);
+
+    public final DatePath<java.time.LocalDate> reportDate = createDate("reportDate", java.time.LocalDate.class);
 
     public final brave.btc.domain.app.user.QUsePerson usePerson;
 
