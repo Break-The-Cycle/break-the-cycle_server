@@ -122,6 +122,7 @@ public class RegisterDto {
 				.officialInstitution(officialInstitution)
 				.department(department)
 				.position(position)
+				.address(address.toEntity())
 				.build();
 		}
 
@@ -133,6 +134,7 @@ public class RegisterDto {
 				.phoneNumber(phoneNumber)
 				.officialInstitution(officialInstitution)
 				.position(position)
+				.address(address.toEntity())
 				.build();
 		}
 	}
