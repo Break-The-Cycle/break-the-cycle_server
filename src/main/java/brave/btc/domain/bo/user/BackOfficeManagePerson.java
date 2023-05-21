@@ -13,9 +13,9 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @SuperBuilder
 @NoArgsConstructor
-// @Entity
-// @DiscriminatorValue(ManageDivision.Values.BACKOFFICE_MANAGE_PERSON)
-// @Table(name = "BACKOFFICE_MANAGE_PERSON")
+@Entity
+@DiscriminatorValue(ManageDivision.Values.BACKOFFICE_MANAGE_PERSON)
+@Table(name = "BACKOFFICE_MANAGE_PERSON")
 public class BackOfficeManagePerson extends ManagePerson{
 
 }

@@ -12,7 +12,7 @@ public interface AuthService {
      * @param rawPassword 확인할 비밀번호
      * @return 로그인 성공한 유저 객체
      */
-    UsePerson checkIsPasswordEqual(String loginId, String rawPassword);
+    UsePerson checkIsCredentialValid(String loginId, String rawPassword);
 
     /**
      * 아이디 중복을 확인한다

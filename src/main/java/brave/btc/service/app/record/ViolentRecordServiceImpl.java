@@ -88,7 +88,7 @@ public class ViolentRecordServiceImpl implements ViolentRecordService {
 
 		String loginId = requestDto.getLoginId();
 		String rawPassword = requestDto.getPassword();
-		UsePerson usePerson = authService.checkIsPasswordEqual(loginId, rawPassword);
+		UsePerson usePerson = authService.checkIsCredentialValid(loginId, rawPassword);
 		log.debug("[uploadRecord] usePerson: {}", usePerson);
 
 		List<Record> newRecordList = new ArrayList<>();
