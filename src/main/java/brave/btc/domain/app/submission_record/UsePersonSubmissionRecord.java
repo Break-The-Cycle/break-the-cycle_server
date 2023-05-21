@@ -1,13 +1,12 @@
-package brave.btc.domain.app.record;
+package brave.btc.domain.app.submission_record;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.Comment;
 
-import brave.btc.constant.enums.RecordDivision;
+import brave.btc.constant.enums.SubmissionDivision;
 import brave.btc.domain.app.user.UsePerson;
-import brave.btc.util.converter.RecordDivisionToCodeConverter;
+import brave.btc.util.converter.SubmissionDivisionToCodeConverter;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.DiscriminatorColumn;
@@ -23,7 +22,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -36,14 +34,14 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name="REPORT_DVSN", discriminatorType = DiscriminatorType.STRING)
-@Table(name = "USE_PERSON_RECORD")
-public class Record {
+@DiscriminatorColumn(name="RECORD_DVSN", discriminatorType = DiscriminatorType.STRING)
+@Table(name = "USE_PERSON_SUBMISSION_RECORD")
+public class UsePersonSubmissionRecord {
 
 	@Comment("사용개인기록ID")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "USE_PERSON_RECORD_ID", columnDefinition = "INT NOT NULL")
+	@Column(name = "SUBMISSION_RECORD_ID", columnDefinition = "INT NOT NULL")
 	protected Integer id;
 
 	@Comment("기록 구분")
@@ -52,20 +50,19 @@ public class Record {
 	@ToString.Exclude
 	protected UsePerson usePerson;
 
-	@Builder.Default
-	@Comment("기록일")
-	@Column(name = "REPORT_DATE", columnDefinition = "DATE NOT NULL", nullable = false)
-	protected LocalDate reportDate = LocalDate.now();
+
+	@Comment("제출일시")
+	@Column(name = "SUBMISSION_DATETIME", columnDefinition = "TIMESTAMP NOT NULL", nullable = false)
+	protected LocalDateTime submissionDatetime;
 
 
-	@Builder.Default
-	@Comment("생성일시")
-	@Column(name = "CREATED_AT", columnDefinition = "TIMESTAMP NOT NULL", nullable = false)
-	protected LocalDateTime createdAt = LocalDateTime.now();
+	@Comment("유효일시")
+	@Column(name = "EFFECTiVE_DATETIME", columnDefinition = "TIMESTAMP NOT NULL", nullable = false)
+	protected LocalDateTime effectiveDatetime;
 
-	@Convert(converter = RecordDivisionToCodeConverter.class)
-	@Comment("기록 구분")
-	@Column(name = "REPORT_DVSN", insertable = false, updatable = false)
-	protected RecordDivision recordDivision;
+	@Convert(converter = SubmissionDivisionToCodeConverter.class)
+	@Comment("제출 기록 구분")
+	@Column(name = "SUBMISSION_DVSN", insertable = false, updatable = false)
+	protected SubmissionDivision submissionDivision;
 
 }

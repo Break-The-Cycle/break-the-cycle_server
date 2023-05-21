@@ -1,5 +1,6 @@
 package brave.btc.dto.app.record;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -38,8 +39,8 @@ public class ViolentRecordDto {
 		@Schema(title = "첨부 사진 리스트")
 		private List<MultipartFile> pictureList;
 
-		@Schema(title = "피해를 당한 날과 시간", requiredMode = Schema.RequiredMode.REQUIRED, implementation = LocalDateTime.class)
-		private LocalDateTime targetDateTime;
+		@Schema(title = "피해를 당한 날", requiredMode = Schema.RequiredMode.REQUIRED, implementation = LocalDate.class, example = "2023-05-19")
+		private LocalDate reportDate;
 
 		public DiaryDto.Create toDiaryDto() {
 			return DiaryDto.Create.builder()
@@ -70,8 +71,8 @@ public class ViolentRecordDto {
 		@Schema(title = "일기 내용")
 		private DiaryDto.Response diary;
 
-		@Schema(title = "피해를 당한 날과 시간")
-		private LocalDateTime targetDateTime;
+		@Schema(title = "피해를 당한 날", example = "2023-05-19")
+		private LocalDate reportDate;
 
 	}
 	@Data
@@ -84,7 +85,40 @@ public class ViolentRecordDto {
 
 		@Schema(title = "사용자 로그인 패스워드 / s3 암호화 패스워드 (하나로 통일되어 있는 상태)", defaultValue = "kang123!")
 		private String password;
+	}
+
+	@Data
+	@Builder
+	@AllArgsConstructor
+	@NoArgsConstructor
+	@Schema(name = "데이터 내보내기 요청 dto",
+		description = "데이터 내보내기를 통해 aws s3에서 객체가 퍼블릭 객체로 복제되어 이동됨.")
+	public static class OutRequest {
+
+		@Schema(title = "사용자 로그인 id", example = "kang123", requiredMode = Schema.RequiredMode.REQUIRED)
+		private String loginId;
+
+		@Schema(title = "로그인, 암호화 password", example = "kang123!", requiredMode = Schema.RequiredMode.REQUIRED )
+		private String password;
 
 	}
+
+
+	@Data
+	@Builder
+	@AllArgsConstructor
+	@NoArgsConstructor
+	@Schema(name = "사용자 패스워드가 담긴 dto",
+		description = "s3 객체를 다운로드 하기 위해서는 사용자 패스워드가 필요함. 이것을 담는 dto")
+	public static class OutResponse {
+
+		@Schema(title = "액세스 토큰", description = "데이터 내보내기 후 생성된 토큰", example = "3sd234sad@")
+		private String accessToken;
+
+		@Schema(title = "만료 시간", description = "토큰 만료 시간")
+		private LocalDateTime expireDateTime;
+
+	}
+
 	
 }

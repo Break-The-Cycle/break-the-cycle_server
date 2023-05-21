@@ -36,6 +36,18 @@ public class QPolicePerson extends EntityPathBase<PolicePerson> {
     public final NumberPath<Integer> id;
 
     //inherited
+    public final BooleanPath isAccountNonExpired;
+
+    //inherited
+    public final BooleanPath isAccountNonLocked;
+
+    //inherited
+    public final BooleanPath isCredentialsNonExpired;
+
+    //inherited
+    public final BooleanPath isEnabled;
+
+    //inherited
     public final StringPath loginId;
 
     //inherited
@@ -73,6 +85,10 @@ public class QPolicePerson extends EntityPathBase<PolicePerson> {
         this.address = _super.address;
         this.division = _super.division;
         this.id = _super.id;
+        this.isAccountNonExpired = _super.isAccountNonExpired;
+        this.isAccountNonLocked = _super.isAccountNonLocked;
+        this.isCredentialsNonExpired = _super.isCredentialsNonExpired;
+        this.isEnabled = _super.isEnabled;
         this.loginId = _super.loginId;
         this.name = _super.name;
         this.officialInstitution = inits.isInitialized("officialInstitution") ? new QOfficialInstitution(forProperty("officialInstitution"), inits.get("officialInstitution")) : null;

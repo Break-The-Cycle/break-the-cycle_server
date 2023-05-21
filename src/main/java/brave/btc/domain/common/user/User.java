@@ -1,8 +1,11 @@
 package brave.btc.domain.common.user;
 
+import org.hibernate.annotations.Comment;
+
 import brave.btc.constant.enums.UserType;
 import brave.btc.domain.app.user.UsePerson;
 import brave.btc.domain.bo.user.ManagePerson;
+import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.Transient;
 import lombok.Getter;
@@ -32,6 +35,18 @@ public class User {
 	@Transient
 	private String phoneNumber;
 
+	@Transient
+	private Boolean isAccountNonExpired;
+
+	@Transient
+	private Boolean isAccountNonLocked;
+
+	@Transient
+	private Boolean isCredentialsNonExpired;
+
+	@Transient
+	private Boolean isEnabled;
+
 	public static User of(UsePerson usePerson) {
 		return User.builder()
 			.id(usePerson.getId())
@@ -39,6 +54,10 @@ public class User {
 			.password(usePerson.getPassword())
 			.phoneNumber(usePerson.getPhoneNumber())
 			.userType(UserType.USE_PERSON)
+			.isAccountNonExpired(usePerson.getIsAccountNonExpired())
+			.isAccountNonLocked(usePerson.getIsAccountNonLocked())
+			.isCredentialsNonExpired(usePerson.getIsCredentialsNonExpired())
+			.isEnabled(usePerson.getIsEnabled())
 			.build();
 	}
 
@@ -49,6 +68,10 @@ public class User {
 			.password(managePerson.getPassword())
 			.phoneNumber(managePerson.getPhoneNumber())
 			.userType(UserType.MANAGE_PERSON)
+			.isAccountNonExpired(managePerson.getIsAccountNonExpired())
+			.isAccountNonLocked(managePerson.getIsAccountNonLocked())
+			.isCredentialsNonExpired(managePerson.getIsCredentialsNonExpired())
+			.isEnabled(managePerson.getIsEnabled())
 			.build();
 	}
 }

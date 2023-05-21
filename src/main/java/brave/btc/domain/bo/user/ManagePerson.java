@@ -21,8 +21,8 @@ import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -73,4 +73,25 @@ public class ManagePerson extends User {
 	@OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
 	@ToString.Exclude
 	private Address address;
+
+	@Builder.Default
+	@Comment("계정만료여부")
+	@Column(name = "IS_ACCOUNT_NON_EXPIRED", columnDefinition = "TINYINT", nullable = false)
+	private Boolean isAccountNonExpired=Boolean.TRUE;
+
+	@Builder.Default
+	@Comment("계정잠금여부")
+	@Column(name = "IS_ACCOUNT_NON_LOCKED", columnDefinition = "TINYINT", nullable = false)
+	private Boolean isAccountNonLocked=Boolean.TRUE;
+
+	@Builder.Default
+	@Comment("자격증명만료여부")
+	@Column(name = "IS_CREDENTIALS_NON_EXPIRED", columnDefinition = "TINYINT", nullable = false)
+	private Boolean isCredentialsNonExpired=Boolean.TRUE;
+
+	@Builder.Default
+	@Comment("계정활성화여부")
+	@Column(name = "IS_ENABLED", columnDefinition = "TINYINT", nullable = false)
+	private Boolean isEnabled=Boolean.FALSE;
+
 }

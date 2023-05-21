@@ -118,11 +118,10 @@ public class AWSS3ServiceImpl implements AWSS3Service {
 
 	private PutObjectRequest getPutObjectRequest(String objectPath, String encodePassword) throws NoSuchAlgorithmException {
 		String encodeAlgorithm = "AES256";
-		String fullPath = BUCKET_NAME + objectPath;
 		byte[] keyBytes = convertAES256ValidKey(encodePassword);
 		return PutObjectRequest.builder()
 			.bucket(BUCKET_NAME)
-			.key(fullPath)
+			.key(objectPath)
 			.sseCustomerKey(BinaryUtils.toBase64(keyBytes))
 			.sseCustomerKeyMD5(Md5Utils.md5AsBase64(keyBytes))
 			.sseCustomerAlgorithm(encodeAlgorithm)

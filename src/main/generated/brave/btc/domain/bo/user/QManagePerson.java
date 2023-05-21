@@ -30,6 +30,14 @@ public class QManagePerson extends EntityPathBase<ManagePerson> {
 
     public final NumberPath<Integer> id = createNumber("id", Integer.class);
 
+    public final BooleanPath isAccountNonExpired = createBoolean("isAccountNonExpired");
+
+    public final BooleanPath isAccountNonLocked = createBoolean("isAccountNonLocked");
+
+    public final BooleanPath isCredentialsNonExpired = createBoolean("isCredentialsNonExpired");
+
+    public final BooleanPath isEnabled = createBoolean("isEnabled");
+
     public final StringPath loginId = createString("loginId");
 
     public final StringPath name = createString("name");

@@ -1,13 +1,11 @@
 package brave.btc.service.app.record;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import brave.btc.service.app.auth.AuthService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +18,7 @@ import brave.btc.dto.CommonResponseDto;
 import brave.btc.dto.app.record.DiaryDto;
 import brave.btc.dto.app.record.ViolentRecordDto;
 import brave.btc.repository.app.record.RecordRepository;
+import brave.btc.service.app.auth.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -37,13 +36,7 @@ public class ViolentRecordServiceImpl implements ViolentRecordService {
 
 	@Override
 	public List<LocalDate> findViolentRecordDateList(Integer usePersonId, LocalDate fromDate, LocalDate toDate) {
-		List<String> dateStringList = recordRepository.searchViolentRecordDateList(usePersonId, fromDate, toDate);
-		List<LocalDate> dateList = new ArrayList<>();
-		for (String dateString : dateStringList) {
-			LocalDate localDate = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-			dateList.add(localDate);
-		}
-		return dateList;
+		return recordRepository.searchViolentRecordDateList(usePersonId, fromDate, toDate);
 	}
 
 	@Override
@@ -63,7 +56,7 @@ public class ViolentRecordServiceImpl implements ViolentRecordService {
 							.id(record.getId())
 							.image(imageByteArrayResponse)
 							.division(RecordDivision.PICTURE)
-							.targetDateTime(record.getDatetime())
+							.reportDate(record.getReportDate())
 							.build();
 
 					} else if (record.getRecordDivision() == RecordDivision.DIARY) {
@@ -75,7 +68,7 @@ public class ViolentRecordServiceImpl implements ViolentRecordService {
 							.id(record.getId())
 							.diary(diaryResponse)
 							.division(RecordDivision.DIARY)
-							.targetDateTime(record.getDatetime())
+							.reportDate(record.getReportDate())
 							.build();
 					}
 					throw new IllegalStateException("상태 이상 에러. 다른 종류가 들어올 수 없음");
@@ -88,7 +81,7 @@ public class ViolentRecordServiceImpl implements ViolentRecordService {
 
 		String loginId = requestDto.getLoginId();
 		String rawPassword = requestDto.getPassword();
-		UsePerson usePerson = authService.checkIsPasswordEqual(loginId, rawPassword);
+		UsePerson usePerson = authService.checkIsCredentialValid(loginId, rawPassword);
 		log.debug("[uploadRecord] usePerson: {}", usePerson);
 
 		List<Record> newRecordList = new ArrayList<>();
@@ -102,6 +95,14 @@ public class ViolentRecordServiceImpl implements ViolentRecordService {
 			.build();
 	}
 
+	@Override
+	public ViolentRecordDto.OutResponse outViolentRecord(ViolentRecordDto.OutRequest requestDto) {
+
+		//유저의 record 전부 조회하기
+
+		return null;
+	}
+
 	private void makeNewDiaryRecord(ViolentRecordDto.Create requestDto, String password, UsePerson usePerson, List<Record> newRecordList) {
 		DiaryDto.Create diaryDto = requestDto.toDiaryDto();
 		String objectPath = makeObjectPath(requestDto.getLoginId(), RecordDivision.DIARY);
@@ -109,7 +110,7 @@ public class ViolentRecordServiceImpl implements ViolentRecordService {
 		Record newDiary = Diary.builder()
 			.usePerson(usePerson)
 			.content(diaryS3Url)
-			.datetime(requestDto.getTargetDateTime())
+			.reportDate(requestDto.getReportDate())
 			.build();
 		newRecordList.add(newDiary);
 	}
@@ -123,7 +124,7 @@ public class ViolentRecordServiceImpl implements ViolentRecordService {
 			.map(pictureS3Url -> (Record) Picture.builder()
 					.usePerson(usePerson)
 					.content(pictureS3Url)
-					.datetime(requestDto.getTargetDateTime())
+					.reportDate(requestDto.getReportDate())
 					.build())
 			.forEach(newRecordList::add);
 	}

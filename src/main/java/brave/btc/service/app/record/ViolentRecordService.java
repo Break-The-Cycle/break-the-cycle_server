@@ -32,4 +32,5 @@ public interface ViolentRecordService {
 	 */
 	CommonResponseDto<Object> uploadViolentRecord(ViolentRecordDto.Create requestDto);
 
+	ViolentRecordDto.OutResponse outViolentRecord(ViolentRecordDto.OutRequest requestDto);
 }

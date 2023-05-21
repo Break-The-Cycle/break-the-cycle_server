@@ -6,13 +6,16 @@ import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import brave.btc.constant.enums.ManageDivision;
 import brave.btc.constant.enums.UserType;
 import brave.btc.domain.app.user.UsePerson;
 import brave.btc.domain.bo.user.ManagePerson;
 import brave.btc.domain.common.user.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Data
 @NoArgsConstructor
 public class PrincipalDetails implements UserDetails {
@@ -26,25 +29,38 @@ public class PrincipalDetails implements UserDetails {
             .password(usePerson.getPassword())
             .phoneNumber(usePerson.getPhoneNumber())
             .userType(UserType.USE_PERSON)
+            .isAccountNonExpired(usePerson.getIsAccountNonExpired())
+            .isCredentialsNonExpired(usePerson.getIsCredentialsNonExpired())
+            .isAccountNonLocked(usePerson.getIsAccountNonLocked())
+            .isEnabled(usePerson.getIsEnabled())
             .build();
     }
 
     public PrincipalDetails(ManagePerson managePerson) {
+
+        UserType userType = managePerson.getDivision() == ManageDivision.BACKOFFICE_MANAGE_PERSON ?
+            UserType.ADMIN :
+            UserType.MANAGE_PERSON;
+
         this.user = User.builder()
             .id(managePerson.getId())
             .loginId(managePerson.getLoginId())
             .password(managePerson.getPassword())
             .phoneNumber(managePerson.getPhoneNumber())
-            .userType(UserType.MANAGE_PERSON)
+            .userType(userType)
+            .isAccountNonExpired(managePerson.getIsAccountNonExpired())
+            .isCredentialsNonExpired(managePerson.getIsCredentialsNonExpired())
+            .isAccountNonLocked(managePerson.getIsAccountNonLocked())
+            .isEnabled(managePerson.getIsEnabled())
             .build();
     }
 
-    //TODO : ADMIN 만들어서 수정하기
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> authorities = new ArrayList<>();
 
         UserType userType = user.getUserType();
+        log.debug("[getAuthorities] userType: {}", userType);
         if (userType == UserType.USE_PERSON) {
             authorities.add((GrantedAuthority)() -> "ROLE_USE_PERSON");
         } else if (userType == UserType.MANAGE_PERSON) {
@@ -72,22 +88,22 @@ public class PrincipalDetails implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return user.getIsAccountNonExpired();
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return user.getIsAccountNonLocked();
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
+        return user.getIsCredentialsNonExpired();
     }
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return user.getIsEnabled();
     }
 
 }

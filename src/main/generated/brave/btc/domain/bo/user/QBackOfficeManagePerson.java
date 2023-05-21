@@ -11,16 +11,16 @@ import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
- * QCounselingPerson is a Querydsl query type for CounselingPerson
+ * QBackOfficeManagePerson is a Querydsl query type for BackOfficeManagePerson
  */
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
-public class QCounselingPerson extends EntityPathBase<CounselingPerson> {
+public class QBackOfficeManagePerson extends EntityPathBase<BackOfficeManagePerson> {
 
-    private static final long serialVersionUID = -425531357L;
+    private static final long serialVersionUID = 2026014558L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
-    public static final QCounselingPerson counselingPerson = new QCounselingPerson("counselingPerson");
+    public static final QBackOfficeManagePerson backOfficeManagePerson = new QBackOfficeManagePerson("backOfficeManagePerson");
 
     public final QManagePerson _super;
 
@@ -51,33 +51,29 @@ public class QCounselingPerson extends EntityPathBase<CounselingPerson> {
     //inherited
     public final StringPath name;
 
-    public final QOfficialInstitution officialInstitution;
-
     //inherited
     public final StringPath password;
 
     //inherited
     public final StringPath phoneNumber;
 
-    public final StringPath position = createString("position");
-
-    public QCounselingPerson(String variable) {
-        this(CounselingPerson.class, forVariable(variable), INITS);
+    public QBackOfficeManagePerson(String variable) {
+        this(BackOfficeManagePerson.class, forVariable(variable), INITS);
     }
 
-    public QCounselingPerson(Path<? extends CounselingPerson> path) {
+    public QBackOfficeManagePerson(Path<? extends BackOfficeManagePerson> path) {
         this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
-    public QCounselingPerson(PathMetadata metadata) {
+    public QBackOfficeManagePerson(PathMetadata metadata) {
         this(metadata, PathInits.getFor(metadata, INITS));
     }
 
-    public QCounselingPerson(PathMetadata metadata, PathInits inits) {
-        this(CounselingPerson.class, metadata, inits);
+    public QBackOfficeManagePerson(PathMetadata metadata, PathInits inits) {
+        this(BackOfficeManagePerson.class, metadata, inits);
     }
 
-    public QCounselingPerson(Class<? extends CounselingPerson> type, PathMetadata metadata, PathInits inits) {
+    public QBackOfficeManagePerson(Class<? extends BackOfficeManagePerson> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this._super = new QManagePerson(type, metadata, inits);
         this.address = _super.address;
@@ -89,7 +85,6 @@ public class QCounselingPerson extends EntityPathBase<CounselingPerson> {
         this.isEnabled = _super.isEnabled;
         this.loginId = _super.loginId;
         this.name = _super.name;
-        this.officialInstitution = inits.isInitialized("officialInstitution") ? new QOfficialInstitution(forProperty("officialInstitution"), inits.get("officialInstitution")) : null;
         this.password = _super.password;
         this.phoneNumber = _super.phoneNumber;
     }

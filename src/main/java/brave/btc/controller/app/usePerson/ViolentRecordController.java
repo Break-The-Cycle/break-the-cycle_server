@@ -120,6 +120,29 @@ public class ViolentRecordController {
 	}
 
 
+	@Operation(summary = "폭력 기록/일기 내보내기", description = "가정 폭력 사실에 대한 기록을 내보내기한다.",
+		responses = {
+			@ApiResponse(responseCode = "200", description = "내보내기 성공",
+				content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+					schema = @Schema(implementation = ViolentRecordDto.OutResponse.class))),
+			@ApiResponse(responseCode = "400", description = "회원 정보 불일치",
+				content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+					schema = @Schema(implementation = ErrorResponseDto.class))),
+			@ApiResponse(responseCode = "500", description = "aws에서 내보내기 실패",
+				content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+					schema = @Schema(implementation = ErrorResponseDto.class)))
+		})
+	@PostMapping("/out")
+	public ResponseEntity<?> ViolentRecordOut(
+		@ModelAttribute ViolentRecordDto.OutRequest requestDto) {
+
+		log.info("[ViolentRecordOut] requestDto: {}", requestDto);
+		ViolentRecordDto.OutResponse responseDto = violentRecordService.outViolentRecord(requestDto);
+		return ResponseEntity.ok()
+			.body(responseDto);
+	}
+
+
 
 
 }

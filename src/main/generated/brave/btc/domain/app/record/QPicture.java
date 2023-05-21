@@ -27,13 +27,16 @@ public class QPicture extends EntityPathBase<Picture> {
     public final StringPath content = createString("content");
 
     //inherited
-    public final DateTimePath<java.time.LocalDateTime> datetime;
+    public final DateTimePath<java.time.LocalDateTime> createdAt;
 
     //inherited
     public final NumberPath<Integer> id;
 
     //inherited
     public final EnumPath<brave.btc.constant.enums.RecordDivision> recordDivision;
+
+    //inherited
+    public final DatePath<java.time.LocalDate> reportDate;
 
     // inherited
     public final brave.btc.domain.app.user.QUsePerson usePerson;
@@ -57,9 +60,10 @@ public class QPicture extends EntityPathBase<Picture> {
     public QPicture(Class<? extends Picture> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this._super = new QRecord(type, metadata, inits);
-        this.datetime = _super.datetime;
+        this.createdAt = _super.createdAt;
         this.id = _super.id;
         this.recordDivision = _super.recordDivision;
+        this.reportDate = _super.reportDate;
         this.usePerson = _super.usePerson;
     }
 

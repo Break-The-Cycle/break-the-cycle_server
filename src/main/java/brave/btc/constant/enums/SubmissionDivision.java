@@ -5,9 +5,10 @@ import java.util.Arrays;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public enum ManageDivision {
+public enum SubmissionDivision {
 
-	BACKOFFICE_MANAGE_PERSON("000"),COUNSELOR("001"), POLICE_OFFICER("002");
+
+	COUNSELOR("001"), POLICE_OFFICER("002");
 	private final String code;
 
 
@@ -15,7 +16,7 @@ public enum ManageDivision {
 		return this.code;
 	}
 
-	static public ManageDivision findByCode(String code) {
+	static public SubmissionDivision findByCode(String code) {
 		return Arrays.stream(values())
 			.filter(value -> value.code.equals(code))
 			.findAny()
@@ -23,8 +24,8 @@ public enum ManageDivision {
 	}
 
 	public static class Values{
-		public static final String BACKOFFICE_MANAGE_PERSON = "000";
 		public static final String COUNSELOR="001";
 		public static final String POLICE_OFFICER= "002";
 	}
+
 }

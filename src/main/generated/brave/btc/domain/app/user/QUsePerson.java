@@ -25,6 +25,14 @@ public class QUsePerson extends EntityPathBase<UsePerson> {
 
     public final NumberPath<Integer> id = createNumber("id", Integer.class);
 
+    public final BooleanPath isAccountNonExpired = createBoolean("isAccountNonExpired");
+
+    public final BooleanPath isAccountNonLocked = createBoolean("isAccountNonLocked");
+
+    public final BooleanPath isCredentialsNonExpired = createBoolean("isCredentialsNonExpired");
+
+    public final BooleanPath isEnabled = createBoolean("isEnabled");
+
     public final StringPath loginId = createString("loginId");
 
     public final SimplePath<java.time.Period> menstruationPeriod = createSimple("menstruationPeriod", java.time.Period.class);

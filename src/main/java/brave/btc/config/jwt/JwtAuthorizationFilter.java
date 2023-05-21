@@ -56,7 +56,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
 
         log.info("request = " + request.getServletPath());
-        if (!request.getServletPath().startsWith("/v1/auth/")) {
+        if (request.getServletPath().startsWith("/v1/auth/")) {
             chain.doFilter(request, response);
             return;
         }
@@ -68,7 +68,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             if (!rtHeader.startsWith(JwtProperties.TOKEN_PREFIX)) {
                 throw new JwtException("유효하지 않은 Refresh Token입니다.");
             }
-            String refreshToken = rtHeader.replace(JwtProperties.TOKEN_PREFIX, "");
+            String refreshToken = rtHeader.replaceAll(JwtProperties.TOKEN_PREFIX, "");
             JwtResponseDto responseDto = jwtService.refresh(refreshToken);
             ObjectMapper mapper = new ObjectMapper();
             response.setContentType("application/json; charset=UTF-8");
@@ -94,7 +94,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
         //토큰 헤더가 없다면 통과
 
-        String atToken = atHeader.replace(JwtProperties.TOKEN_PREFIX, "");
+        String atToken = atHeader.replaceAll(JwtProperties.TOKEN_PREFIX, "");
         log.info("atToken= {}", atToken);
         //서명 확인
         try {
