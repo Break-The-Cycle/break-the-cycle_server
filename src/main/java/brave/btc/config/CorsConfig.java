@@ -23,7 +23,7 @@ public class CorsConfig {
         config.addAllowedHeader("*");
         //모든 http method 요청 허용
         config.addAllowedMethod("*");
-        source.registerCorsConfiguration("/api/**", config);
+        source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
 }
