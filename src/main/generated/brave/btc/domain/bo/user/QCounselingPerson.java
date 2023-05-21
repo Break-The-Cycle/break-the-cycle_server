@@ -22,24 +22,30 @@ public class QCounselingPerson extends EntityPathBase<CounselingPerson> {
 
     public static final QCounselingPerson counselingPerson = new QCounselingPerson("counselingPerson");
 
-    public final QManagePerson _super = new QManagePerson(this);
+    public final QManagePerson _super;
+
+    // inherited
+    public final brave.btc.domain.bo.QAddress address;
 
     //inherited
-    public final EnumPath<brave.btc.constant.enums.ManageDivision> division = _super.division;
+    public final EnumPath<brave.btc.constant.enums.ManageDivision> division;
 
     //inherited
-    public final NumberPath<Integer> id = _super.id;
+    public final NumberPath<Integer> id;
 
     //inherited
-    public final StringPath loginId = _super.loginId;
+    public final StringPath loginId;
 
     //inherited
-    public final StringPath name = _super.name;
+    public final StringPath name;
 
     public final QOfficialInstitution officialInstitution;
 
     //inherited
-    public final StringPath password = _super.password;
+    public final StringPath password;
+
+    //inherited
+    public final StringPath phoneNumber;
 
     public final StringPath position = createString("position");
 
@@ -61,7 +67,15 @@ public class QCounselingPerson extends EntityPathBase<CounselingPerson> {
 
     public QCounselingPerson(Class<? extends CounselingPerson> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
+        this._super = new QManagePerson(type, metadata, inits);
+        this.address = _super.address;
+        this.division = _super.division;
+        this.id = _super.id;
+        this.loginId = _super.loginId;
+        this.name = _super.name;
         this.officialInstitution = inits.isInitialized("officialInstitution") ? new QOfficialInstitution(forProperty("officialInstitution"), inits.get("officialInstitution")) : null;
+        this.password = _super.password;
+        this.phoneNumber = _super.phoneNumber;
     }
 
 }

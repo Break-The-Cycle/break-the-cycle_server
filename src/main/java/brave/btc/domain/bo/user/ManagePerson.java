@@ -3,18 +3,23 @@ package brave.btc.domain.bo.user;
 import org.hibernate.annotations.Comment;
 
 import brave.btc.constant.enums.ManageDivision;
+import brave.btc.domain.bo.Address;
 import brave.btc.domain.common.user.User;
 import brave.btc.util.converter.ManageDivisionToCodeConverter;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
@@ -61,4 +66,11 @@ public class ManagePerson extends User {
 	@Comment("관리구분")
 	@Column(name = "MANAGE_DVSN", columnDefinition = "VARCHAR(3) NOT NULL", nullable = false,  insertable = false, updatable = false)
 	protected ManageDivision division;
+
+
+	@Comment("공식 기관 주소")
+	@JoinColumn(name = "ADDRESS_ID", columnDefinition = "INT NOT NULL", nullable = false)
+	@OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
+	@ToString.Exclude
+	private Address address;
 }
