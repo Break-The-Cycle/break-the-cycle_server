@@ -1,5 +1,7 @@
 package brave.btc.config;
 
+import java.util.Collections;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
@@ -18,6 +20,8 @@ public class CorsConfig {
         //서버가 응답할 때 json을 클라이언트에서 처리할 수 있게 할 지 정하는것
         config.setAllowCredentials(true);
         //모든 ip에 응답 허용
+        config.setAllowedOriginPatterns(Collections.singletonList("*"));
+        //모든 메서드에 허용
         config.addAllowedMethod("*");
         //모든 header에 응답 허용
         config.addAllowedHeader("*");
