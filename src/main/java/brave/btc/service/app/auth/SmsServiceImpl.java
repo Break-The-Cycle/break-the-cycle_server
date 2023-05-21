@@ -60,7 +60,7 @@ public class SmsServiceImpl implements SmsService {
 
         return CommonResponseDto.builder()
                 .message("인증번호 전송이 완료되었습니다.")
-                .code(HttpStatus.OK.value())
+                .statusCode(HttpStatus.OK.value())
                 .build();
     }
 
@@ -95,7 +95,7 @@ public class SmsServiceImpl implements SmsService {
                 log.info("authNumber = " + authNumber);
                 return CommonResponseDto.builder()
                         .message("인증번호 인증이 완료되었습니다.")
-                        .code(HttpStatus.OK.value())
+                        .statusCode(HttpStatus.OK.value())
                         .build();
             }
         }

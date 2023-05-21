@@ -60,13 +60,13 @@ public class AuthServiceImpl implements AuthService {
         if (notExist) {
             return CommonResponseDto.builder()
                 .message("사용 가능한 아이디입니다.")
-                .code(HttpStatus.OK.value())
+                .statusCode(HttpStatus.OK.value())
                 .build();
 
         }else {
             return CommonResponseDto.builder()
                 .message("이미 사용중인 아이디입니다.")
-                .code(HttpStatus.CONFLICT.value())
+                .statusCode(HttpStatus.CONFLICT.value())
                 .build();
         }
     }
@@ -98,7 +98,7 @@ public class AuthServiceImpl implements AuthService {
         log.info("[register] 사용 개인 회원 가입 완료");
         return CommonResponseDto.builder()
             .message("사용 개인 회원 가입이 완료되었습니다.")
-            .code(HttpStatus.OK.value())
+            .statusCode(HttpStatus.OK.value())
             .build();
     }
 
@@ -141,7 +141,7 @@ public class AuthServiceImpl implements AuthService {
         log.info("[register] 관리 개인 회원 가입 완료");
         return CommonResponseDto.builder()
             .message("관리 개인  회원 가입이 완료되었습니다.")
-            .code(HttpStatus.OK.value())
+            .statusCode(HttpStatus.OK.value())
             .build();
     }
 
@@ -165,7 +165,7 @@ public class AuthServiceImpl implements AuthService {
         log.info("[register] 백오피스 관리 개인 회원 가입 완료");
         return CommonResponseDto.builder()
             .message("백오피스 관리 개인 회원 가입이 완료되었습니다.")
-            .code(HttpStatus.OK.value())
+            .statusCode(HttpStatus.OK.value())
             .build();
 
     }

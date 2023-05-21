@@ -26,7 +26,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@Tag(name = "20. BO_Official Institution", description = "공식 기관")
+@Tag(name = "20. BO_Official Institution", description = "공식 기관 / ADMIN 권한 있어야 사용 가능")
 @Slf4j
 @Valid
 @RequiredArgsConstructor
