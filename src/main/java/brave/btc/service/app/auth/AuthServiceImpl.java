@@ -138,10 +138,35 @@ public class AuthServiceImpl implements AuthService {
             throw new IllegalStateException("비정상 상태");
         }
         managePersonRepository.save(newManagePerson);
-        log.info("[register] 회원 가입 완료");
+        log.info("[register] 관리 개인 회원 가입 완료");
         return CommonResponseDto.builder()
-            .message("회원 가입이 완료되었습니다.")
+            .message("관리 개인  회원 가입이 완료되었습니다.")
             .code(HttpStatus.OK.value())
             .build();
+    }
+
+    @Override
+    public CommonResponseDto<Object> registerBackOffIceManagePerson(RegisterDto.BackOfficeManagePersonCreate request) {
+        log.debug("[register] request: {}", request);
+        //비밀번호 매칭 확인
+        String password = request.getPassword();
+        String password2 = request.getPassword2();
+        checkIsPasswordEqual(password, password2);
+
+        String loginId = request.getLoginId();
+        if (!checkLoginIdNotExist(loginId)) {
+            throw new IllegalStateException("이미 사용 중인 아이디 입니다.");
+        }
+
+        String encodedPassword = bCryptPasswordEncoder.encode(password);
+        ManagePerson newManagePerson = request.toBackOfficeManagePersonEntity(encodedPassword);
+        managePersonRepository.save(newManagePerson);
+
+        log.info("[register] 백오피스 관리 개인 회원 가입 완료");
+        return CommonResponseDto.builder()
+            .message("백오피스 관리 개인 회원 가입이 완료되었습니다.")
+            .code(HttpStatus.OK.value())
+            .build();
+
     }
 }

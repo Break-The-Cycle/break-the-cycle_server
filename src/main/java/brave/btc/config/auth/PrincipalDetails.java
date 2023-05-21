@@ -29,6 +29,10 @@ public class PrincipalDetails implements UserDetails {
             .password(usePerson.getPassword())
             .phoneNumber(usePerson.getPhoneNumber())
             .userType(UserType.USE_PERSON)
+            .isAccountNonExpired(usePerson.getIsAccountNonExpired())
+            .isCredentialsNonExpired(usePerson.getIsCredentialsNonExpired())
+            .isAccountNonLocked(usePerson.getIsAccountNonLocked())
+            .isEnabled(usePerson.getIsEnabled())
             .build();
     }
 
@@ -44,6 +48,10 @@ public class PrincipalDetails implements UserDetails {
             .password(managePerson.getPassword())
             .phoneNumber(managePerson.getPhoneNumber())
             .userType(userType)
+            .isAccountNonExpired(managePerson.getIsAccountNonExpired())
+            .isCredentialsNonExpired(managePerson.getIsCredentialsNonExpired())
+            .isAccountNonLocked(managePerson.getIsAccountNonLocked())
+            .isEnabled(managePerson.getIsEnabled())
             .build();
     }
 

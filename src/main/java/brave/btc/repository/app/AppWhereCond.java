@@ -5,8 +5,6 @@ import static brave.btc.domain.app.record.QRecord.*;
 import static brave.btc.domain.app.user.QUsePerson.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 
@@ -26,15 +24,10 @@ public abstract class AppWhereCond {
 	}
 	public static BooleanExpression btwDateTime(LocalDate fromDate, LocalDate toDate) {
 		return fromDate!=null && toDate!=null ?
-			record.datetime.between(
-			LocalDateTime.of(fromDate, LocalTime.of(0,0,0)),
-			LocalDateTime.of(toDate, LocalTime.of(23,59,59))) : null;
+			record.reportDate.between(fromDate,toDate) : null;
 	}
 	public static BooleanExpression eqDate(LocalDate targetDate) {
-		return targetDate!=null ?
-			record.datetime.between(
-			LocalDateTime.of(targetDate, LocalTime.of(0,0,0)),
-			LocalDateTime.of(targetDate, LocalTime.of(23,59,59))) : null;
+		return targetDate != null ? record.reportDate.eq(targetDate) : null;
 	}
 
 

@@ -9,9 +9,6 @@ import java.util.List;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Repository;
 
-import com.querydsl.core.types.ConstantImpl;
-import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.dsl.StringTemplate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import brave.btc.domain.app.record.Record;
@@ -26,32 +23,33 @@ public class RecordRepositoryCustomImpl implements RecordRepositoryCustom{
 	private final JPAQueryFactory queryFactory;
 	private final Environment environment;
 	@Override
-	public List<String> searchViolentRecordDateList(int usePersonId, LocalDate fromDate, LocalDate toDate) {
+	public List<LocalDate> searchViolentRecordDateList(int usePersonId, LocalDate fromDate, LocalDate toDate) {
 
-		String[] activeProfiles = environment.getActiveProfiles();
-		String activeProfile = activeProfiles[0];
-		StringTemplate formattedDate;
-		if (activeProfile.equals("dev") || activeProfile.equals("master")) {
-			 formattedDate = Expressions.stringTemplate(
-			"DATE_FORMAT({0}, {1})"
-			, record.datetime
-			, ConstantImpl.create("%Y-%m-%d"));
-		} else {
-			formattedDate = Expressions.stringTemplate(
-			"FORMATDATETIME({0}, {1})"
-			, record.datetime
-			, ConstantImpl.create("yyyy-MM-dd"));
-		}
+		//report datetime -> date로 바뀌면서 아래 코드는 사용 x
+		// String[] activeProfiles = environment.getActiveProfiles();
+		// String activeProfile = activeProfiles[0];
+		// StringTemplate formattedDate;
+		// if (activeProfile.equals("dev") || activeProfile.equals("master")) {
+		// 	 formattedDate = Expressions.stringTemplate(
+		// 	"DATE_FORMAT({0}, {1})"
+		// 	, record.reportDate
+		// 	, ConstantImpl.create("%Y-%m-%d"));
+		// } else {
+		// 	formattedDate = Expressions.stringTemplate(
+		// 	"FORMATDATETIME({0}, {1})"
+		// 	, record.reportDate
+		// 	, ConstantImpl.create("yyyy-MM-dd"));
+		// }
 
 		return queryFactory
-			.select(formattedDate)
+			.select(record.reportDate)
 			.from(record)
 			.where(
 				eqUsePerson(usePersonId),
 				btwDateTime(fromDate, toDate)
 			)
-			.groupBy(formattedDate)
-			.orderBy(record.datetime.asc())
+			.groupBy(record.reportDate)
+			.orderBy(record.reportDate.asc())
 			.fetch();
 	}
 
@@ -62,7 +60,7 @@ public class RecordRepositoryCustomImpl implements RecordRepositoryCustom{
 				eqUsePerson(usePersonId),
 				eqDate(targetDate)
 			)
-			.orderBy(record.datetime.asc())
+			.orderBy(record.reportDate.asc())
 			.fetch();
 	}
 }

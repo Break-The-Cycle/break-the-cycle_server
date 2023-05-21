@@ -1,13 +1,11 @@
 package brave.btc.service.app.record;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import brave.btc.service.app.auth.AuthService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +18,7 @@ import brave.btc.dto.CommonResponseDto;
 import brave.btc.dto.app.record.DiaryDto;
 import brave.btc.dto.app.record.ViolentRecordDto;
 import brave.btc.repository.app.record.RecordRepository;
+import brave.btc.service.app.auth.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -37,13 +36,7 @@ public class ViolentRecordServiceImpl implements ViolentRecordService {
 
 	@Override
 	public List<LocalDate> findViolentRecordDateList(Integer usePersonId, LocalDate fromDate, LocalDate toDate) {
-		List<String> dateStringList = recordRepository.searchViolentRecordDateList(usePersonId, fromDate, toDate);
-		List<LocalDate> dateList = new ArrayList<>();
-		for (String dateString : dateStringList) {
-			LocalDate localDate = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-			dateList.add(localDate);
-		}
-		return dateList;
+		return recordRepository.searchViolentRecordDateList(usePersonId, fromDate, toDate);
 	}
 
 	@Override

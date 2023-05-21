@@ -16,7 +16,7 @@ import brave.btc.dto.common.auth.jwt.JwtResponseDto;
 import brave.btc.dto.common.auth.login.LoginRequestDto;
 import brave.btc.dto.common.auth.register.RegisterDto;
 import brave.btc.exception.ErrorResponseDto;
-import brave.btc.service.app.auth.AuthServiceImpl;
+import brave.btc.service.app.auth.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -36,7 +36,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/v1/auth")
 public class AuthController {
 
-    private final AuthServiceImpl authService;
+    private final AuthService authService;
 
     @Operation(summary = "Login ID Duplication Check", description = "아이디 중복 체크",
             responses = {
@@ -93,6 +93,25 @@ public class AuthController {
         return ResponseEntity.ok()
                 .body(responseDto);
     }
+
+    @Operation(summary = "bo manage person register", description = "백 오피스 관리자 개인 회원 가입(ADMIN)",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "회원 가입 성공",
+                content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                    schema = @Schema(implementation = CommonResponseDto.class))),
+            @ApiResponse(responseCode = "400", description = "회원 가입 실패",
+                content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                    schema = @Schema(implementation = ErrorResponseDto.class)))
+        })
+    @PostMapping("/register/bo-manage-person")
+    public ResponseEntity<?> registerAdminPersonV1(
+        @RequestBody @Valid RegisterDto.BackOfficeManagePersonCreate request,
+        BindingResult bindingResult) {
+        CommonResponseDto<Object> responseDto = authService.registerBackOffIceManagePerson(request);
+        return ResponseEntity.ok()
+            .body(responseDto);
+    }
+
 
     @Operation(summary = "Login", description = "로그인 ID PW 확인",
             responses = {

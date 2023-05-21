@@ -137,7 +137,7 @@ public class ViolentRecordController {
 		@ModelAttribute ViolentRecordDto.OutRequest requestDto) {
 
 		log.info("[ViolentRecordOut] requestDto: {}", requestDto);
-		CommonResponseDto<Object> responseDto = violentRecordService.uploadViolentRecord(requestDto);
+		ViolentRecordDto.OutResponse responseDto = violentRecordService.outViolentRecord(requestDto);
 		return ResponseEntity.ok()
 			.body(responseDto);
 	}

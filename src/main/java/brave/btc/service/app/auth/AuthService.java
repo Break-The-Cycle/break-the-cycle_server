@@ -34,5 +34,12 @@ public interface AuthService {
      * @return 응답 메세지
      */
     CommonResponseDto<Object> registerManagePerson(RegisterDto.ManagePersonCreate request);
+
+    /**
+     * BACK OFFICE MANAGE_PERSON 회원가입을 한다
+     * @param request 회원가입에 필요한 데이터를 담은 dto
+     * @return 응답 메세지
+     */
+    CommonResponseDto<Object> registerBackOffIceManagePerson(RegisterDto.BackOfficeManagePersonCreate request);
 }
 

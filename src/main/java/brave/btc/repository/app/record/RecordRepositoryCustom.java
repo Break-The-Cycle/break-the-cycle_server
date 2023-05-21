@@ -7,7 +7,7 @@ import brave.btc.domain.app.record.Record;
 
 public interface RecordRepositoryCustom {
 
-	List<String> searchViolentRecordDateList(int usePersonId, LocalDate fromDate, LocalDate toDate);
+	List<LocalDate> searchViolentRecordDateList(int usePersonId, LocalDate fromDate, LocalDate toDate);
 
 	List<Record> searchViolentRecordList(int usePersonId, LocalDate targetDate);
 }
