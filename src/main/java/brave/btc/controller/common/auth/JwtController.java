@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import brave.btc.dto.CommonResponseDto;
-import brave.btc.dto.common.auth.jwt.JwtResponseDto;
 import brave.btc.exception.ErrorResponseDto;
 import brave.btc.service.app.auth.JwtServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -54,10 +53,10 @@ public class JwtController {
             responses = {
                     @ApiResponse(responseCode = "200", description = "유효성 통과",
                             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = JwtResponseDto.class))),
+                                    schema = @Schema(implementation = CommonResponseDto.class))),
                     @ApiResponse(responseCode = "401", description = "유효하지 않음",
                             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = JwtResponseDto.class)))
+                                    schema = @Schema(implementation = ErrorResponseDto.class)))
             })
     @Parameter(name = "Refresh-Token", in = ParameterIn.HEADER)
     @GetMapping("/refresh")

@@ -1,6 +1,6 @@
 package brave.btc.config.jwt;
 
-import brave.btc.dto.common.auth.jwt.JwtResponseDto;
+import brave.btc.exception.ErrorResponseDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -29,9 +29,9 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
     private void setErrorResponse(HttpServletRequest request, HttpServletResponse response, Throwable e) throws IOException {
         log.error("[Authentication] {}", e.getMessage());
         response.setContentType("application/json; charset=UTF-8");
-        JwtResponseDto responseDto = JwtResponseDto.builder()
+        ErrorResponseDto<?> responseDto = ErrorResponseDto.builder()
                 .message(e.getMessage())
-                .code(401)
+                .statusCode(401)
                 .build();
 
         ObjectMapper mapper = new ObjectMapper();

@@ -1,6 +1,7 @@
 package brave.btc.service.app.auth;
 
-import brave.btc.dto.common.auth.jwt.JwtResponseDto;
+import brave.btc.dto.CommonResponseDto;
+import brave.btc.dto.common.auth.jwt.JwtTokenDto;
 
 public interface JwtService {
 
@@ -17,5 +18,5 @@ public interface JwtService {
      * @param refreshToken 유효성을 검증할 refreshToken
      * @return 갱신된 Access Token과 Refresh Token
      */
-    JwtResponseDto refresh(String refreshToken);
+    CommonResponseDto<Object> refresh(String refreshToken);
 }

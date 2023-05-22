@@ -3,6 +3,7 @@ package brave.btc.config.jwt;
 import java.io.IOException;
 import java.util.Optional;
 
+import brave.btc.dto.CommonResponseDto;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -20,7 +21,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import brave.btc.config.auth.PrincipalDetails;
 import brave.btc.domain.app.user.UsePerson;
 import brave.btc.domain.bo.user.ManagePerson;
-import brave.btc.dto.common.auth.jwt.JwtResponseDto;
 import brave.btc.exception.auth.UserPrincipalNotFoundException;
 import brave.btc.repository.app.UsePersonRepository;
 import brave.btc.repository.bo.ManagePersonRepository;
@@ -56,7 +56,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
 
         log.info("request = " + request.getServletPath());
-        if (request.getServletPath().startsWith("/v1/auth/")) {
+        if (!request.getServletPath().startsWith("/v1/auth/")) {
             chain.doFilter(request, response);
             return;
         }
@@ -69,13 +69,16 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                 throw new JwtException("유효하지 않은 Refresh Token입니다.");
             }
             String refreshToken = rtHeader.replaceAll(JwtProperties.TOKEN_PREFIX, "");
-            JwtResponseDto responseDto = jwtService.refresh(refreshToken);
-            ObjectMapper mapper = new ObjectMapper();
-            response.setContentType("application/json; charset=UTF-8");
-            response.setStatus(HttpServletResponse.SC_OK);
-            mapper.writeValue(response.getOutputStream(), responseDto);
-            chain.doFilter(request, response);
-            return;
+            try {
+                CommonResponseDto<Object> responseDto = jwtService.refresh(refreshToken);
+                ObjectMapper mapper = new ObjectMapper();
+                response.setContentType("application/json; charset=UTF-8");
+                mapper.writeValue(response.getOutputStream(), responseDto);
+                chain.doFilter(request, response);
+                return;
+            } catch (Exception e) {
+                throw new JwtException(e.getMessage());
+            }
         }
         log.info("[Authorization] Refresh Token 없음 확인");
 
