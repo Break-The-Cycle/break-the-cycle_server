@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import brave.btc.dto.CommonResponseDto;
-import brave.btc.dto.common.auth.jwt.JwtResponseDto;
 import brave.btc.dto.common.auth.login.LoginRequestDto;
 import brave.btc.dto.common.auth.register.RegisterDto;
 import brave.btc.exception.ErrorResponseDto;
@@ -118,10 +117,10 @@ public class AuthController {
             responses = {
                     @ApiResponse(responseCode = "200", description = "로그인 성공",
                             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = JwtResponseDto.class))),
+                                    schema = @Schema(implementation = CommonResponseDto.class))),
                     @ApiResponse(responseCode = "401", description = "로그인 실패",
                             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = JwtResponseDto.class)))
+                                    schema = @Schema(implementation = ErrorResponseDto.class)))
             })
     @PostMapping("/login")
     public void loginV1(

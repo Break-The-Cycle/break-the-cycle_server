@@ -1,6 +1,6 @@
 package brave.btc.exception.controller;
 
-import brave.btc.dto.common.auth.jwt.JwtResponseDto;
+import brave.btc.dto.common.auth.jwt.JwtTokenDto;
 import brave.btc.exception.ErrorResponseDto;
 import brave.btc.exception.auth.*;
 import brave.btc.exception.sms.SmsCertificationNumberExpiredException;
@@ -25,7 +25,7 @@ public class ErrorController {
 
         ErrorResponseDto<Object> errorResponseDto = ErrorResponseDto.builder()
                 .message(e.getMessage())
-                .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .build();
         return ResponseEntity.internalServerError()
                 .body(errorResponseDto);
@@ -37,7 +37,7 @@ public class ErrorController {
         log.error("[handleAuthenticationInvalidException] 로그인 실패 예외");
         ErrorResponseDto<Object> errorResponseDto = ErrorResponseDto.builder()
                 .message(e.getMessage())
-                .code(HttpStatus.NOT_FOUND.value())
+                .statusCode(HttpStatus.NOT_FOUND.value())
                 .build();
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(errorResponseDto);
@@ -49,19 +49,19 @@ public class ErrorController {
         log.error("[handleUserPrincipalNotFoundException] 회원 존재하지 않음");
         ErrorResponseDto<Object> errorResponseDto = ErrorResponseDto.builder()
                 .message(e.getMessage())
-                .code(HttpStatus.NOT_FOUND.value())
+                .statusCode(HttpStatus.NOT_FOUND.value())
                 .build();
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(errorResponseDto);
     }
 
     @ExceptionHandler(JWTVerificationException.class)
-    public ResponseEntity<JwtResponseDto> handleInvalidTokenException(JWTVerificationException e) {
+    public ResponseEntity<ErrorResponseDto<?>> handleInvalidTokenException(JWTVerificationException e) {
 
         log.error("[handleJWTVerificationException] 유효하지 않은 토큰입니다.");
-        JwtResponseDto errorResponseDto = JwtResponseDto.builder()
+        ErrorResponseDto<?> errorResponseDto = ErrorResponseDto.builder()
                 .message(e.getMessage())
-                .code(HttpStatus.UNAUTHORIZED.value())
+                .statusCode(HttpStatus.UNAUTHORIZED.value())
                 .build();
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(errorResponseDto);
@@ -73,7 +73,7 @@ public class ErrorController {
         log.error("[handleSmsSendFailedException] 인증 번호 전송 실패");
         ErrorResponseDto<Object> errorResponseDto = ErrorResponseDto.builder()
                 .message(e.getMessage())
-                .code(HttpStatus.BAD_REQUEST.value())
+                .statusCode(HttpStatus.BAD_REQUEST.value())
                 .build();
         return ResponseEntity.badRequest()
                 .body(errorResponseDto);
@@ -85,7 +85,7 @@ public class ErrorController {
         log.error("[handleSmsCertificationNumberNotSameException] 인증 번호 불일치");
         ErrorResponseDto<Object> errorResponseDto = ErrorResponseDto.builder()
                 .message(e.getMessage())
-                .code(HttpStatus.BAD_REQUEST.value())
+                .statusCode(HttpStatus.BAD_REQUEST.value())
                 .build();
         return ResponseEntity.badRequest()
                 .body(errorResponseDto);
@@ -97,7 +97,7 @@ public class ErrorController {
         log.error("[handleSmsCertificationNumberExpiredException] 인증 번호 만료");
         ErrorResponseDto<Object> errorResponseDto = ErrorResponseDto.builder()
                 .message(e.getMessage())
-                .code(HttpStatus.BAD_REQUEST.value())
+                .statusCode(HttpStatus.BAD_REQUEST.value())
                 .build();
         return ResponseEntity.badRequest()
                 .body(errorResponseDto);
