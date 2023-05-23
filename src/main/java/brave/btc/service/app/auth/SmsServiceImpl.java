@@ -1,23 +1,23 @@
 package brave.btc.service.app.auth;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
+import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import net.nurigo.sdk.NurigoApp;
+import net.nurigo.sdk.message.model.Message;
+import net.nurigo.sdk.message.service.DefaultMessageService;
+
 import brave.btc.domain.temporary.SmsCertification;
-import brave.btc.dto.CommonResponseDto;
 import brave.btc.exception.sms.SmsCertificationNumberExpiredException;
 import brave.btc.exception.sms.SmsCertificationNumberNotSameException;
 import brave.btc.exception.sms.SmsSendFailedException;
 import brave.btc.repository.temporary.SmsCertificationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.nurigo.sdk.NurigoApp;
-import net.nurigo.sdk.message.model.Message;
-import net.nurigo.sdk.message.service.DefaultMessageService;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -36,7 +36,7 @@ public class SmsServiceImpl implements SmsService {
     private String smsDomain;
 
     @Override
-    public CommonResponseDto<Object> sendAuthNumber(String phoneNumber) {
+    public String sendAuthNumber(String phoneNumber) {
 
         log.info("[register] 인증번호 요청");
         String authNumber = RandomStringUtils.randomNumeric(6);
@@ -58,10 +58,7 @@ public class SmsServiceImpl implements SmsService {
             throw new SmsSendFailedException(e.getMessage());
         }
 
-        return CommonResponseDto.builder()
-                .message("인증번호 전송이 완료되었습니다.")
-                .statusCode(HttpStatus.OK.value())
-                .build();
+        return "인증번호 전송이 완료되었습니다.";
     }
 
     @Override
@@ -83,7 +80,7 @@ public class SmsServiceImpl implements SmsService {
     }
 
     @Override
-    public CommonResponseDto<Object> checkAuthNumber(String authNumber, String phoneNumber) {
+    public String checkAuthNumber(String authNumber, String phoneNumber) {
 
         log.info("[register] 인증번호 확인 요청");
         SmsCertification smsCertification = smsCertificationRepository.findByPhoneNumber(phoneNumber)
@@ -93,10 +90,7 @@ public class SmsServiceImpl implements SmsService {
             if (smsCertification.getCertificationNumber().equals(authNumber)) {
                 log.info("smsCertification.getCertificationNumber() = " + smsCertification.getCertificationNumber());
                 log.info("authNumber = " + authNumber);
-                return CommonResponseDto.builder()
-                        .message("인증번호 인증이 완료되었습니다.")
-                        .statusCode(HttpStatus.OK.value())
-                        .build();
+                return "인증번호 인증이 완료되었습니다.";
             }
         }
 

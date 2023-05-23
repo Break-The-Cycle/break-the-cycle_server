@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import brave.btc.constant.enums.MenstruationDivision;
 import brave.btc.domain.app.record.Menstruation;
 import brave.btc.domain.app.user.UsePerson;
-import brave.btc.dto.CommonResponseDto;
 import brave.btc.dto.app.menstruation.MenstruationDto;
 import brave.btc.exception.auth.UserPrincipalNotFoundException;
 import brave.btc.exception.menstruation.InvalidMenstruationException;
@@ -62,7 +61,7 @@ public class UsePersonAndMenstruationServiceImpl implements UsePersonAndMenstrua
 	 * @param menstruationPeriod 사용자 생리 주기
 	 * @param latestStartDate 최근 생리일
 	 */
-	private static void calculateExpectedMenstruationInfo(List<MenstruationDto.Response> responseDtoList, Period menstruationPeriod, LocalDate latestStartDate) {
+	private void calculateExpectedMenstruationInfo(List<MenstruationDto.Response> responseDtoList, Period menstruationPeriod, LocalDate latestStartDate) {
 		LocalDate todayDate = LocalDate.now();
 
 		LocalDate expectedMenstruationDate = latestStartDate;
@@ -98,7 +97,7 @@ public class UsePersonAndMenstruationServiceImpl implements UsePersonAndMenstrua
 	}
 
 	@Override
-	public CommonResponseDto<?> createMenstruationInfo(int usePersonId, MenstruationDto.Create mensttCreateDto) {
+	public String createMenstruationInfo(int usePersonId, MenstruationDto.Create mensttCreateDto) {
 
 		LocalDate startDate = mensttCreateDto.getStartDate();
 		LocalDate endDate = mensttCreateDto.getEndDate();
@@ -112,24 +111,20 @@ public class UsePersonAndMenstruationServiceImpl implements UsePersonAndMenstrua
 		Menstruation menstruation = mensttCreateDto.toEntity(usePerson);
 		recordRepository.save(menstruation);
 		log.debug("[createMenstruationInfo] menstruation 등록 완료: {}", menstruation);
-		return CommonResponseDto.builder()
-			.message("생리 기록이 정상적으로 등록되었습니다.")
-			.build();
+		return "생리 기록이 정상적으로 등록되었습니다.";
 	}
 
 	@Override
-	public CommonResponseDto<?> modifyUsePersonMenstruationPeriod(int usePersonId, int mnsttPeriod) {
+	public String modifyUsePersonMenstruationPeriod(int usePersonId, int mnsttPeriod) {
 
 		UsePerson usePerson = usePersonRepository.findById(usePersonId)
 			.orElseThrow(()->new UserPrincipalNotFoundException("해당하는 유저가 존재하지 않습니다."));
 		usePerson.changeMenstruationPeriod(mnsttPeriod);
-		return CommonResponseDto.builder()
-			.message("유저의 생리 주기가 정상적으로 변경되었습니다.")
-			.build();
+		return "유저의 생리 주기가 정상적으로 변경되었습니다.";
 	}
 
 	@Override
-	public CommonResponseDto<?> createOnBoardMenstruationInfo(int usePersonId, MenstruationDto.OnBoardCreate mnsttOnBoardCreateDto) {
+	public String createOnBoardMenstruationInfo(int usePersonId, MenstruationDto.OnBoardCreate mnsttOnBoardCreateDto) {
 
 		Integer newPeriod = mnsttOnBoardCreateDto.getPeriod();
 
@@ -137,8 +132,6 @@ public class UsePersonAndMenstruationServiceImpl implements UsePersonAndMenstrua
 
 		modifyUsePersonMenstruationPeriod(usePersonId, newPeriod);
 		createMenstruationInfo(usePersonId, mnsttOnBoardCreateDto.toCreateDto());
-		return CommonResponseDto.builder()
-			.message("유저 온보딩 정보가 정상적으로 등록되었습니다.")
-			.build();
+		return "유저 온보딩 정보가 정상적으로 등록되었습니다.";
 	}
 }

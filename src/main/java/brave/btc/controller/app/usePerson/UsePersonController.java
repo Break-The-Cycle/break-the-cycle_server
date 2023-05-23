@@ -50,7 +50,8 @@ public class UsePersonController {
 		@RequestBody MenstruationDto.OnBoardCreate onBoardCreateReqDto) {
 
 		log.debug("[modifyMenstruationPeriod] usePersonId: {} onBoardCreateReqDto: {}",usePersonId, onBoardCreateReqDto);
-		CommonResponseDto<?> responseDto = usePersonAndMenstruationService.createOnBoardMenstruationInfo(usePersonId, onBoardCreateReqDto);
+		String message = usePersonAndMenstruationService.createOnBoardMenstruationInfo(usePersonId, onBoardCreateReqDto);
+		CommonResponseDto<Object> responseDto = CommonResponseDto.builder().message(message).build();
 
 		return ResponseEntity.ok()
 			.body(responseDto);
@@ -71,7 +72,9 @@ public class UsePersonController {
 		@Positive @Parameter(description = "유저의 생리 주기",required = true, example = "28") @RequestParam(value="period",defaultValue = "28") Integer period) {
 
 		log.debug("[modifyMenstruationPeriod] usePersonId: {} newPeriod: {}",usePersonId, period);
-		CommonResponseDto<?> responseDto = usePersonAndMenstruationService.modifyUsePersonMenstruationPeriod(usePersonId, period);
+		String message = usePersonAndMenstruationService.modifyUsePersonMenstruationPeriod(usePersonId, period);
+		CommonResponseDto<Object> responseDto = CommonResponseDto.builder().message(message).build();
+
 		return ResponseEntity.ok()
 			.body(responseDto);
 	}

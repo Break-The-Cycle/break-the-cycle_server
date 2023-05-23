@@ -3,8 +3,6 @@ package brave.btc.config.jwt;
 import java.io.IOException;
 import java.util.Date;
 
-import brave.btc.dto.CommonResponseDto;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,6 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import brave.btc.config.auth.PrincipalDetails;
 import brave.btc.domain.common.user.User;
+import brave.btc.dto.CommonResponseDto;
 import brave.btc.dto.common.auth.jwt.JwtTokenDto;
 import brave.btc.dto.common.auth.login.LoginRequestDto;
 import brave.btc.service.app.auth.JwtServiceImpl;
@@ -111,7 +110,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         log.info("[Authentication] refreshToken DB에 저장 완료: " + refreshToken);
 
         JwtTokenDto jwtTokenDto = JwtTokenDto.builder()
-                .usePersonId(loginSuccessUser.getId())
+                .userId(loginSuccessUser.getId())
                 .accessToken(JwtProperties.TOKEN_PREFIX+accessToken)
                 .refreshToken(JwtProperties.TOKEN_PREFIX+refreshToken)
                 .build();
@@ -119,7 +118,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         CommonResponseDto<Object> responseDto = CommonResponseDto.builder()
                 .data(jwtTokenDto)
                 .message("로그인에 성공하였습니다.")
-                .statusCode(HttpStatus.OK.value())
                 .build();
         ObjectMapper mapper = new ObjectMapper();
         response.setContentType("application/json; charset=UTF-8");

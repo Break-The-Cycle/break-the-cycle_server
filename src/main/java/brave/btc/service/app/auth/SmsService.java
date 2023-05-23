@@ -1,7 +1,5 @@
 package brave.btc.service.app.auth;
 
-import brave.btc.dto.CommonResponseDto;
-
 import java.sql.Timestamp;
 
 public interface SmsService {
@@ -11,7 +9,7 @@ public interface SmsService {
      * @param phoneNumber 인증할 전화번호
      * @return 응답 메세지
      */
-    CommonResponseDto<Object> sendAuthNumber(String phoneNumber);
+    String sendAuthNumber(String phoneNumber);
 
     /**
      * 인증번호를 저장한다.
@@ -25,7 +23,7 @@ public interface SmsService {
      * @param phoneNumber 전화번호로 서버애 저장된 인증번호를 불러온다
      * @param authNumber 요청받은 인증번호
      */
-    CommonResponseDto<Object> checkAuthNumber(String authNumber, String phoneNumber);
+    String checkAuthNumber(String authNumber, String phoneNumber);
 
     /**
      * 인증번호 만료시간을 확인한다.

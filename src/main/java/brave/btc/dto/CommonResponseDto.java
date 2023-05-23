@@ -14,5 +14,4 @@ import lombok.ToString;
 public class CommonResponseDto<T> {
 	T data;
 	String message;
-	int statusCode;
 }
