@@ -73,6 +73,7 @@ public class PrincipalDetails implements UserDetails {
         } else {
             throw new IllegalStateException("비정상 상태입니다.");
         }
+        log.debug("[getAuthorities] authorities: {}", authorities);
         return authorities;
     }
 
