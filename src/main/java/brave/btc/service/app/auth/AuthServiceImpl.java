@@ -1,5 +1,7 @@
 package brave.btc.service.app.auth;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
@@ -96,10 +98,13 @@ public class AuthServiceImpl implements AuthService {
         UsePerson newUsePerson = request.toUsePersonEntity(encodedPassword);
         usePersonRepository.save(newUsePerson);
         log.info("[register] 사용 개인 회원 가입 완료");
+        Map<String, Integer> usePersonIdMap = new HashMap<>();
+        usePersonIdMap.put("usePersonId", newUsePerson.getId());
         return CommonResponseDto.builder()
-            .message("사용 개인 회원 가입이 완료되었습니다.")
-            .statusCode(HttpStatus.OK.value())
-            .build();
+                .data(usePersonIdMap)
+                .message("사용 개인 회원 가입이 완료되었습니다.")
+                .statusCode(HttpStatus.OK.value())
+                .build();
     }
 
     private static void checkIsPasswordEqual(String password, String password2) {

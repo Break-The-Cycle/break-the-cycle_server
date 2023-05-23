@@ -111,6 +111,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         log.info("[Authentication] refreshToken DB에 저장 완료: " + refreshToken);
 
         JwtTokenDto jwtTokenDto = JwtTokenDto.builder()
+                .usePersonId(loginSuccessUser.getId())
                 .accessToken(JwtProperties.TOKEN_PREFIX+accessToken)
                 .refreshToken(JwtProperties.TOKEN_PREFIX+refreshToken)
                 .build();

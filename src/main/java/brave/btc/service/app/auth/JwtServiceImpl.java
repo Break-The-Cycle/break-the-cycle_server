@@ -89,6 +89,7 @@ public class JwtServiceImpl implements JwtService {
         log.info("[Authorization] Refresh Token DB에 저장 완료");
 
         JwtTokenDto jwtTokenDto = JwtTokenDto.builder()
+                .usePersonId(userId)
                 .accessToken(JwtProperties.TOKEN_PREFIX + accessToken)
                 .refreshToken(JwtProperties.TOKEN_PREFIX + newRefreshToken)
                 .build();
