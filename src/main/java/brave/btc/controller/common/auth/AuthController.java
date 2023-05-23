@@ -51,8 +51,10 @@ public class AuthController {
             @Pattern(regexp = "^[a-z]+[a-zA-Z0-9]{6,19}", message = "아이디는 영문 소문자로 시작하고 숫자를 포함하여 7~20자로 구성되어야 합니다.")
             @PathVariable("loginId") String loginId) {
 
-        CommonResponseDto<Object> responseDto = authService.loginIdIdDuplicateCheck(loginId);
-        return ResponseEntity.status(responseDto.getStatusCode())
+        String message = authService.loginIdIdDuplicateCheck(loginId);
+        CommonResponseDto<Object> responseDto = CommonResponseDto.builder().message(message).build();
+
+        return ResponseEntity.ok()
                 .body(responseDto);
     }
 
@@ -69,7 +71,15 @@ public class AuthController {
     public ResponseEntity<?> registerUsePersonV1(
             @RequestBody @Valid RegisterDto.UsePersonCreate request,
             BindingResult bindingResult) {
-        CommonResponseDto<Object> responseDto = authService.registerUsePerson(request);
+
+        RegisterDto.Response registerResponse = authService.registerUsePerson(request);
+        String message = registerResponse.getMessage();
+
+        CommonResponseDto<Object> responseDto = CommonResponseDto.builder()
+            .message(message)
+            .data(registerResponse)
+            .build();
+
         return ResponseEntity.ok()
                 .body(responseDto);
     }
@@ -87,9 +97,17 @@ public class AuthController {
     public ResponseEntity<?> registerManagePersonV1(
             @RequestBody @Valid RegisterDto.ManagePersonCreate request,
             BindingResult bindingResult) {
-        CommonResponseDto<Object> responseDto = authService.registerManagePerson(request);
+
+        RegisterDto.Response registerResponse = authService.registerManagePerson(request);
+        String message = registerResponse.getMessage();
+
+        CommonResponseDto<Object> responseDto = CommonResponseDto.builder()
+            .message(message)
+            .data(registerResponse)
+            .build();
+
         return ResponseEntity.ok()
-                .body(responseDto);
+            .body(responseDto);
     }
 
     @Operation(summary = "bo manage person register",
@@ -107,7 +125,15 @@ public class AuthController {
     public ResponseEntity<?> registerAdminPersonV1(
         @RequestBody @Valid RegisterDto.BackOfficeManagePersonCreate request,
         BindingResult bindingResult) {
-        CommonResponseDto<Object> responseDto = authService.registerBackOffIceManagePerson(request);
+
+        RegisterDto.Response registerResponse = authService.registerBackOffIceManagePerson(request);
+        String message = registerResponse.getMessage();
+
+        CommonResponseDto<Object> responseDto = CommonResponseDto.builder()
+            .message(message)
+            .data(registerResponse)
+            .build();
+
         return ResponseEntity.ok()
             .body(responseDto);
     }

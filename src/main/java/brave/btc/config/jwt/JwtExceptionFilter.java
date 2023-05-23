@@ -1,17 +1,19 @@
 package brave.btc.config.jwt;
 
-import brave.btc.exception.ErrorResponseDto;
+import java.io.IOException;
+
+import org.springframework.security.oauth2.jwt.JwtException;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import brave.btc.exception.ErrorResponseDto;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.oauth2.jwt.JwtException;
-import org.springframework.stereotype.Component;
-import org.springframework.web.filter.OncePerRequestFilter;
-
-import java.io.IOException;
 
 @Slf4j
 @Component
@@ -31,7 +33,6 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
         response.setContentType("application/json; charset=UTF-8");
         ErrorResponseDto<?> responseDto = ErrorResponseDto.builder()
                 .message(e.getMessage())
-                .statusCode(401)
                 .build();
 
         ObjectMapper mapper = new ObjectMapper();

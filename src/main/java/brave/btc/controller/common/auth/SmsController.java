@@ -11,7 +11,7 @@ import brave.btc.dto.CommonResponseDto;
 import brave.btc.dto.common.auth.sms.SmsCertificationDto;
 import brave.btc.dto.common.auth.sms.SmsRequestDto;
 import brave.btc.exception.ErrorResponseDto;
-import brave.btc.service.app.auth.SmsServiceImpl;
+import brave.btc.service.app.auth.SmsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/v1/auth")
 public class SmsController {
 
-    private final SmsServiceImpl smsServiceImpl;
+    private final SmsService smsService;
 
     @Operation(summary = "Sms Certification Send", description = "인증번호 요청",
             responses = {
@@ -42,7 +42,10 @@ public class SmsController {
             })
     @PostMapping("/sms-certification/send")
     public ResponseEntity<?> sendSms(@RequestBody SmsRequestDto request){
-        CommonResponseDto<Object> responseDto = smsServiceImpl.sendAuthNumber(request.getPhoneNumber());
+
+        String message = smsService.sendAuthNumber(request.getPhoneNumber());
+        CommonResponseDto<Object> responseDto = CommonResponseDto.builder().message(message).build();
+
         return ResponseEntity.ok()
                 .body(responseDto);
     }
@@ -58,7 +61,10 @@ public class SmsController {
             })
     @PostMapping("/sms-certification/confirm")
     public ResponseEntity<?> smsCertification(@RequestBody SmsCertificationDto request) {
-        CommonResponseDto<Object> responseDto = smsServiceImpl.checkAuthNumber(request.getCertificationNumber(), request.getPhoneNumber());
+
+        String message = smsService.checkAuthNumber(request.getCertificationNumber(), request.getPhoneNumber());
+        CommonResponseDto<Object> responseDto = CommonResponseDto.builder().message(message).build();
+
         return ResponseEntity.ok()
                 .body(responseDto);
     }

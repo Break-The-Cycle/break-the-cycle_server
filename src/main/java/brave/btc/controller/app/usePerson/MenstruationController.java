@@ -58,8 +58,9 @@ public class MenstruationController {
 
 		List<MenstruationDto.Response> menstruationList =
 			usePersonAndMenstruationService.findMenstruationList(usePersonId, fromDate, toDate);
+		CommonResponseDto<Object> respDto = CommonResponseDto.builder().data(menstruationList).build();
 		return ResponseEntity.ok()
-			.body(menstruationList);
+			.body(respDto);
 	}
 
 	@Operation(summary = "생리 기록 등록", description = "생리한 기록을 등록",
@@ -77,7 +78,8 @@ public class MenstruationController {
 		@RequestBody MenstruationDto.Create mnsttCreateDto) {
 
 		log.debug("[createUsePersonRecordMenstruation] usePersonId: {} mnsttCreateDto: {}",usePersonId, mnsttCreateDto);
-		CommonResponseDto<?> responseDto = usePersonAndMenstruationService.createMenstruationInfo(usePersonId, mnsttCreateDto);
+		String message = usePersonAndMenstruationService.createMenstruationInfo(usePersonId, mnsttCreateDto);
+		CommonResponseDto<Object> responseDto = CommonResponseDto.builder().message(message).build();
 
 		return ResponseEntity.ok()
 			.body(responseDto);

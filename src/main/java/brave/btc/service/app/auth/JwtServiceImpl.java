@@ -1,5 +1,16 @@
 package brave.btc.service.app.auth;
 
+import java.util.Date;
+
+import org.springframework.security.oauth2.jwt.JwtException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
+
 import brave.btc.config.jwt.JwtProperties;
 import brave.btc.domain.app.user.UsePerson;
 import brave.btc.domain.temporary.jwt.RefreshToken;
@@ -7,18 +18,8 @@ import brave.btc.dto.CommonResponseDto;
 import brave.btc.dto.common.auth.jwt.JwtTokenDto;
 import brave.btc.repository.app.UsePersonRepository;
 import brave.btc.repository.temporary.jwt.RefreshTokenRepository;
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.oauth2.jwt.JwtException;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Date;
 
 @RequiredArgsConstructor
 @Transactional
@@ -89,7 +90,7 @@ public class JwtServiceImpl implements JwtService {
         log.info("[Authorization] Refresh Token DB에 저장 완료");
 
         JwtTokenDto jwtTokenDto = JwtTokenDto.builder()
-                .usePersonId(userId)
+                .userId(userId)
                 .accessToken(JwtProperties.TOKEN_PREFIX + accessToken)
                 .refreshToken(JwtProperties.TOKEN_PREFIX + newRefreshToken)
                 .build();
@@ -97,7 +98,6 @@ public class JwtServiceImpl implements JwtService {
         return CommonResponseDto.builder()
                 .data(jwtTokenDto)
                 .message("Access Token, Refresh Token이 갱신되었습니다.")
-                .statusCode(HttpStatus.OK.value())
                 .build();
     }
 }

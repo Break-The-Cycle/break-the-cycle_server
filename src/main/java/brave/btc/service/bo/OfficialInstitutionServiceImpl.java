@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import brave.btc.domain.bo.user.OfficialInstitution;
-import brave.btc.dto.CommonResponseDto;
 import brave.btc.dto.bo.OfficialInstitutionDto;
 import brave.btc.exception.domain.EntityNotFoundException;
 import brave.btc.repository.bo.OfficialInstitutionRepository;
@@ -38,12 +37,10 @@ public class OfficialInstitutionServiceImpl implements OfficialInstitutionServic
 	}
 
 	@Override
-	public CommonResponseDto<?> createOfficialInstitution(OfficialInstitutionDto.Create requestDto) {
+	public String createOfficialInstitution(OfficialInstitutionDto.Create requestDto) {
 
 		OfficialInstitution newOfficialInstitution = requestDto.toEntity();
 		officialInstitutionRepository.save(newOfficialInstitution);
-		return CommonResponseDto.builder()
-			.message("공식 기관 생성이 완료되었습니다.")
-			.build();
+		return "공식 기관 생성이 완료되었습니다.";
 	}
 }

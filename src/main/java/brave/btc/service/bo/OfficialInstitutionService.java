@@ -2,7 +2,6 @@ package brave.btc.service.bo;
 
 import java.util.List;
 
-import brave.btc.dto.CommonResponseDto;
 import brave.btc.dto.bo.OfficialInstitutionDto;
 
 public interface OfficialInstitutionService {
@@ -12,5 +11,5 @@ public interface OfficialInstitutionService {
 
 	List<OfficialInstitutionDto.Response> findOfficialInstitutionList();
 
-	CommonResponseDto<?> createOfficialInstitution(OfficialInstitutionDto.Create requestDto);
+	String createOfficialInstitution(OfficialInstitutionDto.Create requestDto);
 }

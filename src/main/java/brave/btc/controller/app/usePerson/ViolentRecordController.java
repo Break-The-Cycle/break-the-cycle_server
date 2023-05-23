@@ -59,8 +59,8 @@ public class ViolentRecordController {
 
 		log.info("[violentRecordList] usePersonId: {} fromDate: {} toDate: {}", usePersonId, fromDate, toDate);
 
-		List<LocalDate> responseDto =
-			violentRecordService.findViolentRecordDateList(usePersonId, fromDate, toDate);
+		List<LocalDate> violentRecordDateList = violentRecordService.findViolentRecordDateList(usePersonId, fromDate, toDate);
+		CommonResponseDto<Object> responseDto = CommonResponseDto.builder().data(violentRecordDateList).build();
 
 		return ResponseEntity.ok()
 			.body(responseDto);
@@ -88,8 +88,8 @@ public class ViolentRecordController {
 
 		log.info("[violentRecordDetails] usePersonId: {} targetDate: {}", usePersonId,targetDate);
 
-		List<ViolentRecordDto.Response> responseDto =
-			violentRecordService.findViolentRecordList(usePersonId, targetDate, credential);
+		List<ViolentRecordDto.Response> violentRecordList = violentRecordService.findViolentRecordList(usePersonId, targetDate, credential);
+		CommonResponseDto<Object> responseDto = CommonResponseDto.builder().data(violentRecordList).build();
 
 		return ResponseEntity.ok()
 			.body(responseDto);
@@ -114,7 +114,9 @@ public class ViolentRecordController {
 		 @ModelAttribute ViolentRecordDto.Create requestDto) {
 
 		log.info("[uploadRecord] requestDto: {}", requestDto);
-		CommonResponseDto<Object> responseDto = violentRecordService.uploadViolentRecord(requestDto);
+		String message = violentRecordService.uploadViolentRecord(requestDto);
+		CommonResponseDto<Object> responseDto = CommonResponseDto.builder().message(message).build();
+
 		return ResponseEntity.ok()
 			.body(responseDto);
 	}
@@ -137,7 +139,9 @@ public class ViolentRecordController {
 		@ModelAttribute ViolentRecordDto.OutRequest requestDto) {
 
 		log.info("[ViolentRecordOut] requestDto: {}", requestDto);
-		ViolentRecordDto.OutResponse responseDto = violentRecordService.outViolentRecord(requestDto);
+		ViolentRecordDto.OutResponse outResponse = violentRecordService.outViolentRecord(requestDto);
+		CommonResponseDto<Object> responseDto = CommonResponseDto.builder().data(outResponse).build();
+
 		return ResponseEntity.ok()
 			.body(responseDto);
 	}

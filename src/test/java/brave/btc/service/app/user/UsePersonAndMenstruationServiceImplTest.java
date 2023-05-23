@@ -16,7 +16,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import brave.btc.domain.app.record.Menstruation;
 import brave.btc.domain.app.user.UsePerson;
-import brave.btc.dto.CommonResponseDto;
 import brave.btc.dto.app.menstruation.MenstruationDto;
 import brave.btc.exception.auth.UserPrincipalNotFoundException;
 import brave.btc.exception.menstruation.InvalidMenstruationException;
@@ -51,13 +50,13 @@ class UsePersonAndMenstruationServiceImplTest {
 		when(usePersonRepository.findById(eq(usePersonId))).thenReturn(Optional.of(usePerson));
 
 		// when
-		CommonResponseDto<?> result = menstruationService.createMenstruationInfo(usePersonId, createDto);
+		String result = menstruationService.createMenstruationInfo(usePersonId, createDto);
 
 		// then
 		verify(usePersonRepository, times(1)).findById(eq(usePersonId));
 		verify(recordRepository, times(1)).save(any(Menstruation.class));
 		// check result
-		assertThat(result.getMessage()).isEqualTo("생리 기록이 정상적으로 등록되었습니다.");
+		assertThat(result).isEqualTo("생리 기록이 정상적으로 등록되었습니다.");
 	}
 
 	@Test
@@ -86,7 +85,7 @@ class UsePersonAndMenstruationServiceImplTest {
 		when(usePersonRepository.findById(eq(usePersonId))).thenReturn(Optional.of(usePerson));
 
 		// when
-		CommonResponseDto<?> result = menstruationService.modifyUsePersonMenstruationPeriod(usePersonId, menstruationPeriod);
+		String result = menstruationService.modifyUsePersonMenstruationPeriod(usePersonId, menstruationPeriod);
 
 		// then
 		verify(usePersonRepository, times(1)).findById(eq(usePersonId));
@@ -94,7 +93,7 @@ class UsePersonAndMenstruationServiceImplTest {
 		verify(usePersonRepository, times(0)).save(eq(usePerson));
 		verifyNoMoreInteractions(usePersonRepository, usePerson);
 		// check result
-		assertThat(result.getMessage()).isEqualTo("유저의 생리 주기가 정상적으로 변경되었습니다.");
+		assertThat(result).isEqualTo("유저의 생리 주기가 정상적으로 변경되었습니다.");
 	}
 
 	@Test

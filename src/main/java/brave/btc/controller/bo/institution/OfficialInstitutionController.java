@@ -48,11 +48,12 @@ public class OfficialInstitutionController {
 	@GetMapping
 	public ResponseEntity<?> findOfficialInstitutionList() {
 
-		List<OfficialInstitutionDto.Response> responseDtoList =
-			officialInstitutionService.findOfficialInstitutionList();
+		List<OfficialInstitutionDto.Response> officialInstitutionList = officialInstitutionService.findOfficialInstitutionList();
+		CommonResponseDto<Object> responseDto = CommonResponseDto.builder().data(officialInstitutionList).build();
+		
 
 		return ResponseEntity.ok()
-			.body(responseDtoList);
+			.body(responseDto);
 	}
 
 	@Operation(summary = "공식 기관 조회", description = "id를 사용하여 공식 기관을 조회한다.",
@@ -69,8 +70,9 @@ public class OfficialInstitutionController {
 		@Parameter(description = "official institution pk",required = true) @PathVariable("officialInstitutionId") Integer officialInstitutionId
 	) {
 
-		OfficialInstitutionDto.Response responseDto =
-			officialInstitutionService.findOfficialInstitutionDetail(officialInstitutionId);
+		OfficialInstitutionDto.Response officialInstitutionDto = officialInstitutionService.findOfficialInstitutionDetail(officialInstitutionId);
+		CommonResponseDto<Object> responseDto = CommonResponseDto.builder().data(officialInstitutionDto).build();
+
 		return ResponseEntity.ok()
 			.body(responseDto);
 	}
@@ -89,7 +91,9 @@ public class OfficialInstitutionController {
 		@RequestBody OfficialInstitutionDto.Create requestDto
 	) {
 
-		CommonResponseDto<?> responseDto = officialInstitutionService.createOfficialInstitution(requestDto);
+		String message = officialInstitutionService.createOfficialInstitution(requestDto);
+		CommonResponseDto<Object> responseDto = CommonResponseDto.builder().data(message).build();
+
 		return ResponseEntity.ok()
 			.body(responseDto);
 	}

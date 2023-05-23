@@ -3,7 +3,6 @@ package brave.btc.service.app.record;
 import java.time.LocalDate;
 import java.util.List;
 
-import brave.btc.dto.CommonResponseDto;
 import brave.btc.dto.app.record.ViolentRecordDto;
 
 public interface ViolentRecordService {
@@ -30,7 +29,7 @@ public interface ViolentRecordService {
 	 * @param requestDto 제목, 내용, 사진을 포함한 req dto
 	 * @return 응답 메세지
 	 */
-	CommonResponseDto<Object> uploadViolentRecord(ViolentRecordDto.Create requestDto);
+	String uploadViolentRecord(ViolentRecordDto.Create requestDto);
 
 	ViolentRecordDto.OutResponse outViolentRecord(ViolentRecordDto.OutRequest requestDto);
 }

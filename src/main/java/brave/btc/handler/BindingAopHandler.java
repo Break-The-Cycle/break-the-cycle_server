@@ -52,7 +52,6 @@ public class BindingAopHandler {
 					.body(CommonResponseDto.builder()
 							.data(errorMap)
 							.message("유효성 검사에 실패하였습니다.")
-							.statusCode(HttpStatus.BAD_REQUEST.value())
 							.build());
 		}
 		return null;

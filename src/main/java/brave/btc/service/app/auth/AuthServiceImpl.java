@@ -1,10 +1,7 @@
 package brave.btc.service.app.auth;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,9 +10,9 @@ import brave.btc.constant.enums.ManageDivision;
 import brave.btc.domain.app.user.UsePerson;
 import brave.btc.domain.bo.user.ManagePerson;
 import brave.btc.domain.bo.user.OfficialInstitution;
-import brave.btc.dto.CommonResponseDto;
 import brave.btc.dto.common.auth.register.RegisterDto;
 import brave.btc.exception.auth.AuthenticationInvalidException;
+import brave.btc.exception.auth.LoginIdDuplicateException;
 import brave.btc.exception.auth.UserPrincipalNotFoundException;
 import brave.btc.exception.domain.EntityNotFoundException;
 import brave.btc.repository.app.UsePersonRepository;
@@ -56,21 +53,13 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     @Transactional(readOnly = true)
-    public CommonResponseDto<Object> loginIdIdDuplicateCheck(String loginId) {
+    public String loginIdIdDuplicateCheck(String loginId) {
 
         boolean notExist = checkLoginIdNotExist(loginId);
         if (notExist) {
-            return CommonResponseDto.builder()
-                .message("사용 가능한 아이디입니다.")
-                .statusCode(HttpStatus.OK.value())
-                .build();
-
-        }else {
-            return CommonResponseDto.builder()
-                .message("이미 사용중인 아이디입니다.")
-                .statusCode(HttpStatus.CONFLICT.value())
-                .build();
+            return "사용 가능한 아이디입니다.";
         }
+        throw new LoginIdDuplicateException("이미 사용중인 아이디입니다.");
     }
 
     private boolean checkLoginIdNotExist(String loginId) {
@@ -81,30 +70,28 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public CommonResponseDto<Object> registerUsePerson(RegisterDto.UsePersonCreate request) {
+    public RegisterDto.Response registerUsePerson(RegisterDto.UsePersonCreate request) {
 
         log.debug("[register] request: {}", request);
+        String loginId = request.getLoginId();
+        if (!checkLoginIdNotExist(loginId)) {
+            throw new LoginIdDuplicateException("이미 사용 중인 아이디 입니다.");
+        }
+
         //비밀번호 매칭 확인
         String password = request.getPassword();
         String password2 = request.getPassword2();
         checkIsPasswordEqual(password, password2);
-
-        String loginId = request.getLoginId();
-        if (!checkLoginIdNotExist(loginId)) {
-            throw new IllegalStateException("이미 사용 중인 아이디 입니다.");
-        }
-
         String encodedPassword = bCryptPasswordEncoder.encode(password);
+
         UsePerson newUsePerson = request.toUsePersonEntity(encodedPassword);
-        usePersonRepository.save(newUsePerson);
+        Integer usePersonId = usePersonRepository.save(newUsePerson).getId();
         log.info("[register] 사용 개인 회원 가입 완료");
-        Map<String, Integer> usePersonIdMap = new HashMap<>();
-        usePersonIdMap.put("usePersonId", newUsePerson.getId());
-        return CommonResponseDto.builder()
-                .data(usePersonIdMap)
-                .message("사용 개인 회원 가입이 완료되었습니다.")
-                .statusCode(HttpStatus.OK.value())
-                .build();
+
+        return RegisterDto.Response.builder()
+            .message("사용 개인 회원가입이 완료되었습니다.")
+            .id(usePersonId)
+            .build();
     }
 
     private static void checkIsPasswordEqual(String password, String password2) {
@@ -115,24 +102,26 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public CommonResponseDto<Object> registerManagePerson(RegisterDto.ManagePersonCreate request) {
+    public RegisterDto.Response registerManagePerson(RegisterDto.ManagePersonCreate request) {
         log.debug("[register] request: {}", request);
-        //비밀번호 매칭 확인
-        String password = request.getPassword();
-        String password2 = request.getPassword2();
-        checkIsPasswordEqual(password, password2);
 
         String loginId = request.getLoginId();
         if (!checkLoginIdNotExist(loginId)) {
-            throw new IllegalStateException("이미 사용 중인 아이디 입니다.");
+            throw new LoginIdDuplicateException("이미 사용 중인 아이디 입니다.");
         }
+
 
         Integer officialInstitutionId = request.getOfficialInstitutionId();
         OfficialInstitution officialInstitution = officialInstitutionRepository.findById(officialInstitutionId)
             .orElseThrow(() -> new EntityNotFoundException(OfficialInstitution.class.getName(), officialInstitutionId));
 
-        ManageDivision manageDivision = request.getManageDivision();
+        //비밀번호 매칭 확인
+        String password = request.getPassword();
+        String password2 = request.getPassword2();
+        checkIsPasswordEqual(password, password2);
         String encodedPassword = bCryptPasswordEncoder.encode(password);
+
+        ManageDivision manageDivision = request.getManageDivision();
         ManagePerson newManagePerson;
 
         if (manageDivision == ManageDivision.COUNSELOR) {
@@ -142,36 +131,38 @@ public class AuthServiceImpl implements AuthService {
         }else{
             throw new IllegalStateException("비정상 상태");
         }
-        managePersonRepository.save(newManagePerson);
+        Integer managePersonId = managePersonRepository.save(newManagePerson).getId();
+
         log.info("[register] 관리 개인 회원 가입 완료");
-        return CommonResponseDto.builder()
+        return RegisterDto.Response.builder()
             .message("관리 개인  회원 가입이 완료되었습니다.")
-            .statusCode(HttpStatus.OK.value())
+            .id(managePersonId)
             .build();
     }
 
     @Override
-    public CommonResponseDto<Object> registerBackOffIceManagePerson(RegisterDto.BackOfficeManagePersonCreate request) {
+    public RegisterDto.Response registerBackOffIceManagePerson(RegisterDto.BackOfficeManagePersonCreate request) {
         log.debug("[register] request: {}", request);
+
+        String loginId = request.getLoginId();
+        if (!checkLoginIdNotExist(loginId)) {
+            throw new LoginIdDuplicateException("이미 사용 중인 아이디 입니다.");
+        }
+
         //비밀번호 매칭 확인
         String password = request.getPassword();
         String password2 = request.getPassword2();
         checkIsPasswordEqual(password, password2);
-
-        String loginId = request.getLoginId();
-        if (!checkLoginIdNotExist(loginId)) {
-            throw new IllegalStateException("이미 사용 중인 아이디 입니다.");
-        }
-
         String encodedPassword = bCryptPasswordEncoder.encode(password);
+
         ManagePerson newManagePerson = request.toBackOfficeManagePersonEntity(encodedPassword);
-        managePersonRepository.save(newManagePerson);
+        Integer boManagePersonId = managePersonRepository.save(newManagePerson).getId();
 
         log.info("[register] 백오피스 관리 개인 회원 가입 완료");
-        return CommonResponseDto.builder()
-            .message("백오피스 관리 개인 회원 가입이 완료되었습니다.")
-            .statusCode(HttpStatus.OK.value())
-            .build();
 
+        return RegisterDto.Response.builder()
+            .message("백오피스 관리 개인  회원 가입이 완료되었습니다.")
+            .id(boManagePersonId)
+            .build();
     }
 }

@@ -14,7 +14,6 @@ import brave.btc.domain.app.record.Diary;
 import brave.btc.domain.app.record.Picture;
 import brave.btc.domain.app.record.Record;
 import brave.btc.domain.app.user.UsePerson;
-import brave.btc.dto.CommonResponseDto;
 import brave.btc.dto.app.record.DiaryDto;
 import brave.btc.dto.app.record.ViolentRecordDto;
 import brave.btc.repository.app.record.RecordRepository;
@@ -77,7 +76,7 @@ public class ViolentRecordServiceImpl implements ViolentRecordService {
 	}
 
 	@Override
-	public CommonResponseDto<Object> uploadViolentRecord(ViolentRecordDto.Create requestDto) {
+	public String uploadViolentRecord(ViolentRecordDto.Create requestDto) {
 
 		String loginId = requestDto.getLoginId();
 		String rawPassword = requestDto.getPassword();
@@ -90,9 +89,7 @@ public class ViolentRecordServiceImpl implements ViolentRecordService {
 		recordRepository.saveAll(newRecordList);
 
 		log.info("[uploadRecord] 업로드 완료");
-		return CommonResponseDto.builder()
-			.message("일기가 성공적으로 업로드 되었습니다.")
-			.build();
+		return "일기가 성공적으로 업로드 되었습니다.";
 	}
 
 	@Override

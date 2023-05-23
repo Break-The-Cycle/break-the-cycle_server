@@ -1,5 +1,7 @@
 package brave.btc.dto.common.auth.register;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import brave.btc.constant.enums.ManageDivision;
 import brave.btc.domain.app.user.UsePerson;
 import brave.btc.domain.bo.user.BackOfficeManagePerson;
@@ -196,6 +198,21 @@ public class RegisterDto {
 				.address(address.toEntity())
 				.build();
 		}
+	}
+
+	@Data
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Builder
+	@Schema(title = "백오피스 관리 개인 회원가입 요청 (Admin)", description = "백오피스 관리 개인 회원가입 폼을 작성하여 요청한다.")
+	public static class Response {
+
+		@JsonIgnore
+		private String message;
+
+		@Schema(description = "회원가입 된 유저 pk", example = "1")
+		private Integer id;
+
 	}
 
 }
