@@ -9,6 +9,7 @@ import lombok.*;
 @Builder
 public class JwtTokenDto {
 
+    private Integer usePersonId;
     private String accessToken;
     private String refreshToken;
 
