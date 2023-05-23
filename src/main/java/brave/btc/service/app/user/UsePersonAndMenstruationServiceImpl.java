@@ -51,7 +51,7 @@ public class UsePersonAndMenstruationServiceImpl implements UsePersonAndMenstrua
 			throw new InvalidMenstruationException("유저의 생리 기록이 존재하지 않습니다.");
 		}
 		LocalDate latestStartDate = latestMenstruation.getStartDate();
-		calculateExpectedMenstruationInfo(responseDtoList, menstruationPeriod, latestStartDate);
+		calculateExpectedMenstruationInfo(responseDtoList, menstruationPeriod, latestStartDate, fromDate, toDate);
 		return responseDtoList;
 	}
 
@@ -61,12 +61,12 @@ public class UsePersonAndMenstruationServiceImpl implements UsePersonAndMenstrua
 	 * @param menstruationPeriod 사용자 생리 주기
 	 * @param latestStartDate 최근 생리일
 	 */
-	private void calculateExpectedMenstruationInfo(List<MenstruationDto.Response> responseDtoList, Period menstruationPeriod, LocalDate latestStartDate) {
-		LocalDate todayDate = LocalDate.now();
+	private void calculateExpectedMenstruationInfo(List<MenstruationDto.Response> responseDtoList,
 
+		Period menstruationPeriod, LocalDate latestStartDate, LocalDate fromDate, LocalDate toDate) {
 		LocalDate expectedMenstruationDate = latestStartDate;
 		//가장 가까운 미래에 생리를 할 날짜를 결정
-		while (expectedMenstruationDate.isBefore(todayDate)) {
+		while (expectedMenstruationDate.isBefore(fromDate)) {
 			expectedMenstruationDate = expectedMenstruationDate.plus(menstruationPeriod);
 		}
 		int halfMenstruationPeriodDays = menstruationPeriod.getDays()/2;

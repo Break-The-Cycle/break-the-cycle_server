@@ -2,9 +2,6 @@ package brave.btc.constant.enums;
 
 import java.util.Arrays;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -13,10 +10,8 @@ public enum MenstruationDivision {
 
 	private final String label;
 
-	@JsonValue
 	public String getLabel(){return label; }
 
-	@JsonCreator
 	public MenstruationDivision findByLabel(String label){
 		return Arrays.stream(values())
 			.filter(value->value.label.equals(label))
