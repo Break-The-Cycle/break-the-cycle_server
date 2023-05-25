@@ -16,7 +16,7 @@ public interface ManagePersonRepository extends JpaRepository<ManagePerson, Inte
 
     @Query("SELECT mp " +
             "FROM ManagePerson mp " +
-            "WHERE mp.isAccepted = FALSE " +
+            "WHERE mp.isEnabled = FALSE " +
             "AND mp.division != brave.btc.constant.enums.ManageDivision.BACKOFFICE_MANAGE_PERSON")
     List<ManagePerson> findNotAcceptedManagePersons();
 }

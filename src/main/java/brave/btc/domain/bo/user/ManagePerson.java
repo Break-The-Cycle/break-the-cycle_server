@@ -59,7 +59,12 @@ public class ManagePerson extends User {
 	@Column(name = "MANAGE_DVSN", columnDefinition = "VARCHAR(3) NOT NULL", nullable = false,  insertable = false, updatable = false)
 	protected ManageDivision division;
 
-	@Comment("공식 기관 주소")
+	@Comment("회원가입 요청 시간")
+	@CreatedDate
+	@Column(name = "CREATED_AT", columnDefinition = "DATE", nullable = false)
+	protected LocalDate createdAt;
+
+	@Comment("관리 개인 주소")
 	@JoinColumn(name = "ADDRESS_ID", columnDefinition = "INT NOT NULL", nullable = false)
 	@OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
 	@ToString.Exclude
@@ -84,11 +89,6 @@ public class ManagePerson extends User {
 	@Comment("계정활성화여부")
 	@Column(name = "IS_ENABLED", columnDefinition = "TINYINT", nullable = false)
 	private Boolean isEnabled=Boolean.FALSE;
-
-	@Comment("회원가입 요청 시간")
-	@CreatedDate
-	@Column(name = "CREATED_AT", columnDefinition = "DATE", nullable = false)
-	private LocalDate createdAt;
 
 
 	public RegisterDto.ManagePersonResponse toResponseDto() {
