@@ -1,7 +1,8 @@
 package brave.btc.service.bo;
 
 import brave.btc.domain.bo.user.ManagePerson;
-import brave.btc.dto.common.auth.register.RegisterDto;
+import brave.btc.dto.bo.BackOfficeManagePerson.ManagePersonInfoDto;
+import brave.btc.dto.bo.BackOfficeManagePerson.ManagePersonRegisterListDto;
 import brave.btc.exception.auth.UserPrincipalNotFoundException;
 import brave.btc.repository.bo.ManagePersonRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,7 @@ public class BackOfficeManagePersonServiceImpl implements BackOfficeManagePerson
     private final ManagePersonRepository managePersonRepository;
 
     @Override
-    public List<RegisterDto.ManagePersonResponse> findManagePersonRegisterList() {
+    public List<ManagePersonRegisterListDto> findManagePersonRegisterList() {
         List<ManagePerson> notAcceptedManagePersons = managePersonRepository.findNotAcceptedManagePersons();
         return notAcceptedManagePersons.stream()
                 .map(ManagePerson::toResponseDto)
@@ -34,5 +35,12 @@ public class BackOfficeManagePersonServiceImpl implements BackOfficeManagePerson
                 .orElseThrow(() -> new UserPrincipalNotFoundException("해당하는 유저가 존재하지 않습니다."));
         managePerson.activateAccount();
         log.info("[register] 허용된 관리 개인 이름: {}", managePerson.getName());
+    }
+
+    @Override
+    public ManagePersonInfoDto findManagePersonInfo(Integer managePersonId) {
+        ManagePerson managePerson = managePersonRepository.findAcceptedManagePersonsByIdWithAddress(managePersonId)
+                .orElseThrow(() -> new UserPrincipalNotFoundException("해당하는 유저가 존재하지 않습니다."));
+        return managePerson.toInfoResponseDto();
     }
 }
