@@ -67,7 +67,6 @@ public class Address {
 	@Column(name = "BUNGEE", columnDefinition = "VARCHAR(10) NULL", nullable = true)
 	private String bungee;
 
-
 	@Comment("상세지역")
 	@Column(name = "DETAIL_ADDRESS", columnDefinition = "VARCHAR(100) NULL")
 	private String detail;

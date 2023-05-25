@@ -1,6 +1,7 @@
 package brave.btc.domain.bo.user;
 
-import brave.btc.dto.common.auth.register.RegisterDto;
+import brave.btc.dto.bo.BackOfficeManagePerson.ManagePersonInfoDto;
+import brave.btc.dto.bo.BackOfficeManagePerson.ManagePersonRegisterListDto;
 import org.hibernate.annotations.Comment;
 
 import brave.btc.constant.enums.ManageDivision;
@@ -40,15 +41,31 @@ public class PolicePerson extends ManagePerson{
 	@Column(name = "DEPARTMENT", columnDefinition = "VARCHAR(45) NOT NULL", nullable = false)
 	private String department;
 
+	@Comment("프로필 소개글")
+	@Column(name = "DESCRIPTION", columnDefinition = "VARCHAR(45)")
+	private String description;
+
 	@Override
-	public RegisterDto.ManagePersonResponse toResponseDto() {
-		return RegisterDto.ManagePersonResponse.builder()
+	public ManagePersonRegisterListDto toResponseDto() {
+		return ManagePersonRegisterListDto.builder()
 				.id(id)
-				.manageDivision(division)
+				.division(division)
 				.officialInstitutionName(officialInstitution.getName())
 				.name(name)
 				.phoneNumber(phoneNumber)
 				.createdAt(createdAt)
+				.build();
+	}
+
+	@Override
+	public ManagePersonInfoDto toInfoResponseDto() {
+		return ManagePersonInfoDto.builder()
+				.id(id)
+				.division(division)
+				.name(name)
+				.phoneNumber(phoneNumber)
+				.address(address)
+				.description(description)
 				.build();
 	}
 }
