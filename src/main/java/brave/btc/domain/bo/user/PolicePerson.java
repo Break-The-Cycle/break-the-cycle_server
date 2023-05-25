@@ -1,5 +1,6 @@
 package brave.btc.domain.bo.user;
 
+import brave.btc.dto.common.auth.register.RegisterDto;
 import org.hibernate.annotations.Comment;
 
 import brave.btc.constant.enums.ManageDivision;
@@ -39,5 +40,15 @@ public class PolicePerson extends ManagePerson{
 	@Column(name = "DEPARTMENT", columnDefinition = "VARCHAR(45) NOT NULL", nullable = false)
 	private String department;
 
-
+	@Override
+	public RegisterDto.ManagePersonResponse toResponseDto() {
+		return RegisterDto.ManagePersonResponse.builder()
+				.id(id)
+				.manageDivision(division)
+				.officialInstitutionName(officialInstitution.getName())
+				.name(name)
+				.phoneNumber(phoneNumber)
+				.createdAt(createdAt)
+				.build();
+	}
 }

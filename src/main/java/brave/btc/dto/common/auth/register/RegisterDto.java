@@ -1,5 +1,6 @@
 package brave.btc.dto.common.auth.register;
 
+import brave.btc.constant.enums.OfficialInstitutionDivision;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import brave.btc.constant.enums.ManageDivision;
@@ -16,6 +17,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -204,7 +207,33 @@ public class RegisterDto {
 	@NoArgsConstructor
 	@AllArgsConstructor
 	@Builder
-	@Schema(title = "백오피스 관리 개인 회원가입 요청 (Admin)", description = "백오피스 관리 개인 회원가입 폼을 작성하여 요청한다.")
+	@Schema(title = "관리 개인 회원가입 응답", description = "관리 개인 회원가입을 요청한 사람들의 목록을 보낸다.")
+	public static class ManagePersonResponse {
+
+		@Schema(description = "회원가입 된 유저 pk", example = "1")
+		private Integer id;
+
+		@Schema(description = "회원가입 요청한 유저 이름", example = "강경찰")
+		private String name;
+
+		@Schema(description = "관리 구분", example = "POLICE_OFFICER")
+		private ManageDivision manageDivision;
+
+		@Schema(description = "회원가입 요청한 유저 전화번호", example = "01012345678")
+		private String phoneNumber;
+
+		@Schema(description = "회원가입 요청한 유저 공식 기관 이름", example = "일산 동부 경찰서")
+		private String officialInstitutionName;
+
+		@Schema(description = "회원가입 요청한 날짜", example = "2023-05-23")
+		private LocalDate createdAt;
+	}
+
+	@Data
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Builder
+	@Schema(title = "백오피스 관리 개인 회원가입 응답 (Admin)", description = "백오피스 관리 개인 회원가입에 대한 응답 메세지를 전달한다.")
 	public static class Response {
 
 		@JsonIgnore
@@ -214,5 +243,4 @@ public class RegisterDto {
 		private Integer id;
 
 	}
-
 }
