@@ -3,7 +3,6 @@ package brave.btc.repository.bo;
 import java.util.List;
 import java.util.Optional;
 
-import brave.btc.dto.common.auth.register.RegisterDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import brave.btc.domain.bo.user.ManagePerson;
@@ -13,6 +12,12 @@ public interface ManagePersonRepository extends JpaRepository<ManagePerson, Inte
 
 
     Optional<ManagePerson> findByLoginId(String loginId);
+
+    @Query("SELECT mp " +
+            "FROM ManagePerson mp " +
+            "JOIN FETCH mp.address ad " +
+            "WHERE mp.id = :id")
+    Optional<ManagePerson> findAcceptedManagePersonsByIdWithAddress(Integer id);
 
     @Query("SELECT mp " +
             "FROM ManagePerson mp " +
