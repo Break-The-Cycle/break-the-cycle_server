@@ -16,9 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,7 +25,7 @@ import java.util.List;
 @Valid
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/v1/manage-person")
+@RequestMapping("/v1/bo-manage-person")
 public class BackOfficeManagePersonController {
 
     private final BackOfficeManagePersonService backOfficeManagePersonService;
@@ -41,10 +39,27 @@ public class BackOfficeManagePersonController {
                             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                                     schema = @Schema(implementation = ErrorResponseDto.class)))
             })
-    @GetMapping
+    @GetMapping("/permission")
     public ResponseEntity<?> findManagePersonRegisterList() {
         List<RegisterDto.ManagePersonResponse> managePersonRegisterList = backOfficeManagePersonService.findManagePersonRegisterList();
         CommonResponseDto<Object> responseDto = CommonResponseDto.builder().data(managePersonRegisterList).build();
+        return ResponseEntity.ok()
+                .body(responseDto);
+    }
+
+    @Operation(summary = "회원 가입 요청 승인", description = "회원 가입 요청을 승인한다.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "회원 가입 요청 승인 성공",
+                            content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    array=@ArraySchema(schema = @Schema(implementation = CommonResponseDto.class)))),
+                    @ApiResponse(responseCode = "400", description = "회원 가입 요청 승인 실패",
+                            content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = ErrorResponseDto.class)))
+            })
+    @PutMapping("/permission/{managePersonId}")
+    public ResponseEntity<?> permissionManagerPersonRegister(@PathVariable Integer managePersonId) {
+        backOfficeManagePersonService.permissionManagerPersonRegister(managePersonId);
+        CommonResponseDto<Object> responseDto = CommonResponseDto.builder().build();
         return ResponseEntity.ok()
                 .body(responseDto);
     }

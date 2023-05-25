@@ -90,6 +90,9 @@ public class ManagePerson extends User {
 	@Column(name = "IS_ENABLED", columnDefinition = "TINYINT", nullable = false)
 	private Boolean isEnabled=Boolean.FALSE;
 
+	public void activateAccount() {
+		isEnabled = Boolean.TRUE;
+	}
 
 	public RegisterDto.ManagePersonResponse toResponseDto() {
 		return RegisterDto.ManagePersonResponse.builder()

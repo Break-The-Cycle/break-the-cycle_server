@@ -2,6 +2,7 @@ package brave.btc.service.bo;
 
 import brave.btc.domain.bo.user.ManagePerson;
 import brave.btc.dto.common.auth.register.RegisterDto;
+import brave.btc.exception.auth.UserPrincipalNotFoundException;
 import brave.btc.repository.bo.ManagePersonRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,5 +26,13 @@ public class BackOfficeManagePersonServiceImpl implements BackOfficeManagePerson
         return notAcceptedManagePersons.stream()
                 .map(ManagePerson::toResponseDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void permissionManagerPersonRegister(Integer managePersonId) {
+        ManagePerson managePerson = managePersonRepository.findById(managePersonId)
+                .orElseThrow(() -> new UserPrincipalNotFoundException("해당하는 유저가 존재하지 않습니다."));
+        managePerson.activateAccount();
+        log.info("[register] 허용된 관리 개인 이름: {}", managePerson.getName());
     }
 }

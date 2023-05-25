@@ -7,4 +7,6 @@ import java.util.List;
 public interface BackOfficeManagePersonService {
 
     List<RegisterDto.ManagePersonResponse> findManagePersonRegisterList();
+
+    void permissionManagerPersonRegister(Integer managePersonId);
 }

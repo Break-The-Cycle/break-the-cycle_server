@@ -213,11 +213,11 @@ public class RegisterDto {
 		@Schema(description = "회원가입 된 유저 pk", example = "1")
 		private Integer id;
 
-		@Schema(description = "관리 구분", example = "POLICE_OFFICER")
-		private ManageDivision manageDivision;
-
 		@Schema(description = "회원가입 요청한 유저 이름", example = "강경찰")
 		private String name;
+
+		@Schema(description = "관리 구분", example = "POLICE_OFFICER")
+		private ManageDivision manageDivision;
 
 		@Schema(description = "회원가입 요청한 유저 전화번호", example = "01012345678")
 		private String phoneNumber;
