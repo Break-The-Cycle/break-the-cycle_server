@@ -1,4 +1,4 @@
-package brave.btc.config;
+package brave.btc.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +11,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.expression.WebExpressionAuthorizationManager;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import brave.btc.config.CorsConfig;
 import brave.btc.config.jwt.JwtAuthenticationFilter;
 import brave.btc.config.jwt.JwtAuthorizationFilter;
 import brave.btc.config.jwt.JwtExceptionFilter;
@@ -31,6 +32,16 @@ public class SecurityConfig {
     private final ManagePersonRepository managePersonRepository;
     private final JwtServiceImpl jwtService;
     private final JwtExceptionFilter jwtExceptionFilter;
+
+
+
+    @Bean
+    public CustomPasswordEncoder passwordEncoder() {
+        return new CustomPasswordEncoder();
+    }
+
+
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {

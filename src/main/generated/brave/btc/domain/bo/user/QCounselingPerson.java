@@ -28,6 +28,9 @@ public class QCounselingPerson extends EntityPathBase<CounselingPerson> {
     public final brave.btc.domain.bo.QAddress address;
 
     //inherited
+    public final DatePath<java.time.LocalDate> createdAt;
+
+    //inherited
     public final EnumPath<brave.btc.constant.enums.ManageDivision> division;
 
     //inherited
@@ -81,6 +84,7 @@ public class QCounselingPerson extends EntityPathBase<CounselingPerson> {
         super(type, metadata, inits);
         this._super = new QManagePerson(type, metadata, inits);
         this.address = _super.address;
+        this.createdAt = _super.createdAt;
         this.division = _super.division;
         this.id = _super.id;
         this.isAccountNonExpired = _super.isAccountNonExpired;

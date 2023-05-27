@@ -26,6 +26,8 @@ public class QManagePerson extends EntityPathBase<ManagePerson> {
 
     public final brave.btc.domain.bo.QAddress address;
 
+    public final DatePath<java.time.LocalDate> createdAt = createDate("createdAt", java.time.LocalDate.class);
+
     public final EnumPath<brave.btc.constant.enums.ManageDivision> division = createEnum("division", brave.btc.constant.enums.ManageDivision.class);
 
     public final NumberPath<Integer> id = createNumber("id", Integer.class);

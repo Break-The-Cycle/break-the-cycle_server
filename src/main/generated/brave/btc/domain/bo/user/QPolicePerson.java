@@ -27,6 +27,9 @@ public class QPolicePerson extends EntityPathBase<PolicePerson> {
     // inherited
     public final brave.btc.domain.bo.QAddress address;
 
+    //inherited
+    public final DatePath<java.time.LocalDate> createdAt;
+
     public final StringPath department = createString("department");
 
     //inherited
@@ -83,6 +86,7 @@ public class QPolicePerson extends EntityPathBase<PolicePerson> {
         super(type, metadata, inits);
         this._super = new QManagePerson(type, metadata, inits);
         this.address = _super.address;
+        this.createdAt = _super.createdAt;
         this.division = _super.division;
         this.id = _super.id;
         this.isAccountNonExpired = _super.isAccountNonExpired;
