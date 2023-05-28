@@ -8,7 +8,6 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 import brave.btc.constant.enums.RecordDivision;
-import brave.btc.constant.enums.SubmissionDivision;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -108,10 +107,6 @@ public class ViolentRecordDto {
 		
 		@Schema(title = "조회 종료 날짜 (생성일 기준 X  폭력 당한 날O)", example = "2023-07-01", requiredMode = Schema.RequiredMode.REQUIRED)
 		private LocalDate toDate;
-
-
-		@Schema(title = "제출 구분 (누구한테 제출하는가)", requiredMode = Schema.RequiredMode.REQUIRED)
-		private SubmissionDivision submissionDivision;
 
 	}
 

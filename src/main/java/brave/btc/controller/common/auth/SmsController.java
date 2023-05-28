@@ -11,7 +11,7 @@ import brave.btc.dto.CommonResponseDto;
 import brave.btc.dto.common.auth.sms.SmsCertificationDto;
 import brave.btc.dto.common.auth.sms.SmsRequestDto;
 import brave.btc.exception.ErrorResponseDto;
-import brave.btc.service.app.auth.SmsService;
+import brave.btc.service.common.auth.SmsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

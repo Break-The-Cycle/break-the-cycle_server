@@ -9,6 +9,9 @@ public class SubmissionDivisionToCodeConverter implements AttributeConverter<Sub
 
 	@Override
 	public String convertToDatabaseColumn(SubmissionDivision attribute) {
+		if (attribute == null) {
+			return null;
+		}
 		return attribute.getCode();
 	}
 

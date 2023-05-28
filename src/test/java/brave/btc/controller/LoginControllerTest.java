@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import brave.btc.repository.app.UsePersonRepository;
-import brave.btc.service.app.auth.AuthServiceImpl;
+import brave.btc.service.common.auth.AuthServiceImpl;
 
 @SpringBootTest
 class LoginControllerTest {

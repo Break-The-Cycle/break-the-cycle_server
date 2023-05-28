@@ -14,7 +14,7 @@ import brave.btc.dto.CommonResponseDto;
 import brave.btc.dto.common.auth.login.LoginRequestDto;
 import brave.btc.dto.common.auth.register.RegisterDto;
 import brave.btc.exception.ErrorResponseDto;
-import brave.btc.service.app.auth.AuthService;
+import brave.btc.service.common.auth.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
