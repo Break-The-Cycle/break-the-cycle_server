@@ -1,6 +1,7 @@
 package brave.btc.domain.bo.user;
 
-import brave.btc.dto.common.auth.register.RegisterDto;
+import brave.btc.dto.bo.BackOfficeManagePerson.ManagePersonInfoDto;
+import brave.btc.dto.bo.BackOfficeManagePerson.ManagePersonRegisterListDto;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Comment;
 
@@ -53,6 +54,9 @@ public class ManagePerson extends User {
 	@Column(name = "MANAGE_PERSON_PNBR", columnDefinition = "VARCHAR(18) NOT NULL" , nullable = false)
 	protected String phoneNumber;
 
+	@Comment("관리 개인 소개")
+	@Column(name = "MANAGE_PERSON_INTRD", columnDefinition = "VARCHAR(200)", nullable = true)
+	protected String description;
 
 	@Convert(converter = ManageDivisionToCodeConverter.class)
 	@Comment("관리구분")
@@ -68,7 +72,7 @@ public class ManagePerson extends User {
 	@JoinColumn(name = "ADDRESS_ID", columnDefinition = "INT NOT NULL", nullable = false)
 	@OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
 	@ToString.Exclude
-	private Address address;
+	protected Address address;
 
 	@Builder.Default
 	@Comment("계정만료여부")
@@ -94,13 +98,23 @@ public class ManagePerson extends User {
 		isEnabled = Boolean.TRUE;
 	}
 
-	public RegisterDto.ManagePersonResponse toResponseDto() {
-		return RegisterDto.ManagePersonResponse.builder()
+	public ManagePersonRegisterListDto toResponseDto() {
+		return ManagePersonRegisterListDto.builder()
 				.id(id)
-				.manageDivision(division)
+				.division(division)
 				.name(name)
 				.phoneNumber(phoneNumber)
 				.createdAt(createdAt)
+				.build();
+	}
+
+	public ManagePersonInfoDto toInfoResponseDto() {
+		return ManagePersonInfoDto.builder()
+				.id(id)
+				.division(division)
+				.name(name)
+				.phoneNumber(phoneNumber)
+				.address(address)
 				.build();
 	}
 }
