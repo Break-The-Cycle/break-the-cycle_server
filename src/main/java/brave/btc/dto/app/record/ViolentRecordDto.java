@@ -2,6 +2,7 @@ package brave.btc.dto.app.record;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -37,7 +38,7 @@ public class ViolentRecordDto {
 		private String password;
 
 		@Schema(title = "첨부 사진 리스트")
-		private List<MultipartFile> pictureList;
+		private List<MultipartFile> pictureList = new ArrayList<>();
 
 		@Schema(title = "피해를 당한 날", requiredMode = Schema.RequiredMode.REQUIRED, implementation = LocalDate.class, example = "2023-05-19")
 		private LocalDate reportDate;
@@ -83,7 +84,7 @@ public class ViolentRecordDto {
 		description = "s3 객체를 다운로드 하기 위해서는 사용자 패스워드가 필요함. 이것을 담는 dto")
 	public static class Credential {
 
-		@Schema(title = "사용자 로그인 패스워드 / s3 암호화 패스워드 (하나로 통일되어 있는 상태)", defaultValue = "kang123!")
+		@Schema(title = "사용자 로그인 패스워드을 SHA256 해싱한 상태 / s3 암호화 패스워드 ", defaultValue = "AS234ASD@#234")
 		private String password;
 	}
 

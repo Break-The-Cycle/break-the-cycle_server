@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import brave.btc.config.security.CustomPasswordEncoder;
 import brave.btc.constant.enums.ManageDivision;
+import brave.btc.constant.enums.RawPasswordDivision;
 import brave.btc.domain.app.user.UsePerson;
 import brave.btc.domain.bo.user.ManagePerson;
 import brave.btc.domain.bo.user.OfficialInstitution;
@@ -33,13 +34,15 @@ public class AuthServiceImpl implements AuthService {
     private final CustomPasswordEncoder customPasswordEncoder;
 
     @Override
-    public UsePerson checkIsCredentialValid(String loginId, String rawPassword) {
+    public UsePerson checkIsCredentialValid(String loginId, String rawPassword, RawPasswordDivision rawPasswordDivision) {
         UsePerson usePerson = usePersonRepository.findByLoginId(loginId)
                 .orElseThrow(() -> new UserPrincipalNotFoundException("해당하는 유저를 찾을 수 없습니다."));
 
         //비밀번호 확인 로직
         String orgPassword = usePerson.getPassword();
-        boolean isMatches = customPasswordEncoder.matches(rawPassword, orgPassword);
+        boolean isMatches = rawPasswordDivision == RawPasswordDivision.RAW ?
+            customPasswordEncoder.matches(rawPassword, orgPassword) :
+            customPasswordEncoder.matchesSHA256(rawPassword, orgPassword);
         log.debug("[checkIsPasswordEqual] isMatches: {}", isMatches);
 
         if (isMatches) {

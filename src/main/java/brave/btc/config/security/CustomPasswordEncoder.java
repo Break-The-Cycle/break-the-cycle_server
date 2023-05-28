@@ -28,7 +28,12 @@ public class CustomPasswordEncoder implements PasswordEncoder {
 	@Override
 	public boolean matches(CharSequence rawPassword, String encodedPassword) {
 		String sha256EncodedPassword = sha256PasswordEncoder.encode(rawPassword);
+		log.debug("[matches] sha256EncodedPassword: {}", sha256EncodedPassword);
 		return bCryptPasswordEncoder.matches(sha256EncodedPassword,encodedPassword);
+	}
+
+	public boolean matchesSHA256(String sha256encodedPassword, String encodedPassword) {
+		return bCryptPasswordEncoder.matches(sha256encodedPassword, encodedPassword);
 	}
 
 }

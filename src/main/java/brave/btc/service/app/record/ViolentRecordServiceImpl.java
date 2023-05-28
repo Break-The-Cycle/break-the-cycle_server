@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import brave.btc.constant.enums.RawPasswordDivision;
 import brave.btc.constant.enums.RecordDivision;
 import brave.btc.domain.app.record.Diary;
 import brave.btc.domain.app.record.Picture;
@@ -79,13 +80,13 @@ public class ViolentRecordServiceImpl implements ViolentRecordService {
 	public String uploadViolentRecord(ViolentRecordDto.Create requestDto) {
 
 		String loginId = requestDto.getLoginId();
-		String rawPassword = requestDto.getPassword();
-		UsePerson usePerson = authService.checkIsCredentialValid(loginId, rawPassword);
+		String sha256EncodedPassword = requestDto.getPassword();
+		UsePerson usePerson = authService.checkIsCredentialValid(loginId, sha256EncodedPassword, RawPasswordDivision.SHA256);
 		log.debug("[uploadRecord] usePerson: {}", usePerson);
 
 		List<Record> newRecordList = new ArrayList<>();
-		makeNewPictureRecordList(requestDto, rawPassword, usePerson, newRecordList);
-		makeNewDiaryRecord(requestDto, rawPassword, usePerson, newRecordList);
+		makeNewPictureRecordList(requestDto, sha256EncodedPassword, usePerson, newRecordList);
+		makeNewDiaryRecord(requestDto, sha256EncodedPassword, usePerson, newRecordList);
 		recordRepository.saveAll(newRecordList);
 
 		log.info("[uploadRecord] 업로드 완료");
