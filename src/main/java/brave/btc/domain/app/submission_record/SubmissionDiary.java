@@ -1,4 +1,4 @@
-package brave.btc.domain.app.record;
+package brave.btc.domain.app.submission_record;
 
 import org.hibernate.annotations.Comment;
 
@@ -19,15 +19,11 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@DiscriminatorValue(RecordDivision.Values.RECORDING)
-@Table(name = "RECORDING")
-public class Recording extends Record{
+@DiscriminatorValue(RecordDivision.Values.DIARY)
+@Table(name = "SUBMISSION_DIARY")
+public class SubmissionDiary extends UsePersonSubmissionRecord {
 
-	@Comment("녹음내용")
-	@Column(name = "RECORDING_CONTENT", columnDefinition = "VARCHAR(500) NOT NULL")
+	@Comment("일기 내용")
+	@Column(name = "DIARY_CONTENT", columnDefinition = "VARCHAR(500) NOT NULL", nullable = false)
 	private String content;
-
-	@Comment("녹음변환내용")
-	@Column(name = "RCRDN_CNVRS_CONTENT", columnDefinition = "VARCHAR(100) NULL")
-	private String conversionContent;
 }

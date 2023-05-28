@@ -28,6 +28,9 @@ public class QBackOfficeManagePerson extends EntityPathBase<BackOfficeManagePers
     public final brave.btc.domain.bo.QAddress address;
 
     //inherited
+    public final DatePath<java.time.LocalDate> createdAt;
+
+    //inherited
     public final EnumPath<brave.btc.constant.enums.ManageDivision> division;
 
     //inherited
@@ -77,6 +80,7 @@ public class QBackOfficeManagePerson extends EntityPathBase<BackOfficeManagePers
         super(type, metadata, inits);
         this._super = new QManagePerson(type, metadata, inits);
         this.address = _super.address;
+        this.createdAt = _super.createdAt;
         this.division = _super.division;
         this.id = _super.id;
         this.isAccountNonExpired = _super.isAccountNonExpired;

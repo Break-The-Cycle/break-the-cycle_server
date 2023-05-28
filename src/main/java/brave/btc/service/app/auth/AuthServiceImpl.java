@@ -2,11 +2,12 @@ package brave.btc.service.app.auth;
 
 import java.util.Optional;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import brave.btc.config.security.CustomPasswordEncoder;
 import brave.btc.constant.enums.ManageDivision;
+import brave.btc.constant.enums.RawPasswordDivision;
 import brave.btc.domain.app.user.UsePerson;
 import brave.btc.domain.bo.user.ManagePerson;
 import brave.btc.domain.bo.user.OfficialInstitution;
@@ -30,17 +31,18 @@ public class AuthServiceImpl implements AuthService {
     private final UsePersonRepository usePersonRepository;
     private final ManagePersonRepository managePersonRepository;
     private final OfficialInstitutionRepository officialInstitutionRepository;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final CustomPasswordEncoder customPasswordEncoder;
 
     @Override
-    public UsePerson checkIsCredentialValid(String loginId, String rawPassword) {
+    public UsePerson checkIsCredentialValid(String loginId, String rawPassword, RawPasswordDivision rawPasswordDivision) {
         UsePerson usePerson = usePersonRepository.findByLoginId(loginId)
                 .orElseThrow(() -> new UserPrincipalNotFoundException("해당하는 유저를 찾을 수 없습니다."));
 
         //비밀번호 확인 로직
-
         String orgPassword = usePerson.getPassword();
-        boolean isMatches = bCryptPasswordEncoder.matches(rawPassword, orgPassword);
+        boolean isMatches = rawPasswordDivision == RawPasswordDivision.RAW ?
+            customPasswordEncoder.matches(rawPassword, orgPassword) :
+            customPasswordEncoder.matchesSHA256(rawPassword, orgPassword);
         log.debug("[checkIsPasswordEqual] isMatches: {}", isMatches);
 
         if (isMatches) {
@@ -82,7 +84,9 @@ public class AuthServiceImpl implements AuthService {
         String password = request.getPassword();
         String password2 = request.getPassword2();
         checkIsPasswordEqual(password, password2);
-        String encodedPassword = bCryptPasswordEncoder.encode(password);
+
+        String encodedPassword = customPasswordEncoder.encode(password);
+        log.debug("[registerUsePerson] encodedPassword : {}", encodedPassword);
 
         UsePerson newUsePerson = request.toUsePersonEntity(encodedPassword);
         Integer usePersonId = usePersonRepository.save(newUsePerson).getId();
@@ -119,7 +123,7 @@ public class AuthServiceImpl implements AuthService {
         String password = request.getPassword();
         String password2 = request.getPassword2();
         checkIsPasswordEqual(password, password2);
-        String encodedPassword = bCryptPasswordEncoder.encode(password);
+        String encodedPassword = customPasswordEncoder.encode(password);
 
         ManageDivision manageDivision = request.getManageDivision();
         ManagePerson newManagePerson;
@@ -153,7 +157,7 @@ public class AuthServiceImpl implements AuthService {
         String password = request.getPassword();
         String password2 = request.getPassword2();
         checkIsPasswordEqual(password, password2);
-        String encodedPassword = bCryptPasswordEncoder.encode(password);
+        String encodedPassword = customPasswordEncoder.encode(password);
 
         ManagePerson newManagePerson = request.toBackOfficeManagePersonEntity(encodedPassword);
         Integer boManagePersonId = managePersonRepository.save(newManagePerson).getId();

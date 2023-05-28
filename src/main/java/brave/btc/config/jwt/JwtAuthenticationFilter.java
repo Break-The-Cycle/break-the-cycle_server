@@ -20,6 +20,7 @@ import brave.btc.domain.common.user.User;
 import brave.btc.dto.CommonResponseDto;
 import brave.btc.dto.common.auth.jwt.JwtTokenDto;
 import brave.btc.dto.common.auth.login.LoginRequestDto;
+import brave.btc.service.app.auth.JwtService;
 import brave.btc.service.app.auth.JwtServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -34,7 +35,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
 
     private final AuthenticationManager authenticationManager;
-    private final JwtServiceImpl jwtService;
+    private final JwtService jwtService;
 
 
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager, JwtServiceImpl jwtService) {
@@ -55,7 +56,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             log.info("[Authentication] loginRequest = " + user);
             //PrincipalDetailsService 함수 실행
             try {
-                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getLoginId(), user.getPassword());
+                UsernamePasswordAuthenticationToken authenticationToken =
+                    new UsernamePasswordAuthenticationToken(user.getLoginId(), user.getPassword());
                 Authentication authentication = authenticationManager.authenticate(authenticationToken);
                 PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
                 log.info("[Authentication] 인증된 유저 = " + principalDetails.getUser());

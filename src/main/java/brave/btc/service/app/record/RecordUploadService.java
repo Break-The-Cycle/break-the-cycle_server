@@ -16,6 +16,14 @@ public interface RecordUploadService {
 	String uploadPicture(MultipartFile multipartFile, String objectKey, String encodePassword);
 
 	/**
+	 * 사진을 업로드한다.
+	 * @param multipartFile 업로드할 사진 파일.
+	 * @param objectKey 저장되는 이름
+	 * @return 업로드된 주소
+	 */
+	String uploadPicture(byte[] multipartFile, String objectKey);
+
+	/**
 	 * 일기를  업로드한다.
 	 * @param diaryDto Diary dto
      * @param objectKey 저장되는 이름
@@ -23,4 +31,12 @@ public interface RecordUploadService {
 	 * @return 업로드된 주소
 	 */
 	String uploadDiary(DiaryDto.Create diaryDto, String objectKey, String encodePassword);
+
+	/**
+	 * 일기를  업로드한다.
+	 * @param diaryDto Diary dto
+	 * @param objectKey 저장되는 이름
+	 * @return 업로드된 주소
+	 */
+	String uploadDiary(DiaryDto.Create diaryDto, String objectKey);
 }

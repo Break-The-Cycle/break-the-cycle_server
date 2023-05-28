@@ -24,7 +24,7 @@ import lombok.experimental.SuperBuilder;
 public class Diary extends Record {
 
 	@Comment("일기 내용")
-	@Column(name = "DIARY_CONTENT", columnDefinition = "VARCHAR(100) NOT NULL" , nullable = false)
+	@Column(name = "DIARY_CONTENT", columnDefinition = "VARCHAR(500) NOT NULL" , nullable = false)
 	private String content;
 
 }

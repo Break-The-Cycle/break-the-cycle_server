@@ -44,16 +44,27 @@ public class AWSS3ServiceImpl implements AWSS3Service {
 	public String uploadPicture(MultipartFile multipartFile, String objectPath, String encodePassword) {
 
 		try {
-			log.debug("[uploadPicture] multipartFile: {}, objectPath: {}, encodePassword: {}", multipartFile, objectPath, encodePassword);
-
-
 			s3Client.putObject(
 				getPutObjectRequest(objectPath, encodePassword),
 				RequestBody.fromInputStream(multipartFile.getInputStream(),multipartFile.getSize()));
 		} catch (Exception e) {
 			throw new S3Exception("S3 업로드 도중 에러 발생: "+e.getMessage(),e);
 		}
-		return S3_BUCKET_PREFIX_URL+objectPath;
+		return S3_BUCKET_PREFIX_URL+ "/" +objectPath;
+	}
+
+	@Override
+	public String uploadPicture(byte[] multipartFile, String objectPath) {
+		try {
+			ByteArrayInputStream bais = new ByteArrayInputStream(multipartFile);
+
+			s3Client.putObject(
+				getPutObjectRequest(objectPath),
+				RequestBody.fromInputStream(bais,multipartFile.length));
+		} catch (Exception e) {
+			throw new S3Exception("S3 업로드 도중 에러 발생: "+e.getMessage(),e);
+		}
+		return S3_BUCKET_PREFIX_URL+ "/" +objectPath;
 	}
 
 	@Override
@@ -68,7 +79,22 @@ public class AWSS3ServiceImpl implements AWSS3Service {
 		} catch (Exception e) {
 			throw new S3Exception("S3 업로드 도중 에러 발생: "+e.getMessage(), e);
 		}
-		return S3_BUCKET_PREFIX_URL+objectPath;
+		return S3_BUCKET_PREFIX_URL+ "/"  +objectPath;
+	}
+
+	@Override
+	public String uploadDiary(DiaryDto.Create diaryDto, String objectPath) {
+
+		try {
+			s3Client.putObject(
+				getPutObjectRequest(objectPath),
+				RequestBody.fromBytes(
+					Objects.requireNonNull(SerializationUtils.serialize(diaryDto))
+				));
+		} catch (Exception e) {
+			throw new S3Exception("S3 업로드 도중 에러 발생: "+e.getMessage(), e);
+		}
+		return S3_BUCKET_PREFIX_URL+ "/" +objectPath;
 	}
 
 	@Override
@@ -104,7 +130,9 @@ public class AWSS3ServiceImpl implements AWSS3Service {
 
 	private GetObjectRequest getGetObjectRequest(String objectUrl, String encodePassword) throws NoSuchAlgorithmException {
 		String encodeAlgorithm = "AES256";
-		String objectKey = objectUrl.substring(5);
+		String[] strings = objectUrl.split(BUCKET_NAME+"/");
+		String objectKey = strings[1];
+		log.debug("[getGetObjectRequest] objectKey: {}", objectKey);
 
 		byte[] keyBytes = convertAES256ValidKey(encodePassword);
 		return GetObjectRequest.builder()
@@ -125,6 +153,13 @@ public class AWSS3ServiceImpl implements AWSS3Service {
 			.sseCustomerKey(BinaryUtils.toBase64(keyBytes))
 			.sseCustomerKeyMD5(Md5Utils.md5AsBase64(keyBytes))
 			.sseCustomerAlgorithm(encodeAlgorithm)
+			.build();
+	}
+
+	private PutObjectRequest getPutObjectRequest(String objectPath) throws NoSuchAlgorithmException {
+		return PutObjectRequest.builder()
+			.bucket(BUCKET_NAME)
+			.key(objectPath)
 			.build();
 	}
 

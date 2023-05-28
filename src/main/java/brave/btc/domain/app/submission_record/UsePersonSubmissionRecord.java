@@ -1,12 +1,11 @@
 package brave.btc.domain.app.submission_record;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import org.hibernate.annotations.Comment;
 
-import brave.btc.constant.enums.SubmissionDivision;
-import brave.btc.domain.app.user.UsePerson;
-import brave.btc.util.converter.SubmissionDivisionToCodeConverter;
+import brave.btc.constant.enums.RecordDivision;
+import brave.btc.util.converter.RecordDivisionToCodeConverter;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.DiscriminatorColumn;
@@ -38,31 +37,25 @@ import lombok.experimental.SuperBuilder;
 @Table(name = "USE_PERSON_SUBMISSION_RECORD")
 public class UsePersonSubmissionRecord {
 
-	@Comment("사용개인기록ID")
+	@Comment("사용 개인 기록 ID")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "SUBMISSION_RECORD_ID", columnDefinition = "INT NOT NULL")
+	@Column(name = "USE_PERSON_SBMSN_RECORD_ID", columnDefinition = "INT NOT NULL")
 	protected Integer id;
 
+	@Comment("기록 일자")
+	@Column(name = "RECORD_DATE", columnDefinition = "DATE NOT NULL", nullable = false)
+	protected LocalDate recordDate;
+
+	@Convert(converter = RecordDivisionToCodeConverter.class)
 	@Comment("기록 구분")
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="USE_PERSON_ID", columnDefinition = "INT NOT NULL", nullable = false)
+	@Column(name = "RECORD_DVSN", insertable = false, updatable = false)
+	protected RecordDivision recordDivision;
+
 	@ToString.Exclude
-	protected UsePerson usePerson;
-
-
-	@Comment("제출일시")
-	@Column(name = "SUBMISSION_DATETIME", columnDefinition = "TIMESTAMP NOT NULL", nullable = false)
-	protected LocalDateTime submissionDatetime;
-
-
-	@Comment("유효일시")
-	@Column(name = "EFFECTiVE_DATETIME", columnDefinition = "TIMESTAMP NOT NULL", nullable = false)
-	protected LocalDateTime effectiveDatetime;
-
-	@Convert(converter = SubmissionDivisionToCodeConverter.class)
-	@Comment("제출 기록 구분")
-	@Column(name = "SUBMISSION_DVSN", insertable = false, updatable = false)
-	protected SubmissionDivision submissionDivision;
+	@Comment("제출 기록")
+	@JoinColumn(name = "SUBMISSION_RECORD_ID", columnDefinition = "INT NOT NULL", nullable = false)
+	@ManyToOne(fetch = FetchType.LAZY)
+	protected SubmissionRecord submissionRecord;
 
 }

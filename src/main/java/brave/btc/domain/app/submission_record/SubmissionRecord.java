@@ -1,72 +1,74 @@
 package brave.btc.domain.app.submission_record;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.hibernate.annotations.Comment;
 
-import brave.btc.constant.enums.RecordDivision;
 import brave.btc.constant.enums.SubmissionDivision;
 import brave.btc.domain.app.user.UsePerson;
-import brave.btc.util.converter.RecordDivisionToCodeConverter;
 import brave.btc.util.converter.SubmissionDivisionToCodeConverter;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
-import jakarta.persistence.DiscriminatorColumn;
-import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import lombok.experimental.SuperBuilder;
 
 @ToString
 @Getter
-@SuperBuilder
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name="SUBMISSION_DVSN", discriminatorType = DiscriminatorType.STRING)
 @Table(name = "SUBMISSION_RECORD")
 public class SubmissionRecord {
 
-	@Comment("사용개인기록ID")
+	@Comment("사용 개인 기록ID")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "SUBMISSION_RECORD_ID", columnDefinition = "INT NOT NULL")
-	protected Integer id;
+	private Integer id;
 
 	@Comment("기록 구분")
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="USE_PERSON_ID", columnDefinition = "INT NOT NULL", nullable = false)
 	@ToString.Exclude
-	protected UsePerson usePerson;
+	private UsePerson usePerson;
 
 
 	@Comment("제출일시")
 	@Column(name = "SUBMISSION_DATETIME", columnDefinition = "TIMESTAMP NOT NULL", nullable = false)
-	protected LocalDateTime submissionDatetime;
+	private LocalDateTime submissionDatetime;
 
 
 	@Comment("유효일시")
 	@Column(name = "EFFECTiVE_DATETIME", columnDefinition = "TIMESTAMP NOT NULL", nullable = false)
-	protected LocalDateTime effectiveDatetime;
+	private LocalDateTime effectiveDatetime;
 
 	@Convert(converter = SubmissionDivisionToCodeConverter.class)
 	@Comment("제출 기록 구분")
-	@Column(name = "SUBMISSION_DVSN", insertable = false, updatable = false)
-	protected SubmissionDivision submissionDivision;
+	@Column(name = "SUBMISSION_DVSN", nullable = false)
+	private SubmissionDivision submissionDivision;
+
+	@Comment("사용 개인 제출 기록 리스트")
+	@OneToMany(mappedBy = "submissionRecord", fetch=FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@ToString.Exclude
+	private List<UsePersonSubmissionRecord> usePersonSubmissionRecordList;
+
+	public void changeUsePersonSubmissionRecordList(List<UsePersonSubmissionRecord> usePersonSubmissionRecordList) {
+		this.usePersonSubmissionRecordList = usePersonSubmissionRecordList;
+	}
 
 }
