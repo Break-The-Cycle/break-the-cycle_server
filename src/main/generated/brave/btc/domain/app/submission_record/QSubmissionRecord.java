@@ -32,6 +32,8 @@ public class QSubmissionRecord extends EntityPathBase<SubmissionRecord> {
 
     public final brave.btc.domain.app.user.QUsePerson usePerson;
 
+    public final ListPath<UsePersonSubmissionRecord, QUsePersonSubmissionRecord> usePersonSubmissionRecordList = this.<UsePersonSubmissionRecord, QUsePersonSubmissionRecord>createList("usePersonSubmissionRecordList", UsePersonSubmissionRecord.class, QUsePersonSubmissionRecord.class, PathInits.DIRECT2);
+
     public QSubmissionRecord(String variable) {
         this(SubmissionRecord.class, forVariable(variable), INITS);
     }

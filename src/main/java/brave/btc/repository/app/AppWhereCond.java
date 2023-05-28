@@ -22,7 +22,7 @@ public abstract class AppWhereCond {
 
 		return fromDate!=null && toDate!=null ? menstruation.endDate.between(fromDate,toDate) : null;
 	}
-	public static BooleanExpression btwDateTime(LocalDate fromDate, LocalDate toDate) {
+	public static BooleanExpression btwReportDate(LocalDate fromDate, LocalDate toDate) {
 		return fromDate!=null && toDate!=null ?
 			record.reportDate.between(fromDate,toDate) : null;
 	}

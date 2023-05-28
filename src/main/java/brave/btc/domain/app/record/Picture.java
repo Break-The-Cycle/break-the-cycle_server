@@ -24,6 +24,6 @@ import lombok.experimental.SuperBuilder;
 public class Picture extends Record {
 
 	@Comment("사진 내용")
-	@Column(name = "PICTURE_CONTENT", columnDefinition = "VARCHAR(100) NOT NULL", nullable = false)
+	@Column(name = "PICTURE_CONTENT", columnDefinition = "VARCHAR(500) NOT NULL", nullable = false)
 	private String content;
 }

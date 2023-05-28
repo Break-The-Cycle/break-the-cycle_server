@@ -22,15 +22,13 @@ public class QUsePersonSubmissionRecord extends EntityPathBase<UsePersonSubmissi
 
     public static final QUsePersonSubmissionRecord usePersonSubmissionRecord = new QUsePersonSubmissionRecord("usePersonSubmissionRecord");
 
-    public final DateTimePath<java.time.LocalDateTime> effectiveDatetime = createDateTime("effectiveDatetime", java.time.LocalDateTime.class);
-
     public final NumberPath<Integer> id = createNumber("id", Integer.class);
 
-    public final DateTimePath<java.time.LocalDateTime> submissionDatetime = createDateTime("submissionDatetime", java.time.LocalDateTime.class);
+    public final DatePath<java.time.LocalDate> recordDate = createDate("recordDate", java.time.LocalDate.class);
 
-    public final EnumPath<brave.btc.constant.enums.SubmissionDivision> submissionDivision = createEnum("submissionDivision", brave.btc.constant.enums.SubmissionDivision.class);
+    public final EnumPath<brave.btc.constant.enums.RecordDivision> recordDivision = createEnum("recordDivision", brave.btc.constant.enums.RecordDivision.class);
 
-    public final brave.btc.domain.app.user.QUsePerson usePerson;
+    public final QSubmissionRecord submissionRecord;
 
     public QUsePersonSubmissionRecord(String variable) {
         this(UsePersonSubmissionRecord.class, forVariable(variable), INITS);
@@ -50,7 +48,7 @@ public class QUsePersonSubmissionRecord extends EntityPathBase<UsePersonSubmissi
 
     public QUsePersonSubmissionRecord(Class<? extends UsePersonSubmissionRecord> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.usePerson = inits.isInitialized("usePerson") ? new brave.btc.domain.app.user.QUsePerson(forProperty("usePerson")) : null;
+        this.submissionRecord = inits.isInitialized("submissionRecord") ? new QSubmissionRecord(forProperty("submissionRecord"), inits.get("submissionRecord")) : null;
     }
 
 }

@@ -10,4 +10,6 @@ public interface RecordRepositoryCustom {
 	List<LocalDate> searchViolentRecordDateList(int usePersonId, LocalDate fromDate, LocalDate toDate);
 
 	List<Record> searchViolentRecordList(int usePersonId, LocalDate targetDate);
+
+	List<Record> searchAllViolentRecordList(int usePersonId, LocalDate fromDate, LocalDate toDate);
 }

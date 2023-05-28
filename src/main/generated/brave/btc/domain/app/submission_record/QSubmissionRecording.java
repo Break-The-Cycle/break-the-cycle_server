@@ -11,20 +11,22 @@ import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
- * QSubmissionPicture is a Querydsl query type for SubmissionPicture
+ * QSubmissionRecording is a Querydsl query type for SubmissionRecording
  */
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
-public class QSubmissionPicture extends EntityPathBase<SubmissionPicture> {
+public class QSubmissionRecording extends EntityPathBase<SubmissionRecording> {
 
-    private static final long serialVersionUID = -489895396L;
+    private static final long serialVersionUID = -485614705L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
-    public static final QSubmissionPicture submissionPicture = new QSubmissionPicture("submissionPicture");
+    public static final QSubmissionRecording submissionRecording = new QSubmissionRecording("submissionRecording");
 
     public final QUsePersonSubmissionRecord _super;
 
     public final StringPath content = createString("content");
+
+    public final StringPath conversionContent = createString("conversionContent");
 
     //inherited
     public final NumberPath<Integer> id;
@@ -38,23 +40,23 @@ public class QSubmissionPicture extends EntityPathBase<SubmissionPicture> {
     // inherited
     public final QSubmissionRecord submissionRecord;
 
-    public QSubmissionPicture(String variable) {
-        this(SubmissionPicture.class, forVariable(variable), INITS);
+    public QSubmissionRecording(String variable) {
+        this(SubmissionRecording.class, forVariable(variable), INITS);
     }
 
-    public QSubmissionPicture(Path<? extends SubmissionPicture> path) {
+    public QSubmissionRecording(Path<? extends SubmissionRecording> path) {
         this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
-    public QSubmissionPicture(PathMetadata metadata) {
+    public QSubmissionRecording(PathMetadata metadata) {
         this(metadata, PathInits.getFor(metadata, INITS));
     }
 
-    public QSubmissionPicture(PathMetadata metadata, PathInits inits) {
-        this(SubmissionPicture.class, metadata, inits);
+    public QSubmissionRecording(PathMetadata metadata, PathInits inits) {
+        this(SubmissionRecording.class, metadata, inits);
     }
 
-    public QSubmissionPicture(Class<? extends SubmissionPicture> type, PathMetadata metadata, PathInits inits) {
+    public QSubmissionRecording(Class<? extends SubmissionRecording> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this._super = new QUsePersonSubmissionRecord(type, metadata, inits);
         this.id = _super.id;

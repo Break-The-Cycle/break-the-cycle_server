@@ -10,6 +10,4 @@ public interface UsePersonRepository extends JpaRepository<UsePerson, Integer> {
 
 
     Optional<UsePerson> findByLoginId(String loginId);
-
-    Optional<UsePerson> findByPhoneNumber(String phoneNumber);
 }

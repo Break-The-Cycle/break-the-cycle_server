@@ -136,7 +136,7 @@ public class ViolentRecordController {
 		})
 	@PostMapping("/out")
 	public ResponseEntity<?> ViolentRecordOut(
-		@ModelAttribute ViolentRecordDto.OutRequest requestDto) {
+		@RequestBody ViolentRecordDto.OutRequest requestDto) {
 
 		log.info("[ViolentRecordOut] requestDto: {}", requestDto);
 		ViolentRecordDto.OutResponse outResponse = violentRecordService.outViolentRecord(requestDto);
