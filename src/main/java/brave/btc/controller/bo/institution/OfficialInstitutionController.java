@@ -6,8 +6,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,7 +24,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@Tag(name = "20. BO_Official Institution", description = "공식 기관 / ADMIN 권한 있어야 사용 가능")
+@Tag(name = "20. BO_Official Institution", description = "공식 기관 / BO 회원가입 할 때 사용하기 때문에 권한 필요 X")
 @Slf4j
 @Valid
 @RequiredArgsConstructor
@@ -77,25 +75,5 @@ public class OfficialInstitutionController {
 			.body(responseDto);
 	}
 
-	@Operation(summary = "공식 기관 추가", description = "공식 기관을 등록한다.",
-		responses = {
-			@ApiResponse(responseCode = "200", description = "공식 기관 등록 성공",
-				content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-					schema = @Schema(implementation = CommonResponseDto.class))),
-			@ApiResponse(responseCode = "400", description = "유효성 검사 통과 실패",
-				content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-					schema = @Schema(implementation = ErrorResponseDto.class)))
-		})
-	@PostMapping
-	public ResponseEntity<?> createOfficialInstitution(
-		@RequestBody OfficialInstitutionDto.Create requestDto
-	) {
-
-		String message = officialInstitutionService.createOfficialInstitution(requestDto);
-		CommonResponseDto<Object> responseDto = CommonResponseDto.builder().data(message).build();
-
-		return ResponseEntity.ok()
-			.body(responseDto);
-	}
 
 }

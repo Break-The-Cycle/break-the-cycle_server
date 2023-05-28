@@ -1,4 +1,4 @@
-package brave.btc.controller.app.usePerson;
+package brave.btc.controller.app.useperson;
 
 import java.time.LocalDate;
 import java.util.List;

@@ -33,6 +33,9 @@ public class QPolicePerson extends EntityPathBase<PolicePerson> {
     public final StringPath department = createString("department");
 
     //inherited
+    public final StringPath description;
+
+    //inherited
     public final EnumPath<brave.btc.constant.enums.ManageDivision> division;
 
     //inherited
@@ -87,6 +90,7 @@ public class QPolicePerson extends EntityPathBase<PolicePerson> {
         this._super = new QManagePerson(type, metadata, inits);
         this.address = _super.address;
         this.createdAt = _super.createdAt;
+        this.description = _super.description;
         this.division = _super.division;
         this.id = _super.id;
         this.isAccountNonExpired = _super.isAccountNonExpired;

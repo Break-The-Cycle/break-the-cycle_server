@@ -1,4 +1,4 @@
-package brave.btc.controller.app.usePerson;
+package brave.btc.controller.app.useperson;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
