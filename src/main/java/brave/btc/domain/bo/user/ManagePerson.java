@@ -54,6 +54,9 @@ public class ManagePerson extends User {
 	@Column(name = "MANAGE_PERSON_PNBR", columnDefinition = "VARCHAR(18) NOT NULL" , nullable = false)
 	protected String phoneNumber;
 
+	@Comment("관리 개인 소개")
+	@Column(name = "MANAGE_PERSON_INTRD", columnDefinition = "VARCHAR(200)", nullable = true)
+	protected String description;
 
 	@Convert(converter = ManageDivisionToCodeConverter.class)
 	@Comment("관리구분")

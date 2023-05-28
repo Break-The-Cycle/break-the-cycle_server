@@ -41,10 +41,6 @@ public class PolicePerson extends ManagePerson{
 	@Column(name = "DEPARTMENT", columnDefinition = "VARCHAR(45) NOT NULL", nullable = false)
 	private String department;
 
-	@Comment("프로필 소개글")
-	@Column(name = "DESCRIPTION", columnDefinition = "VARCHAR(45)")
-	private String description;
-
 	@Override
 	public ManagePersonRegisterListDto toResponseDto() {
 		return ManagePersonRegisterListDto.builder()

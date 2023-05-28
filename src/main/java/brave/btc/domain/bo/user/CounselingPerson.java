@@ -37,10 +37,6 @@ public class CounselingPerson extends ManagePerson{
 	@Column(name = "POSITION", columnDefinition = "VARCHAR(45) NOT NULL", nullable = false)
 	private String position;
 
-	@Comment("프로필 소개글")
-	@Column(name = "DESCRIPTION", columnDefinition = "VARCHAR(45)")
-	private String description;
-
 	@Override
 	public ManagePersonRegisterListDto toResponseDto() {
 		return ManagePersonRegisterListDto.builder()
