@@ -1,6 +1,7 @@
 package brave.btc.dto.common.auth.register;
 
-import brave.btc.constant.enums.OfficialInstitutionDivision;
+import java.time.LocalDate;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import brave.btc.constant.enums.ManageDivision;
@@ -17,8 +18,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -169,14 +168,14 @@ public class RegisterDto {
 
         @Schema(title = "로그인 ID", example = "btc-admin123")
         @NotBlank(message = "아이디는 필수 입력 값입니다.")
-        @Pattern(regexp = "^[a-z]+[a-zA-Z0-9]{6,19}$",
-                message = "아이디는 영문 소문자로 시작하고 숫자를 포함하여 7~20자로 구성되어야 합니다.")
+        // @Pattern(regexp = "^[a-z]+[a-zA-Z0-9]{6,19}$",
+        //         message = "아이디는 영문 소문자로 시작하고 숫자를 포함하여 7~20자로 구성되어야 합니다.")
         private String loginId;
 
         @Schema(title = "로그인 패스워드", example = "breakthecycle123!")
         @NotBlank(message = "비밀번호는 필수 입력 값입니다.")
-        @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*[~!@#$%^&*()+|=])[A-Za-z\\d~!@#$%^&*()+|=]{8,20}$",
-                message = "비밀번호는 영문 대문자, 소문자, 특수문자를 포함하여 8~20자로 구성되어야 합니다.")
+        // @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*[~!@#$%^&*()+|=])[A-Za-z\\d~!@#$%^&*()+|=]{8,20}$",
+        //         message = "비밀번호는 영문 대문자, 소문자, 특수문자를 포함하여 8~20자로 구성되어야 합니다.")
         private String password;
 
         @Schema(description = "로그인 패스워드2", example = "breakthecycle123!")
@@ -197,6 +196,9 @@ public class RegisterDto {
         @Schema(description = "직급", example = "개발자")
         private String position;
 
+        @Schema(description = "프로필 소개글", example = "안녕하세요 OOO입니다. 개발잡니다.")
+        private String description;
+
         public BackOfficeManagePerson toBackOfficeManagePersonEntity(String encodedPassword) {
             return BackOfficeManagePerson.builder()
                     .name(name)
@@ -204,6 +206,7 @@ public class RegisterDto {
                     .password(encodedPassword)
                     .phoneNumber(phoneNumber)
                     .address(address.toEntity())
+                    .description(description)
                     .build();
         }
     }

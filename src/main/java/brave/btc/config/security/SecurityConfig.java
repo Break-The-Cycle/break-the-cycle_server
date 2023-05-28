@@ -17,7 +17,7 @@ import brave.btc.config.jwt.JwtAuthorizationFilter;
 import brave.btc.config.jwt.JwtExceptionFilter;
 import brave.btc.repository.app.UsePersonRepository;
 import brave.btc.repository.bo.ManagePersonRepository;
-import brave.btc.service.app.auth.JwtServiceImpl;
+import brave.btc.service.common.auth.JwtServiceImpl;
 import lombok.RequiredArgsConstructor;
 
 
@@ -58,11 +58,11 @@ public class SecurityConfig {
                 .and()
                 .authorizeHttpRequests()
                 .requestMatchers( "/v1/use-persons/**","/v1/violent-records/**")
-                .access(new WebExpressionAuthorizationManager("hasRole('ROLE_USE_PERSON') or hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER')"))
-                .requestMatchers("/v1/manager/**")
-                .access(new WebExpressionAuthorizationManager("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER')"))
-                .requestMatchers("/v1/admin/**","/v1/official-institutions/**","/register/bo-manage-person")
-                .access(new WebExpressionAuthorizationManager("hasRole('ROLE_ADMIN')"))
+                .access(new WebExpressionAuthorizationManager("hasRole('ROLE_USE_PERSON') or hasRole('ROLE_MANAGE_PERSON') or hasRole('ROLE_BO_MANAGE_PERSON')"))
+                .requestMatchers("/v1/manage-persons/**")
+                .access(new WebExpressionAuthorizationManager("hasRole('ROLE_MANAGE_PERSON') or hasRole('ROLE_BO_MANAGE_PERSON')"))
+                .requestMatchers("/v1/bo-manage-persons/**")
+                .access(new WebExpressionAuthorizationManager("hasRole('ROLE_BO_MANAGE_PERSON')"))
                 .anyRequest().permitAll();
 
 

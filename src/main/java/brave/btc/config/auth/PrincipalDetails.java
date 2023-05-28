@@ -39,7 +39,7 @@ public class PrincipalDetails implements UserDetails {
     public PrincipalDetails(ManagePerson managePerson) {
 
         UserType userType = managePerson.getDivision() == ManageDivision.BACKOFFICE_MANAGE_PERSON ?
-            UserType.ADMIN :
+            UserType.BO_MANAGE_PERSON :
             UserType.MANAGE_PERSON;
 
         this.user = User.builder()
@@ -62,14 +62,14 @@ public class PrincipalDetails implements UserDetails {
         UserType userType = user.getUserType();
         log.debug("[getAuthorities] userType: {}", userType);
         if (userType == UserType.USE_PERSON) {
-            authorities.add((GrantedAuthority)() -> "ROLE_USE_PERSON");
+            authorities.add((GrantedAuthority)UserType.USE_PERSON::getRole);
         } else if (userType == UserType.MANAGE_PERSON) {
-            authorities.add((GrantedAuthority)() -> "ROLE_USE_PERSON");
-            authorities.add((GrantedAuthority)() -> "ROLE_MANAGER");
-        } else if (userType == UserType.ADMIN) {
-            authorities.add((GrantedAuthority)() -> "ROLE_USE_PERSON");
-            authorities.add((GrantedAuthority)() -> "ROLE_MANAGER");
-            authorities.add((GrantedAuthority)() -> "ROLE_ADMIN");
+            authorities.add((GrantedAuthority)UserType.USE_PERSON::getRole);
+            authorities.add((GrantedAuthority)UserType.MANAGE_PERSON::getRole);
+        } else if (userType == UserType.BO_MANAGE_PERSON) {
+            authorities.add((GrantedAuthority)UserType.USE_PERSON::getRole);
+            authorities.add((GrantedAuthority)UserType.MANAGE_PERSON::getRole);
+            authorities.add((GrantedAuthority)UserType.BO_MANAGE_PERSON::getRole);
         } else {
             throw new IllegalStateException("비정상 상태입니다.");
         }

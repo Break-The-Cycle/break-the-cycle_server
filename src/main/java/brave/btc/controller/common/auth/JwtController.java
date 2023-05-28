@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import brave.btc.dto.CommonResponseDto;
 import brave.btc.exception.ErrorResponseDto;
-import brave.btc.service.app.auth.JwtServiceImpl;
+import brave.btc.service.common.auth.JwtServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
