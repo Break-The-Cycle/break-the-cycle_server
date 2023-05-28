@@ -1,4 +1,4 @@
-package brave.btc.domain.common.submissionrecord;
+package brave.btc.domain.bo.submissionrecord;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.List;
 import org.hibernate.annotations.Comment;
 
 import brave.btc.constant.enums.SubmissionDivision;
-import brave.btc.domain.app.user.UsePerson;
+import brave.btc.domain.bo.user.UsePersonView;
 import brave.btc.util.converter.SubmissionDivisionToCodeConverter;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -35,17 +35,17 @@ import lombok.ToString;
 @Table(name = "SUBMISSION_RECORD")
 public class SubmissionRecord {
 
-	@Comment("사용 개인 기록ID")
+	@Comment("제출 기록 ID")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "SUBMISSION_RECORD_ID", columnDefinition = "INT NOT NULL")
 	private Integer id;
 
-	@Comment("기록 구분")
+	@Comment("사용 개인 ID")
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="USE_PERSON_ID", columnDefinition = "INT NOT NULL", nullable = false)
 	@ToString.Exclude
-	private UsePerson usePerson;
+	private UsePersonView usePersonView;
 
 
 	@Comment("제출일시")

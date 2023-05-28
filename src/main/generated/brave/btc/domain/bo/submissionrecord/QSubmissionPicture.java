@@ -1,4 +1,4 @@
-package brave.btc.domain.common.submissionrecord;
+package brave.btc.domain.bo.submissionrecord;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -11,22 +11,20 @@ import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
- * QSubmissionRecording is a Querydsl query type for SubmissionRecording
+ * QSubmissionPicture is a Querydsl query type for SubmissionPicture
  */
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
-public class QSubmissionRecording extends EntityPathBase<SubmissionRecording> {
+public class QSubmissionPicture extends EntityPathBase<SubmissionPicture> {
 
-    private static final long serialVersionUID = 2130380536L;
+    private static final long serialVersionUID = -1016457565L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
-    public static final QSubmissionRecording submissionRecording = new QSubmissionRecording("submissionRecording");
+    public static final QSubmissionPicture submissionPicture = new QSubmissionPicture("submissionPicture");
 
     public final QUsePersonSubmissionRecord _super;
 
     public final StringPath content = createString("content");
-
-    public final StringPath conversionContent = createString("conversionContent");
 
     //inherited
     public final NumberPath<Integer> id;
@@ -40,23 +38,23 @@ public class QSubmissionRecording extends EntityPathBase<SubmissionRecording> {
     // inherited
     public final QSubmissionRecord submissionRecord;
 
-    public QSubmissionRecording(String variable) {
-        this(SubmissionRecording.class, forVariable(variable), INITS);
+    public QSubmissionPicture(String variable) {
+        this(SubmissionPicture.class, forVariable(variable), INITS);
     }
 
-    public QSubmissionRecording(Path<? extends SubmissionRecording> path) {
+    public QSubmissionPicture(Path<? extends SubmissionPicture> path) {
         this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
-    public QSubmissionRecording(PathMetadata metadata) {
+    public QSubmissionPicture(PathMetadata metadata) {
         this(metadata, PathInits.getFor(metadata, INITS));
     }
 
-    public QSubmissionRecording(PathMetadata metadata, PathInits inits) {
-        this(SubmissionRecording.class, metadata, inits);
+    public QSubmissionPicture(PathMetadata metadata, PathInits inits) {
+        this(SubmissionPicture.class, metadata, inits);
     }
 
-    public QSubmissionRecording(Class<? extends SubmissionRecording> type, PathMetadata metadata, PathInits inits) {
+    public QSubmissionPicture(Class<? extends SubmissionPicture> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this._super = new QUsePersonSubmissionRecord(type, metadata, inits);
         this.id = _super.id;

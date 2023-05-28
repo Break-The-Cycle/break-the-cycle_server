@@ -1,4 +1,4 @@
-package brave.btc.domain.common.submissionrecord;
+package brave.btc.domain.bo.submissionrecord;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -11,16 +11,16 @@ import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
- * QSubmissionPicture is a Querydsl query type for SubmissionPicture
+ * QSubmissionDiary is a Querydsl query type for SubmissionDiary
  */
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
-public class QSubmissionPicture extends EntityPathBase<SubmissionPicture> {
+public class QSubmissionDiary extends EntityPathBase<SubmissionDiary> {
 
-    private static final long serialVersionUID = -1465943099L;
+    private static final long serialVersionUID = -1987558744L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
-    public static final QSubmissionPicture submissionPicture = new QSubmissionPicture("submissionPicture");
+    public static final QSubmissionDiary submissionDiary = new QSubmissionDiary("submissionDiary");
 
     public final QUsePersonSubmissionRecord _super;
 
@@ -38,23 +38,23 @@ public class QSubmissionPicture extends EntityPathBase<SubmissionPicture> {
     // inherited
     public final QSubmissionRecord submissionRecord;
 
-    public QSubmissionPicture(String variable) {
-        this(SubmissionPicture.class, forVariable(variable), INITS);
+    public QSubmissionDiary(String variable) {
+        this(SubmissionDiary.class, forVariable(variable), INITS);
     }
 
-    public QSubmissionPicture(Path<? extends SubmissionPicture> path) {
+    public QSubmissionDiary(Path<? extends SubmissionDiary> path) {
         this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
-    public QSubmissionPicture(PathMetadata metadata) {
+    public QSubmissionDiary(PathMetadata metadata) {
         this(metadata, PathInits.getFor(metadata, INITS));
     }
 
-    public QSubmissionPicture(PathMetadata metadata, PathInits inits) {
-        this(SubmissionPicture.class, metadata, inits);
+    public QSubmissionDiary(PathMetadata metadata, PathInits inits) {
+        this(SubmissionDiary.class, metadata, inits);
     }
 
-    public QSubmissionPicture(Class<? extends SubmissionPicture> type, PathMetadata metadata, PathInits inits) {
+    public QSubmissionDiary(Class<? extends SubmissionDiary> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this._super = new QUsePersonSubmissionRecord(type, metadata, inits);
         this.id = _super.id;

@@ -1,8 +1,8 @@
-package brave.btc.repository.app.record;
+package brave.btc.repository.bo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import brave.btc.domain.common.submissionrecord.UsePersonSubmissionRecord;
+import brave.btc.domain.bo.submissionrecord.UsePersonSubmissionRecord;
 
 public interface UsePersonSubmissionRecordRepository extends JpaRepository<UsePersonSubmissionRecord, Integer> {
 }

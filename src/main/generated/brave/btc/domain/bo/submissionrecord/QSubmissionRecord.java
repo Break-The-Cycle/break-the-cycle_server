@@ -1,4 +1,4 @@
-package brave.btc.domain.common.submissionrecord;
+package brave.btc.domain.bo.submissionrecord;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -16,7 +16,7 @@ import com.querydsl.core.types.dsl.PathInits;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QSubmissionRecord extends EntityPathBase<SubmissionRecord> {
 
-    private static final long serialVersionUID = -1794844502L;
+    private static final long serialVersionUID = -1087608308L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
@@ -30,9 +30,9 @@ public class QSubmissionRecord extends EntityPathBase<SubmissionRecord> {
 
     public final EnumPath<brave.btc.constant.enums.SubmissionDivision> submissionDivision = createEnum("submissionDivision", brave.btc.constant.enums.SubmissionDivision.class);
 
-    public final brave.btc.domain.app.user.QUsePerson usePerson;
-
     public final ListPath<UsePersonSubmissionRecord, QUsePersonSubmissionRecord> usePersonSubmissionRecordList = this.<UsePersonSubmissionRecord, QUsePersonSubmissionRecord>createList("usePersonSubmissionRecordList", UsePersonSubmissionRecord.class, QUsePersonSubmissionRecord.class, PathInits.DIRECT2);
+
+    public final brave.btc.domain.bo.user.QUsePersonView usePersonView;
 
     public QSubmissionRecord(String variable) {
         this(SubmissionRecord.class, forVariable(variable), INITS);
@@ -52,7 +52,7 @@ public class QSubmissionRecord extends EntityPathBase<SubmissionRecord> {
 
     public QSubmissionRecord(Class<? extends SubmissionRecord> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.usePerson = inits.isInitialized("usePerson") ? new brave.btc.domain.app.user.QUsePerson(forProperty("usePerson")) : null;
+        this.usePersonView = inits.isInitialized("usePersonView") ? new brave.btc.domain.bo.user.QUsePersonView(forProperty("usePersonView")) : null;
     }
 
 }

@@ -24,16 +24,17 @@ import brave.btc.constant.enums.SubmissionDivision;
 import brave.btc.domain.app.record.Diary;
 import brave.btc.domain.app.record.Picture;
 import brave.btc.domain.app.record.Record;
-import brave.btc.domain.common.submissionrecord.CounselingPersonSubmission;
-import brave.btc.domain.common.submissionrecord.CounselingPersonSubmissionId;
-import brave.btc.domain.common.submissionrecord.PolicePersonSubmission;
-import brave.btc.domain.common.submissionrecord.PolicePersonSubmissionId;
-import brave.btc.domain.common.submissionrecord.SubmissionDiary;
-import brave.btc.domain.common.submissionrecord.SubmissionPicture;
-import brave.btc.domain.common.submissionrecord.SubmissionRecord;
-import brave.btc.domain.common.submissionrecord.UsePersonSubmissionRecord;
 import brave.btc.domain.app.user.UsePerson;
+import brave.btc.domain.bo.submissionrecord.CounselingPersonSubmission;
+import brave.btc.domain.bo.submissionrecord.CounselingPersonSubmissionId;
+import brave.btc.domain.bo.submissionrecord.PolicePersonSubmission;
+import brave.btc.domain.bo.submissionrecord.PolicePersonSubmissionId;
+import brave.btc.domain.bo.submissionrecord.SubmissionDiary;
+import brave.btc.domain.bo.submissionrecord.SubmissionPicture;
+import brave.btc.domain.bo.submissionrecord.SubmissionRecord;
+import brave.btc.domain.bo.submissionrecord.UsePersonSubmissionRecord;
 import brave.btc.domain.bo.user.ManagePerson;
+import brave.btc.domain.bo.user.UsePersonView;
 import brave.btc.dto.app.record.DiaryDto;
 import brave.btc.dto.app.record.ViolentRecordDto;
 import brave.btc.exception.auth.AuthenticationInvalidException;
@@ -41,10 +42,11 @@ import brave.btc.exception.auth.UserPrincipalNotFoundException;
 import brave.btc.exception.domain.EntityNotFoundException;
 import brave.btc.repository.app.UsePersonRepository;
 import brave.btc.repository.app.record.RecordRepository;
-import brave.btc.repository.app.record.SubmissionRecordRepository;
+import brave.btc.repository.bo.SubmissionRecordRepository;
 import brave.btc.repository.bo.CounselingPersonSubmissionRepository;
 import brave.btc.repository.bo.ManagePersonRepository;
 import brave.btc.repository.bo.PolicePersonSubmissionRepository;
+import brave.btc.repository.bo.UsePersonViewRepository;
 import brave.btc.service.common.auth.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -56,6 +58,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ViolentRecordServiceImpl implements ViolentRecordService {
 	private final ManagePersonRepository managePersonRepository;
 	private final UsePersonRepository usePersonRepository;
+	private final UsePersonViewRepository usePersonViewRepository;
 	private final RecordRepository recordRepository;
 	private final SubmissionRecordRepository submissionRecordRepository;
 	private final PolicePersonSubmissionRepository policePersonSubmissionRepository;
@@ -214,10 +217,12 @@ public class ViolentRecordServiceImpl implements ViolentRecordService {
 			throw new AuthenticationInvalidException("비밀번호가 일치하지 않습니다.");
 		}
 
+		UsePersonView usePersonView = usePersonViewRepository.findById(usePersonId)
+			.orElseThrow(()->new IllegalStateException("사용 개인, 사용 개인 뷰 정합성 이상 상태"));
 		LocalDateTime nowDateTime = LocalDateTime.now();
 		LocalDateTime expireDateTime = nowDateTime.plusDays(7);
 		SubmissionRecord newSubmissionRecord = SubmissionRecord.builder()
-			.usePerson(usePerson)
+			.usePersonView(usePersonView)
 			.submissionDatetime(nowDateTime)
 			.effectiveDatetime(expireDateTime)
 			.build();
