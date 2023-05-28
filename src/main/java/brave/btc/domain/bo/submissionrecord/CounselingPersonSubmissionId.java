@@ -1,4 +1,4 @@
-package brave.btc.domain.common.submissionrecord;
+package brave.btc.domain.bo.submissionrecord;
 
 import java.io.Serializable;
 
@@ -15,8 +15,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class PolicePersonSubmissionId implements Serializable {
+public class CounselingPersonSubmissionId implements Serializable {
 	private Integer managePersonId;
 	private Integer submissionRecordId;
-}
 
+
+}

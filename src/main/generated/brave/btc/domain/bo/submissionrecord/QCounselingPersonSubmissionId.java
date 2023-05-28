@@ -1,4 +1,4 @@
-package brave.btc.domain.common.submissionrecord;
+package brave.btc.domain.bo.submissionrecord;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -15,7 +15,7 @@ import com.querydsl.core.types.Path;
 @Generated("com.querydsl.codegen.DefaultEmbeddableSerializer")
 public class QCounselingPersonSubmissionId extends BeanPath<CounselingPersonSubmissionId> {
 
-    private static final long serialVersionUID = 285154390L;
+    private static final long serialVersionUID = -1115837768L;
 
     public static final QCounselingPersonSubmissionId counselingPersonSubmissionId = new QCounselingPersonSubmissionId("counselingPersonSubmissionId");
 

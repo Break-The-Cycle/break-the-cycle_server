@@ -1,4 +1,4 @@
-package brave.btc.domain.common.submissionrecord;
+package brave.btc.domain.bo.submissionrecord;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -16,7 +16,7 @@ import com.querydsl.core.types.dsl.PathInits;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QPolicePersonSubmission extends EntityPathBase<PolicePersonSubmission> {
 
-    private static final long serialVersionUID = -1905901076L;
+    private static final long serialVersionUID = -419446322L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 

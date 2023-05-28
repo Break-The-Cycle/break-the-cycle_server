@@ -1,4 +1,4 @@
-package brave.btc.domain.common.submissionrecord;
+package brave.btc.domain.bo.submissionrecord;
 
 import java.time.LocalDate;
 
