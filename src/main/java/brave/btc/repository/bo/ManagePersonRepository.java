@@ -16,7 +16,7 @@ public interface ManagePersonRepository extends JpaRepository<ManagePerson, Inte
     @Query("SELECT mp " +
             "FROM ManagePerson mp " +
             "JOIN FETCH mp.address ad " +
-            "WHERE mp.id = :id")
+            "WHERE mp.id = :id AND mp.isEnabled = True")
     Optional<ManagePerson> findAcceptedManagePersonsByIdWithAddress(Integer id);
 
     @Query("SELECT mp " +
