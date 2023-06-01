@@ -188,16 +188,16 @@ public class ViolentRecordServiceImpl implements ViolentRecordService {
 	}
 
 	@Override
-	public String uploadViolentRecord(ViolentRecordDto.Create requestDto) {
+	public String uploadViolentRecord(Integer usePersonId, ViolentRecordDto.Create requestDto) {
 
-		String loginId = requestDto.getLoginId();
 		String sha256EncodedPassword = requestDto.getPassword();
-		UsePerson usePerson = authService.checkIsCredentialValid(loginId, sha256EncodedPassword, RawPasswordDivision.SHA256);
+		UsePerson usePerson = authService.checkIsCredentialValid(usePersonId, sha256EncodedPassword, RawPasswordDivision.SHA256);
+		String loginId = usePerson.getLoginId();
 		log.debug("[uploadRecord] usePerson: {}", usePerson);
 
 		List<Record> newRecordList = new ArrayList<>();
-		makeNewPictureRecordList(requestDto, sha256EncodedPassword, usePerson, newRecordList);
-		makeNewDiaryRecord(requestDto, sha256EncodedPassword, usePerson, newRecordList);
+		makeNewPictureRecordList(requestDto,loginId, sha256EncodedPassword, usePerson, newRecordList);
+		makeNewDiaryRecord(requestDto,loginId, sha256EncodedPassword, usePerson, newRecordList);
 		recordRepository.saveAll(newRecordList);
 
 		log.info("[uploadRecord] 업로드 완료");
@@ -293,9 +293,9 @@ public class ViolentRecordServiceImpl implements ViolentRecordService {
 			).toList();
 	}
 
-	private void makeNewDiaryRecord(ViolentRecordDto.Create requestDto, String sha256EncodedPassword, UsePerson usePerson, List<Record> newRecordList) {
+	private void makeNewDiaryRecord(ViolentRecordDto.Create requestDto, String loginId, String sha256EncodedPassword, UsePerson usePerson, List<Record> newRecordList) {
 		DiaryDto.Create diaryDto = requestDto.toDiaryDto();
-		String objectPath = makeObjectPath(FolderDivision.SECRET, requestDto.getLoginId(), RecordDivision.DIARY);
+		String objectPath = makeObjectPath(FolderDivision.SECRET, loginId, RecordDivision.DIARY);
 		String diaryS3Url = recordUploadService.uploadDiary(diaryDto, objectPath, sha256EncodedPassword);
 		Record newDiary = Diary.builder()
 			.usePerson(usePerson)
@@ -305,11 +305,11 @@ public class ViolentRecordServiceImpl implements ViolentRecordService {
 		newRecordList.add(newDiary);
 	}
 
-	private void makeNewPictureRecordList(ViolentRecordDto.Create requestDto, String sha256EncodedPassword, UsePerson usePerson, List<Record> newRecordList) {
+	private void makeNewPictureRecordList(ViolentRecordDto.Create requestDto, String loginId, String sha256EncodedPassword, UsePerson usePerson, List<Record> newRecordList) {
 		requestDto.getPictureList()
 			.stream()
 			.map(multipartFile -> {
-					String objectPath = makeObjectPath(FolderDivision.SECRET, requestDto.getLoginId(),  RecordDivision.PICTURE);
+					String objectPath = makeObjectPath(FolderDivision.SECRET, loginId,  RecordDivision.PICTURE);
 					return recordUploadService.uploadPicture(multipartFile, objectPath, sha256EncodedPassword);})
 			.map(pictureS3Url -> (Record) Picture.builder()
 					.usePerson(usePerson)
