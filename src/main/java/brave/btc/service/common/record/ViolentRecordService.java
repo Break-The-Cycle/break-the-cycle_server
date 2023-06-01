@@ -36,10 +36,12 @@ public interface ViolentRecordService {
 
 	/**
 	 * 가정폭력에 대한 기록을 업로드한다.
-	 * @param requestDto 제목, 내용, 사진을 포함한 req dto
+	 *
+	 * @param usePersonId
+	 * @param requestDto  제목, 내용, 사진을 포함한 req dto
 	 * @return 응답 메세지
 	 */
-	String uploadViolentRecord(ViolentRecordDto.Create requestDto);
+	String uploadViolentRecord(Integer usePersonId, ViolentRecordDto.Create requestDto);
 
 	/**
 	 * 기정폭력에 대해 데이터 내보내기를 수행한다.

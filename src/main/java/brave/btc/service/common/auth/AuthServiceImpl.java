@@ -34,8 +34,8 @@ public class AuthServiceImpl implements AuthService {
     private final CustomPasswordEncoder customPasswordEncoder;
 
     @Override
-    public UsePerson checkIsCredentialValid(String loginId, String rawPassword, RawPasswordDivision rawPasswordDivision) {
-        UsePerson usePerson = usePersonRepository.findByLoginId(loginId)
+    public UsePerson checkIsCredentialValid(Integer usePersonId, String rawPassword, RawPasswordDivision rawPasswordDivision) {
+        UsePerson usePerson = usePersonRepository.findById(usePersonId)
                 .orElseThrow(() -> new UserPrincipalNotFoundException("해당하는 유저를 찾을 수 없습니다."));
 
         //비밀번호 확인 로직

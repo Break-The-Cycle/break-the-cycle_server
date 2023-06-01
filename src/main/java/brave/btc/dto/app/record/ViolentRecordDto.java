@@ -31,10 +31,7 @@ public class ViolentRecordDto {
 		@Schema(title = "내용", example = "내용을 입력해주세요.", requiredMode = Schema.RequiredMode.REQUIRED)
 		private String contents;
 
-		@Schema(title = "사용자 로그인 id", example = "kang123", requiredMode = Schema.RequiredMode.REQUIRED)
-		private String loginId;
-
-		@Schema(title = "로그인, 암호화 password", example = "kang123!", requiredMode = Schema.RequiredMode.REQUIRED )
+		@Schema(title = "로그인, sha256 암호화 password", example = "de96afd707bbaeabc311cca3c271428becfa8596d086d9f0d370fcc210827066", requiredMode = Schema.RequiredMode.REQUIRED )
 		private String password;
 
 		@Schema(title = "첨부 사진 리스트")

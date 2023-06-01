@@ -80,7 +80,7 @@ public class ViolentRecordController {
 				content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
 					schema = @Schema(implementation = ErrorResponseDto.class)))
 		})
-	@PostMapping("/{usePersonId}")
+	@PostMapping("/{usePersonId}/contents")
 	public ResponseEntity<?> violentRecordDetails(
 		@Parameter(description = "use person pk",required = true) @PathVariable("usePersonId") Integer usePersonId,
 		@Parameter(description = "조회 날짜",required = true) @RequestParam(name = "targetDate") LocalDate targetDate,
@@ -107,14 +107,15 @@ public class ViolentRecordController {
 				content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
 					schema = @Schema(implementation = ErrorResponseDto.class)))
 		})
-	@PostMapping(consumes = {
+	@PostMapping(value = "/{usePersonId}",consumes = {
 		MediaType.MULTIPART_FORM_DATA_VALUE
 	})
 	public ResponseEntity<?> ViolentRecordUpload(
-		 @ModelAttribute ViolentRecordDto.Create requestDto) {
+		 @ModelAttribute ViolentRecordDto.Create requestDto,
+		@Parameter(description = "use person pk",required = true) @PathVariable("usePersonId") Integer usePersonId) {
 
-		log.info("[uploadRecord] requestDto: {}", requestDto);
-		String message = violentRecordService.uploadViolentRecord(requestDto);
+		log.info("[uploadRecord] usePersonId: {}, requestDto: {}",usePersonId, requestDto);
+		String message = violentRecordService.uploadViolentRecord(usePersonId, requestDto);
 		CommonResponseDto<Object> responseDto = CommonResponseDto.builder().message(message).build();
 
 		return ResponseEntity.ok()

@@ -8,12 +8,12 @@ public interface AuthService {
 
     /**
      * 아이디 비밀번호를 확인한다.
-     * @param loginId 확인할 아이디
+     * @param usePersonId 확인할 아이디
      * @param rawPassword 확인할 비밀번호
      * @param rawPasswordDivision 확인할 비밀번호의 암호화 단계
      * @return 로그인 성공한 유저 객체
      */
-    UsePerson checkIsCredentialValid(String loginId, String rawPassword, RawPasswordDivision rawPasswordDivision);
+    UsePerson checkIsCredentialValid(Integer usePersonId, String rawPassword, RawPasswordDivision rawPasswordDivision);
 
 
 
