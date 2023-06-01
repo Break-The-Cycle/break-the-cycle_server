@@ -51,22 +51,26 @@ public class UsePersonAndMenstruationServiceImpl implements UsePersonAndMenstrua
 			throw new InvalidMenstruationException("유저의 생리 기록이 존재하지 않습니다.");
 		}
 		LocalDate latestStartDate = latestMenstruation.getStartDate();
-		calculateExpectedMenstruationInfo(responseDtoList, menstruationPeriod, latestStartDate, fromDate, toDate);
+		LocalDate latestEndDate = latestMenstruation.getEndDate();
+		calculateExpectedMenstruationInfo(responseDtoList, menstruationPeriod, latestStartDate, latestEndDate, fromDate, toDate);
 		return responseDtoList;
 	}
 
 	/**
 	 * 사용자의 생리주기, 가장 최근 생리일을 기준으로 예상 가임기, 배란일, 생리일을 계산한다.
-	 * @param responseDtoList 반환할 response dto list
+	 *
+	 * @param responseDtoList    반환할 response dto list
 	 * @param menstruationPeriod 사용자 생리 주기
-	 * @param latestStartDate 최근 생리일
+	 * @param latestStartDate    최근 생리 시작일
+	 * @param latestEndDate 최근 생리 종료일
+	 * @param fromDate 조회 시작일
+	 * @param toDate 조회 종료일
 	 */
 	private void calculateExpectedMenstruationInfo(List<MenstruationDto.Response> responseDtoList,
-
-		Period menstruationPeriod, LocalDate latestStartDate, LocalDate fromDate, LocalDate toDate) {
+		Period menstruationPeriod, LocalDate latestStartDate, LocalDate latestEndDate, LocalDate fromDate, LocalDate toDate) {
 		LocalDate expectedMenstruationDate = latestStartDate;
 		//가장 가까운 미래에 생리를 할 날짜를 결정
-		while (expectedMenstruationDate.isBefore(fromDate)) {
+		while (expectedMenstruationDate.isBefore(fromDate) || expectedMenstruationDate.isBefore(latestEndDate)) {
 			expectedMenstruationDate = expectedMenstruationDate.plus(menstruationPeriod);
 		}
 		int halfMenstruationPeriodDays = menstruationPeriod.getDays()/2;
