@@ -73,31 +73,40 @@ public class UsePersonAndMenstruationServiceImpl implements UsePersonAndMenstrua
 		while (expectedMenstruationDate.isBefore(fromDate) || expectedMenstruationDate.isBefore(latestEndDate)) {
 			expectedMenstruationDate = expectedMenstruationDate.plus(menstruationPeriod);
 		}
-		int halfMenstruationPeriodDays = menstruationPeriod.getDays()/2;
-		LocalDate expectedOvulationDate = expectedMenstruationDate.minusDays(halfMenstruationPeriodDays);
-		LocalDate fromExpectedChildBearing = expectedOvulationDate.minusDays(3);
-		LocalDate toExpectedChildBearing = expectedOvulationDate.plusDays(3);
 
-		MenstruationDto.Response expectedChildBearingResponseDto = MenstruationDto.Response.builder()
-			.startDate(fromExpectedChildBearing)
-			.endDate(toExpectedChildBearing)
-			.division(MenstruationDivision.EXPECTED_CHILDBEARING_PERIOD)
-			.build();
-		responseDtoList.add(0, expectedChildBearingResponseDto);
+		int leftCnt=2; //최소 몇번은 루프를 돌면서 데이터를 넣어줄건지 결정
+		while (expectedMenstruationDate.isBefore(toDate) || leftCnt-->0) {
 
-		MenstruationDto.Response expectedOvulationResponseDto = MenstruationDto.Response.builder()
-					.startDate(expectedOvulationDate)
-					.endDate(null)
-					.division(MenstruationDivision.EXPECTED_OVULATION)
-					.build();
-		responseDtoList.add(0, expectedOvulationResponseDto);
+			int halfMenstruationPeriodDays = menstruationPeriod.getDays()/2;
+			LocalDate expectedOvulationDate = expectedMenstruationDate.minusDays(halfMenstruationPeriodDays);
+			LocalDate fromExpectedChildBearing = expectedOvulationDate.minusDays(3);
+			LocalDate toExpectedChildBearing = expectedOvulationDate.plusDays(3);
 
-		MenstruationDto.Response expectedMenstruationResponseDto = MenstruationDto.Response.builder()
-					.startDate(expectedMenstruationDate)
-					.endDate(expectedMenstruationDate.plusDays(7))
-					.division(MenstruationDivision.EXPECTED_MENSTRUATION)
-					.build();
-		responseDtoList.add(0, expectedMenstruationResponseDto);
+			MenstruationDto.Response expectedChildBearingResponseDto = MenstruationDto.Response.builder()
+				.startDate(fromExpectedChildBearing)
+				.endDate(toExpectedChildBearing)
+				.division(MenstruationDivision.EXPECTED_CHILDBEARING_PERIOD)
+				.build();
+			responseDtoList.add(0, expectedChildBearingResponseDto);
+
+			MenstruationDto.Response expectedOvulationResponseDto = MenstruationDto.Response.builder()
+						.startDate(expectedOvulationDate)
+						.endDate(null)
+						.division(MenstruationDivision.EXPECTED_OVULATION)
+						.build();
+			responseDtoList.add(0, expectedOvulationResponseDto);
+
+			MenstruationDto.Response expectedMenstruationResponseDto = MenstruationDto.Response.builder()
+						.startDate(expectedMenstruationDate)
+						.endDate(expectedMenstruationDate.plusDays(7))
+						.division(MenstruationDivision.EXPECTED_MENSTRUATION)
+						.build();
+			responseDtoList.add(0, expectedMenstruationResponseDto);
+
+			expectedMenstruationDate = expectedMenstruationDate.plus(menstruationPeriod);
+		}
+
+
 	}
 
 	@Override
