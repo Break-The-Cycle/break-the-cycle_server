@@ -119,9 +119,11 @@ public class ViolentRecordServiceImpl implements ViolentRecordService {
 		SubmissionRecord submissionRecord = submissionRecordRepository.findById(submissionRecordId)
 			.orElseThrow(() -> new EntityNotFoundException(SubmissionRecord.class.getName(), submissionRecordId));
 
-		if (submissionRecord.getSubmissionDivision() != null) {
-			throw new IllegalStateException("이미 사용이 완료된 토큰입니다.");
-		}
+		//TODO : 테스트 끝나면 토큰 재사용 불가 로직 활성화 시키기
+		//임시로 토큰 재사용 허가
+		// if (submissionRecord.getSubmissionDivision() != null) {
+		// 	throw new IllegalStateException("이미 사용이 완료된 토큰입니다.");
+		// }
 
 		ManagePerson managePerson = managePersonRepository.findById(managePersonId)
 			.orElseThrow(() -> new UserPrincipalNotFoundException("해당 관리 개인이 존재하지 않습니다."));

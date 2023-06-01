@@ -56,7 +56,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
 
         log.info("request = " + request.getServletPath());
-        if (request.getServletPath().startsWith("/v1/auth/")) {
+        if (request.getServletPath().startsWith("/v1/auth/") || request .getServletPath().startsWith("/v1/test")) {
             chain.doFilter(request, response);
             return;
         }
