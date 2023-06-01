@@ -72,7 +72,7 @@ public class ViolentRecordController {
 		responses = {
 			@ApiResponse(responseCode = "200", description = "폭력 일기 기록 자세히 가져오기 성공",
 				content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-					array = @ArraySchema(schema = @Schema(implementation = LocalDate.class)))),
+					array = @ArraySchema(schema = @Schema(implementation = ViolentRecordDto.Response.class)))),
 			@ApiResponse(responseCode = "400", description = "조회 실패",
 				content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
 					schema = @Schema(implementation = ErrorResponseDto.class))),
