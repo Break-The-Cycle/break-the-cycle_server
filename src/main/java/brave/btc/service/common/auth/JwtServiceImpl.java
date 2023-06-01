@@ -68,7 +68,7 @@ public class JwtServiceImpl implements JwtService {
                 .withExpiresAt(new Date(System.currentTimeMillis() + JwtProperties.AT_EXP_TIME))
                 //비공개 값
                 .withClaim("id", usePerson.getId())
-                .withClaim("phoneNumber", usePerson.getPhoneNumber())
+                .withClaim("loginId", usePerson.getLoginId())
                 //암호화 방식
                 .sign(Algorithm.HMAC512(JwtProperties.SECRET));
         log.info("[Authorization] Access Token 재발급 완료");

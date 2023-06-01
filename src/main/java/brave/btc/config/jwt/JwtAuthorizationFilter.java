@@ -12,7 +12,6 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -136,7 +135,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         } catch (TokenExpiredException e) {
             log.info("[Authorization] Access Token 만료");
             throw new JwtException("Access Token이 만료되었습니다.");
-        } catch (JWTVerificationException e) {
+        } catch (Exception e) {
             log.info("[Authorization] 유효하지 않은 Access Token");
             throw new JwtException("유효하지 않은 Access Token입니다.");
         }
