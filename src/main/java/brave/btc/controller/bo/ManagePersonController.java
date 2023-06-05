@@ -1,6 +1,8 @@
 package brave.btc.controller.bo;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -8,10 +10,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import brave.btc.dto.CommonResponseDto;
 import brave.btc.dto.app.record.ViolentRecordDto;
+import brave.btc.dto.common.auth.UsePersonDto;
 import brave.btc.exception.ErrorResponseDto;
 import brave.btc.service.common.record.ViolentRecordService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -47,14 +51,27 @@ public class ManagePersonController {
 	@GetMapping("/{managePersonId}/violent-records")
 	public ResponseEntity<?> getViolentRecordUsingSubmissionToken(
 		@PathVariable Integer managePersonId,
-		@RequestHeader(value = "Submission") String submissionToken
+		@RequestHeader(value = "Submission") String submissionToken,
+		@RequestParam(required = true) Boolean usePerson,
+		@RequestParam(required = true) Boolean record
 	) {
 		log.info("[getViolentRecordUsingSubmissionToken] submissionToken: {}", submissionToken);
 
-		List<ViolentRecordDto.Response> violentRecordList = violentRecordService.findViolentRecordList(managePersonId,submissionToken);
-		CommonResponseDto<Object> responseDto = CommonResponseDto.builder().data(violentRecordList).build();
+		Map<String, Object> responseData = new HashMap<>();
+		if (usePerson) {
+			UsePersonDto.Response usePersonDto = violentRecordService.findViolentRecordUsePerson(submissionToken);
+			responseData.put("usePerson", usePersonDto);
+		}
+		if (record) {
+			List<ViolentRecordDto.Response> violentRecordList = violentRecordService.findViolentRecordList(managePersonId,submissionToken);
+			responseData.put("record", violentRecordList);
+		}
+		CommonResponseDto<Object> responseDto = CommonResponseDto.builder().data(responseData).build();
 
 		return ResponseEntity.ok()
 			.body(responseDto);
 	}
+
+
+
 }

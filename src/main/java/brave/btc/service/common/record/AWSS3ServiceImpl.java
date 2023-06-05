@@ -136,6 +136,7 @@ public class AWSS3ServiceImpl implements AWSS3Service {
 			return diary.toDiaryResponseDto();
 
 		} catch (Exception e) {
+			log.error("cause : {}",e.getCause(),e);
 			throw new S3Exception("S3 다운로드 도중 에러 발생: "+e.getMessage(), e);
 		}
 	}

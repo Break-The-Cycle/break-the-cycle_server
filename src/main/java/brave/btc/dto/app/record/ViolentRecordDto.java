@@ -93,10 +93,7 @@ public class ViolentRecordDto {
 		description = "데이터 내보내기를 통해 aws s3에서 객체가 퍼블릭 객체로 복제되어 이동됨.")
 	public static class OutRequest {
 
-		@Schema(title = "사용자 로그인 id", example = "kang123", requiredMode = Schema.RequiredMode.REQUIRED)
-		private String loginId;
-
-		@Schema(title = "로그인, 암호화 password", example = "kang123!", requiredMode = Schema.RequiredMode.REQUIRED )
+		@Schema(title = "로그인, 암호화 password", example = "de96afd707bbaeabc311cca3c271428becfa8596d086d9f0d370fcc210827066", requiredMode = Schema.RequiredMode.REQUIRED )
 		private String password;
 		
 		@Schema(title = "조회 시작 날짜 (생성일 기준 X  폭력 당한 날O)", example = "2023-03-01", requiredMode = Schema.RequiredMode.REQUIRED)

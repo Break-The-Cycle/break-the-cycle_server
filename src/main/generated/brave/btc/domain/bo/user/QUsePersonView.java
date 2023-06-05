@@ -21,6 +21,10 @@ public class QUsePersonView extends EntityPathBase<UsePersonView> {
 
     public final NumberPath<Integer> id = createNumber("id", Integer.class);
 
+    public final StringPath name = createString("name");
+
+    public final StringPath phoneNumber = createString("phoneNumber");
+
     public QUsePersonView(String variable) {
         super(UsePersonView.class, forVariable(variable));
     }
