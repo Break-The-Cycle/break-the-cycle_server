@@ -37,15 +37,16 @@ import brave.btc.domain.bo.user.ManagePerson;
 import brave.btc.domain.bo.user.UsePersonView;
 import brave.btc.dto.app.record.DiaryDto;
 import brave.btc.dto.app.record.ViolentRecordDto;
+import brave.btc.dto.common.auth.UsePersonDto;
 import brave.btc.exception.auth.AuthenticationInvalidException;
 import brave.btc.exception.auth.UserPrincipalNotFoundException;
 import brave.btc.exception.domain.EntityNotFoundException;
 import brave.btc.repository.app.UsePersonRepository;
 import brave.btc.repository.app.record.RecordRepository;
-import brave.btc.repository.bo.SubmissionRecordRepository;
 import brave.btc.repository.bo.CounselingPersonSubmissionRepository;
 import brave.btc.repository.bo.ManagePersonRepository;
 import brave.btc.repository.bo.PolicePersonSubmissionRepository;
+import brave.btc.repository.bo.SubmissionRecordRepository;
 import brave.btc.repository.bo.UsePersonViewRepository;
 import brave.btc.service.common.auth.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -113,9 +114,22 @@ public class ViolentRecordServiceImpl implements ViolentRecordService {
 	}
 
 	@Override
+	public UsePersonDto.Response findViolentRecordUsePerson(String submissionToken) {
+
+		Integer submissionRecordId = extractSubmissionRecordIdFromSubmissionToken(submissionToken);
+
+		SubmissionRecord submissionRecord = submissionRecordRepository.findById(submissionRecordId)
+			.orElseThrow(() -> new EntityNotFoundException(SubmissionRecord.class.getName(), submissionRecordId));
+
+		UsePersonView usePersonView = submissionRecord.getUsePersonView();
+		return usePersonView.toDto();
+	}
+
+	@Override
 	public List<ViolentRecordDto.Response> findViolentRecordList(Integer managePersonId, String submissionToken) {
 
 		Integer submissionRecordId = extractSubmissionRecordIdFromSubmissionToken(submissionToken);
+
 		SubmissionRecord submissionRecord = submissionRecordRepository.findById(submissionRecordId)
 			.orElseThrow(() -> new EntityNotFoundException(SubmissionRecord.class.getName(), submissionRecordId));
 
@@ -205,15 +219,15 @@ public class ViolentRecordServiceImpl implements ViolentRecordService {
 	}
 
 	@Override
-	public ViolentRecordDto.OutResponse outViolentRecord(ViolentRecordDto.OutRequest requestDto) {
+	public ViolentRecordDto.OutResponse outViolentRecord(Integer usePersonId, ViolentRecordDto.OutRequest requestDto) {
 
 		//유저의 record 전부 조회 하기 (diary, picture, recording)
-		String loginId = requestDto.getLoginId();
 		String sha256EncodedPassword = requestDto.getPassword();
 
-		UsePerson usePerson = usePersonRepository.findByLoginId(loginId)
+		UsePerson usePerson = usePersonRepository.findById(usePersonId)
 			.orElseThrow(() -> new UserPrincipalNotFoundException("해당 사용 개인을 찾을 수 없습니다."));
-		Integer usePersonId = usePerson.getId();
+		String loginId = usePerson.getLoginId();
+
 		String bcryptEncodedPassword = usePerson.getPassword();
 		if (!customPasswordEncoder.matchesSHA256(sha256EncodedPassword, bcryptEncodedPassword)) {
 			throw new AuthenticationInvalidException("비밀번호가 일치하지 않습니다.");
@@ -229,7 +243,7 @@ public class ViolentRecordServiceImpl implements ViolentRecordService {
 			.effectiveDatetime(expireDateTime)
 			.build();
 		List<UsePersonSubmissionRecord> newUsePersonSubmissionRecordList =
-			downloadSecretRecordAndUploadOpen(requestDto, newSubmissionRecord, sha256EncodedPassword, usePersonId);
+			downloadSecretRecordAndUploadOpen(requestDto, newSubmissionRecord, sha256EncodedPassword, usePersonId,loginId);
 		newSubmissionRecord.changeUsePersonSubmissionRecordList(newUsePersonSubmissionRecordList);
 
 		log.info("[ViolentRecordOut] requestDto: {}", requestDto);
@@ -253,7 +267,7 @@ public class ViolentRecordServiceImpl implements ViolentRecordService {
 	}
 
 	private List<UsePersonSubmissionRecord> downloadSecretRecordAndUploadOpen(ViolentRecordDto.OutRequest requestDto,
-		SubmissionRecord submissionRecord, String sha256EncodedPassword, Integer usePersonId) {
+		SubmissionRecord submissionRecord, String sha256EncodedPassword, Integer usePersonId, String loginId) {
 		List<Record> recordList = recordRepository.searchAllViolentRecordList(usePersonId, requestDto.getFromDate(), requestDto.getToDate());
 		return recordList.stream()
 			.map(record -> {
@@ -262,7 +276,7 @@ public class ViolentRecordServiceImpl implements ViolentRecordService {
 						String secretPictureS3Url = picture.getContent();
 						byte[] imageByteArrayResponse = recordDownloadService.downloadPicture(secretPictureS3Url, sha256EncodedPassword);
 						log.debug("[downloadSecretRecordAndUploadOpen] imageByteArrayResponse");
-						String objectPath = makeObjectPath(FolderDivision.OPEN, requestDto.getLoginId(), RecordDivision.PICTURE);
+						String objectPath = makeObjectPath(FolderDivision.OPEN, loginId, RecordDivision.PICTURE);
 						log.debug("[downloadSecretRecordAndUploadOpen] objectPath: {}", objectPath);
 						String openPictureS3Url = recordUploadService.uploadPicture(imageByteArrayResponse, objectPath);
 						log.debug("[downloadSecretRecordAndUploadOpen] openPictureS3Url: {}", openPictureS3Url);
@@ -278,7 +292,7 @@ public class ViolentRecordServiceImpl implements ViolentRecordService {
 						String secretDiaryS3Url = diary.getContent();
 						log.debug("[findViolentRecordList] secretDiaryS3Url: {}", secretDiaryS3Url);
 						DiaryDto.Response diaryResponse = recordDownloadService.downloadDiary(secretDiaryS3Url, sha256EncodedPassword);
-						String objectPath = makeObjectPath(FolderDivision.OPEN, requestDto.getLoginId(), RecordDivision.DIARY);
+						String objectPath = makeObjectPath(FolderDivision.OPEN, loginId, RecordDivision.DIARY);
 						DiaryDto.Create diaryCreateDto = diaryResponse.toCreateDto();
 						String openDiaryS3Url = recordUploadService.uploadDiary(diaryCreateDto, objectPath);
 

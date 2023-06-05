@@ -27,7 +27,7 @@ public class DiaryDto {
 		@Schema(title = "내용", example = "내용을 입력해주세요.")
 		private String contents;
 
-		public DiaryDto.Response toDiaryResponseDto() {
+		public Response toDiaryResponseDto() {
 			return Response.builder()
 				.title(title)
 				.contents(contents)
@@ -48,7 +48,7 @@ public class DiaryDto {
 		@Schema(title = "내용", example = "내용을 입력해주세요.")
 		private String contents;
 
-		public DiaryDto.Create toCreateDto() {
+		public Create toCreateDto() {
 			return Create.builder()
 				.title(title)
 				.contents(contents)

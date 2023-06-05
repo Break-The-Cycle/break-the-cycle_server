@@ -135,12 +135,13 @@ public class ViolentRecordController {
 				content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
 					schema = @Schema(implementation = ErrorResponseDto.class)))
 		})
-	@PostMapping("/out")
+	@PostMapping("/{usePersonId}/out")
 	public ResponseEntity<?> ViolentRecordOut(
-		@RequestBody ViolentRecordDto.OutRequest requestDto) {
+		@RequestBody ViolentRecordDto.OutRequest requestDto,
+		@Parameter(description = "use person pk",required = true) @PathVariable("usePersonId") Integer usePersonId) {
 
 		log.info("[ViolentRecordOut] requestDto: {}", requestDto);
-		ViolentRecordDto.OutResponse outResponse = violentRecordService.outViolentRecord(requestDto);
+		ViolentRecordDto.OutResponse outResponse = violentRecordService.outViolentRecord(usePersonId, requestDto);
 		CommonResponseDto<Object> responseDto = CommonResponseDto.builder().data(outResponse).build();
 
 		return ResponseEntity.ok()

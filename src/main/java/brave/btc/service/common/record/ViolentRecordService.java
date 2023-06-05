@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import brave.btc.dto.app.record.ViolentRecordDto;
+import brave.btc.dto.common.auth.UsePersonDto;
 
 public interface ViolentRecordService {
 
@@ -26,6 +27,15 @@ public interface ViolentRecordService {
 
 
 	/**
+	 * 데이터 내보내기에 대한 가정 폭력 기록 사용 개인 정보를 가져온다.
+	 * @param submissionToken 가정 폭력 기록 데이터 내보내기 후 발행된 제출 토큰
+	 * @return 사용 개인 응답 dto
+	 */
+	UsePersonDto.Response findViolentRecordUsePerson(String submissionToken);
+
+
+
+	/**
 	 * 데이터 내보내기에 대한 가정 폭력 기록 리스트를 가져온다.
 	 *
 	 * @param managePersonId
@@ -45,10 +55,12 @@ public interface ViolentRecordService {
 
 	/**
 	 * 기정폭력에 대해 데이터 내보내기를 수행한다.
-	 * @param requestDto 가정폭력 내보내기를 위한 req dto (날짜 범위, 로그인 아이디, 암호화 비밀번호)
+	 *
+	 * @param usePersonId
+	 * @param requestDto  가정폭력 내보내기를 위한 req dto (날짜 범위, 로그인 아이디, 암호화 비밀번호)
 	 * @return 내보내기에 대해 발행된 토큰
 	 */
-	ViolentRecordDto.OutResponse outViolentRecord(ViolentRecordDto.OutRequest requestDto);
+	ViolentRecordDto.OutResponse outViolentRecord(Integer usePersonId, ViolentRecordDto.OutRequest requestDto);
 	
 	
 	

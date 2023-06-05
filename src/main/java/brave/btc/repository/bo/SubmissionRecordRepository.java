@@ -11,6 +11,6 @@ import brave.btc.domain.bo.submissionrecord.SubmissionRecord;
 public interface SubmissionRecordRepository extends JpaRepository<SubmissionRecord, Integer> {
 
 	@NotNull
-	@EntityGraph(attributePaths = {"usePersonSubmissionRecordList"})
+	@EntityGraph(attributePaths = {"usePersonView","usePersonSubmissionRecordList"})
 	Optional<SubmissionRecord> findById(@NotNull Integer id);
 }
