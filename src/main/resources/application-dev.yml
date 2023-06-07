@@ -50,3 +50,12 @@ sms:
   secretKey: ${secrets.SMS_SECRET_KEY}
   publicKey: ${secrets.SMS_PUBLIC_KEY}
   domain: ${secrets.SMS_DOMAIN}
+
+sentry:
+  dsn: ${secrets.SENTRY_DSN}
+  # Set traces-sample-rate to 1.0 to capture 100% of transactions for performance monitoring.
+  # We recommend adjusting this value in production.
+  traces-sample-rate: 1.0
+  logging:
+      minimum-breadcrumb-level: debug
+      minimum-event-level: info
