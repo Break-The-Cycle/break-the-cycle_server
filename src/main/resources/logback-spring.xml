@@ -28,6 +28,9 @@
     value="[%d{yyyy-MM-dd HH:mm:ss}:%-3relative]  %clr(%-5level) %clr(${PID:-}){magenta} %clr(---){faint} %clr([%15.15thread]){faint} %clr(%-40.40logger{36}){cyan} %clr(:){faint} %msg%n"/>
   <property name="FILE_LOG_PATTERN"
     value="[%d{yyyy-MM-dd HH:mm:ss}:%-3relative] %-5level ${PID:-} --- [%15.15thread] %-40.40logger{36} : %msg%n"/>
+  <property name="SENTRY_LOG_PATTERN"
+            value="[%d{yyyy-MM-dd HH:mm:ss}:%-3relative] %-5level ${PID:-} --- [%15.15thread] %-40.40logger{36} : %msg%n"/>
+
 
   <!-- 콘솔(STDOUT) -->
   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
@@ -52,6 +55,19 @@
     </rollingPolicy>
   </appender>
 
+  <!-- Configure the Sentry appender, overriding the logging threshold to the WARN level -->
+  <appender name="SENTRY" class="io.sentry.logback.SentryAppender">
+
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      <level>debug</level>
+    </filter>
+    <!-- Optionally add an encoder -->
+    <encoder>
+      <pattern>${SENTRY_LOG_PATTERN}</pattern>
+    </encoder>
+  </appender>
+
+
   <!-- spring profile별 로그 설정 -->
   <springProfile name="jms">
     <root level="debug">
@@ -73,9 +89,15 @@
       <!--     참조할 appender - STDOUT -->
       <appender-ref ref="STDOUT" />
     </root>
+
     <root level="debug">
     <!--     참조할 appender - FILE -->
       <appender-ref ref="FILE" />
+    </root>
+
+    <root level="debug">
+    <!--     참조할 appender - SENTRY -->
+      <appender-ref ref="SENTRY" />
     </root>
   </springProfile>
 
